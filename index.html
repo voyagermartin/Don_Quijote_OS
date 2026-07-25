@@ -29,7 +29,7 @@
                 <!-- Record Expedition Action Button -->
                 <button class="btn-expedition-trigger" id="btn-open-expedition">
                     <span class="btn-icon">⚔️</span>
-                    <span class="btn-text">記錄今日遠征</span>
+                    <span class="btn-text">今日活動</span>
                 </button>
 
                 <!-- Loadout Switch Buttons -->
@@ -43,14 +43,6 @@
                         <button class="loadout-btn" data-loadout="camino">
                             <span class="btn-icon">🥾</span>
                             <span class="btn-text">Camino</span>
-                        </button>
-                        <button class="loadout-btn" data-loadout="japan">
-                            <span class="btn-icon">🗾</span>
-                            <span class="btn-text">Japan</span>
-                        </button>
-                        <button class="loadout-btn" data-loadout="thailand">
-                            <span class="btn-icon">🐘</span>
-                            <span class="btn-text">Thailand</span>
                         </button>
                     </div>
                 </nav>
@@ -70,8 +62,13 @@
                     <!-- Background ambient ring & glow -->
                     <div class="paperdoll-glow"></div>
 
-                    <!-- Left Equipment Slots Column -->
+                    <!-- Left Equipment Slots Column: 👕 穿戴裝備 -->
                     <div class="slots-column slots-left">
+                        <div class="slots-category-header">
+                            <span class="category-icon">👕</span>
+                            <span class="category-title">穿戴裝備</span>
+                        </div>
+
                         <div class="eq-slot" data-slot="head" id="slot-head">
                             <div class="slot-header">
                                 <span class="slot-icon">🪖</span>
@@ -92,10 +89,20 @@
                             </div>
                         </div>
 
-                        <div class="eq-slot" data-slot="backpack" id="slot-backpack">
+                        <div class="eq-slot" data-slot="shoes" id="slot-shoes">
                             <div class="slot-header">
-                                <span class="slot-icon">🎒</span>
-                                <span class="slot-name">Backpack</span>
+                                <span class="slot-icon">👟</span>
+                                <span class="slot-name">Shoes</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="socks" id="slot-socks">
+                            <div class="slot-header">
+                                <span class="slot-icon">🧦</span>
+                                <span class="slot-name">Socks</span>
                             </div>
                             <div class="slot-content">
                                 <span class="slot-item-placeholder">Empty Slot</span>
@@ -111,20 +118,10 @@
                                 <span class="slot-item-placeholder">Empty Slot</span>
                             </div>
                         </div>
-
-                        <div class="eq-slot" data-slot="trekking-pole" id="slot-trekking-pole">
-                            <div class="slot-header">
-                                <span class="slot-icon">🦯</span>
-                                <span class="slot-name">Trekking Pole</span>
-                            </div>
-                            <div class="slot-content">
-                                <span class="slot-item-placeholder">Empty Slot</span>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Center Character Avatar Silhouette -->
-                    <div class="character-avatar">
+                    <div class="character-avatar" id="knight-avatar-btn" title="點擊檢視騎士戰備總覽">
                         <div class="avatar-frame">
                             <div class="silhouette-art">
                                 <svg viewBox="0 0 200 320" class="knight-svg">
@@ -138,25 +135,35 @@
                             </div>
                             <div class="knight-title">DON QUIJOTE</div>
                             <div class="knight-class">Level 1 Windmill Knight</div>
+                            <div class="avatar-badge" id="avatar-total-badge">
+                                <span class="badge-weight">🏋️ ---g</span>
+                                <span class="badge-count">🛡️ 10/10</span>
+                            </div>
+                            <div class="avatar-click-hint">🔍 點擊查看戰備總覽</div>
                         </div>
                     </div>
 
-                    <!-- Right Equipment Slots Column -->
+                    <!-- Right Equipment Slots Column: 🧰 其他配備 -->
                     <div class="slots-column slots-right">
-                        <div class="eq-slot" data-slot="shoes" id="slot-shoes">
+                        <div class="slots-category-header">
+                            <span class="category-icon">🧰</span>
+                            <span class="category-title">其他配備</span>
+                        </div>
+
+                        <div class="eq-slot" data-slot="backpack" id="slot-backpack">
                             <div class="slot-header">
-                                <span class="slot-icon">👟</span>
-                                <span class="slot-name">Shoes</span>
+                                <span class="slot-icon">🎒</span>
+                                <span class="slot-name">Backpack</span>
                             </div>
                             <div class="slot-content">
                                 <span class="slot-item-placeholder">Empty Slot</span>
                             </div>
                         </div>
 
-                        <div class="eq-slot" data-slot="socks" id="slot-socks">
+                        <div class="eq-slot" data-slot="trekking-pole" id="slot-trekking-pole">
                             <div class="slot-header">
-                                <span class="slot-icon">🧦</span>
-                                <span class="slot-name">Socks</span>
+                                <span class="slot-icon">🦯</span>
+                                <span class="slot-name">Trekking Pole</span>
                             </div>
                             <div class="slot-content">
                                 <span class="slot-item-placeholder">Empty Slot</span>
@@ -186,7 +193,7 @@
                         <div class="eq-slot" data-slot="water" id="slot-water">
                             <div class="slot-header">
                                 <span class="slot-icon">💧</span>
-                                <span class="slot-name">Water</span>
+                                <span class="slot-name">水壺</span>
                             </div>
                             <div class="slot-content">
                                 <span class="slot-item-placeholder">Empty Slot</span>
@@ -241,10 +248,10 @@
             <!-- Modal Tab Selector -->
             <div class="modal-tabs">
                 <button class="modal-tab-btn active" data-tab="running">
-                    <span>🏃‍♂️</span> 跑步紀錄
+                    <span>🏃‍♂️</span> Run
                 </button>
                 <button class="modal-tab-btn" data-tab="citywalk">
-                    <span>🌇</span> CityWalk 台北微旅行
+                    <span>🌇</span> CityWalk
                 </button>
             </div>
 

@@ -24,7 +24,7 @@ const INVENTORY_DATA = {
             socks: { name: "Darn Tough Run Ultra-Light", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
             phone: { name: "iPhone 15 Pro (Strava Mode)", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
             "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
-            water: { name: "Hydrapak SoftFlask 500ml x2", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
+            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
         }
     },
     camino: {
@@ -41,49 +41,29 @@ const INVENTORY_DATA = {
             socks: { name: "Darn Tough Hiker Boot Full Cushion", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
             phone: { name: "iPhone 15 Pro", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
             "power-bank": { name: "Anker 325 Power Bank 20000mAh", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
-            water: { name: "CamelBak Crux 3L Reservoir", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
-        }
-    },
-    japan: {
-        id: "loadout_japan",
-        name: "Japan Urban & Shrine Quest",
-        description: "Versatile urban mobility and temple exploration loadout.",
-        gear: {
-            head: { name: "Snow Peak Tech Beanie", weight: 65, rating: "A", mileage: 180, notes: "Warm for high-altitude shrines." },
-            body: { name: "Arc'teryx Atom LT Hoody", weight: 375, rating: "S", mileage: 920, notes: "Midlayer for unpredictable weather." },
-            backpack: { name: "Peak Design Everyday Backpack 20L", weight: 1500, rating: "A+", mileage: 650, notes: "Quick camera side access." },
-            watch: { name: "Apple Watch Ultra 2", weight: 61, rating: "A+", mileage: 720, notes: "Suica integration & city guide." },
-            "trekking-pole": { name: "Helinox Passport Tension Pole", weight: 250, rating: "B+", mileage: 120, notes: "Ultra-compact for Kyoto trails." },
-            shoes: { name: "On Cloudtilte Urban Walking Shoes", weight: 540, rating: "A", mileage: 400, notes: "Slip-on for frequent temple entry." },
-            socks: { name: "Tabi Split Toe Socks", weight: 40, rating: "A", mileage: 250, notes: "Traditional comfort." },
-            phone: { name: "iPhone 15 Pro", weight: 187, rating: "A", mileage: 1500, notes: "Translation & train routes." },
-            "power-bank": { name: "Anker MagGo Magnetic 10000mAh", weight: 250, rating: "A+", mileage: 450, notes: "Wireless snap charging." },
-            water: { name: "Kinto Travel Tumbler 500ml", weight: 310, rating: "S", mileage: 500, notes: "Keeps matcha tea hot all day." }
-        }
-    },
-    thailand: {
-        id: "loadout_thailand",
-        name: "Thailand Tropical Expedition",
-        description: "Ultra-breathable monsoon and tropical heat gear.",
-        gear: {
-            head: { name: "Columbia Breeze UV Cap", weight: 55, rating: "A", mileage: 310, notes: "Breathable mesh venting." },
-            body: { name: "Uniqlo AIRism Seamless Mesh Shirt", weight: 90, rating: "S", mileage: 600, notes: "Maximum ventilation in humidity." },
-            backpack: { name: "Matador FreeFly16 Dry Pack", weight: 190, rating: "A+", mileage: 280, notes: "Waterproof dry pack for boat trips." },
-            watch: { name: "Casio G-Shock Mudmaster", weight: 92, rating: "S", mileage: 1800, notes: "Indestructible tropical companion." },
-            "trekking-pole": { name: "Decathlon Forclaz Compact Stick", weight: 320, rating: "B", mileage: 90, notes: "Jungle trail stability." },
-            shoes: { name: "Teva Hurricane XLT2 Sandals", weight: 580, rating: "A+", mileage: 530, notes: "Water-friendly grip." },
-            socks: { name: "DeFeet Aireator Thin Socks", weight: 30, rating: "A", mileage: 350, notes: "Ultra thin mesh." },
-            phone: { name: "iPhone 15 Pro (Waterproof Case)", weight: 210, rating: "A", mileage: 1500, notes: "Grab app & tropical photography." },
-            "power-bank": { name: "Anker 10000mAh Slim", weight: 180, rating: "A", mileage: 750, notes: "Lightweight pocket power." },
-            water: { name: "Nalgene Wide Mouth 1L Bottle", weight: 180, rating: "S", mileage: 1600, notes: "Unbreakable water storage." }
+            water: { name: "CamelBak Crux 3L Reservoir (水壺)", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
         }
     }
+};
+
+const SLOT_CATEGORY_MAP = {
+    head: { category: "👕 穿戴裝備", label: "Head (頭部)" },
+    body: { category: "👕 穿戴裝備", label: "Body (身體服飾)" },
+    shoes: { category: "👕 穿戴裝備", label: "Shoes (鞋款)" },
+    socks: { category: "👕 穿戴裝備", label: "Socks (襪款)" },
+    watch: { category: "👕 穿戴裝備", label: "Watch (手錶)" },
+    backpack: { category: "🧰 其他配備", label: "Backpack (背包)" },
+    "trekking-pole": { category: "🧰 其他配備", label: "Trekking Pole (登山杖)" },
+    phone: { category: "🧰 其他配備", label: "Phone (手機)" },
+    "power-bank": { category: "🧰 其他配備", label: "Power Bank (行動電源)" },
+    water: { category: "🧰 其他配備", label: "水壺 (Water)" }
 };
 
 // Application State Management
 let currentLoadout = 'running';
 let activeModalTab = 'running';
 let selectedGearList = [];
+let selectedSlotKey = null;
 
 // ==========================================================================
 // 2. Initialization & Event Binding (Browser Environment Only)
@@ -96,6 +76,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         initExpeditionModal();
         initSliders();
         initStarRatings();
+        initSlotAndMannequinEvents();
         setTodayDates();
     });
 }
@@ -128,21 +109,184 @@ function initLoadoutButtons() {
 }
 
 /**
- * Renders gear items into the central character paperdoll slots.
+ * Binds click events to individual slots and central mannequin avatar.
+ */
+function initSlotAndMannequinEvents() {
+    const slots = document.querySelectorAll('.eq-slot');
+    slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+            const slotKey = slot.getAttribute('data-slot');
+            slots.forEach(s => s.classList.remove('selected'));
+            slot.classList.add('selected');
+            selectedSlotKey = slotKey;
+            inspectSlot(slotKey);
+        });
+    });
+
+    const knightAvatarBtn = document.getElementById('knight-avatar-btn');
+    if (knightAvatarBtn) {
+        knightAvatarBtn.addEventListener('click', () => {
+            slots.forEach(s => s.classList.remove('selected'));
+            selectedSlotKey = null;
+            inspectKnightOverview();
+        });
+    }
+}
+
+/**
+ * Renders gear items into the central character paperdoll slots and updates mannequin badge.
  */
 function renderEquipmentSlots() {
     const activeGear = INVENTORY_DATA[currentLoadout]?.gear || {};
+    let totalWeight = 0;
+    let itemHits = 0;
 
     Object.keys(activeGear).forEach(slotKey => {
         const slotEl = document.getElementById(`slot-${slotKey}`);
+        const item = activeGear[slotKey];
+
+        if (item) {
+            totalWeight += item.weight || 0;
+            itemHits++;
+        }
+
         if (slotEl) {
             const contentEl = slotEl.querySelector('.slot-content');
-            const item = activeGear[slotKey];
             if (contentEl && item) {
                 contentEl.innerHTML = `<span class="slot-item-name">${item.name}</span>`;
             }
         }
     });
+
+    const badgeEl = document.getElementById('avatar-total-badge');
+    if (badgeEl) {
+        badgeEl.innerHTML = `
+            <span class="badge-weight">🏋️ ${totalWeight.toLocaleString()}g</span>
+            <span class="badge-count">🛡️ ${itemHits}/10</span>
+        `;
+    }
+
+    if (selectedSlotKey) {
+        inspectSlot(selectedSlotKey);
+    } else {
+        inspectKnightOverview();
+    }
+}
+
+/**
+ * Inspector Panel: Render single slot details
+ */
+function inspectSlot(slotKey) {
+    const inspectorEl = document.getElementById('equipment-panel');
+    if (!inspectorEl) return;
+
+    const gear = INVENTORY_DATA[currentLoadout]?.gear?.[slotKey];
+    const info = SLOT_CATEGORY_MAP[slotKey] || { category: "裝備", label: slotKey };
+
+    if (!gear) {
+        inspectorEl.innerHTML = `
+            <div class="panel-empty-state">
+                <div class="empty-icon">🛡️</div>
+                <h3 class="empty-title">Empty Slot</h3>
+                <p class="empty-desc">Current slot ${info.label} has no equipment assigned.</p>
+            </div>`;
+        return;
+    }
+
+    inspectorEl.innerHTML = `
+        <div class="inspector-card">
+            <div class="inspector-card-header">
+                <div>
+                    <h3 class="inspector-item-name">${gear.name}</h3>
+                    <div class="inspector-item-category">${info.category} • ${info.label}</div>
+                </div>
+                <span class="inspector-badge-rating">${gear.rating || 'A'}</span>
+            </div>
+
+            <div class="inspector-stat-grid">
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">裝備單重</div>
+                    <div class="stat-box-value">${gear.weight} g</div>
+                </div>
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">累積戰報里程</div>
+                    <div class="stat-box-value">${gear.mileage} KM</div>
+                </div>
+            </div>
+
+            <div class="inspector-notes-box">
+                <div class="notes-box-title">⚔️ 騎士戰鬥備註</div>
+                <div class="notes-box-text">${gear.notes || '暫無戰鬥經驗備註。'}</div>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Inspector Panel: Render total knight loadout overview when mannequin is clicked
+ */
+function inspectKnightOverview() {
+    const inspectorEl = document.getElementById('equipment-panel');
+    if (!inspectorEl) return;
+
+    const activeGear = INVENTORY_DATA[currentLoadout]?.gear || {};
+    const loadoutInfo = INVENTORY_DATA[currentLoadout] || {};
+
+    const wearableKeys = ['head', 'body', 'shoes', 'socks', 'watch'];
+    let wearableWeight = 0;
+    let otherWeight = 0;
+    let totalItems = 0;
+
+    Object.keys(activeGear).forEach(key => {
+        const item = activeGear[key];
+        if (item) {
+            totalItems++;
+            if (wearableKeys.includes(key)) {
+                wearableWeight += item.weight || 0;
+            } else {
+                otherWeight += item.weight || 0;
+            }
+        }
+    });
+
+    const totalWeight = wearableWeight + otherWeight;
+    const kgText = (totalWeight / 1000).toFixed(2);
+
+    inspectorEl.innerHTML = `
+        <div class="inspector-card">
+            <div class="inspector-card-header">
+                <div>
+                    <h3 class="inspector-item-name">${loadoutInfo.name || 'Knight Loadout'}</h3>
+                    <div class="inspector-item-category">🛡️ Don Quijote OS • 騎士戰備總覽</div>
+                </div>
+                <span class="inspector-badge-rating">Grade S</span>
+            </div>
+
+            <div class="inspector-stat-grid">
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">裝備總重量</div>
+                    <div class="stat-box-value">${totalWeight.toLocaleString()} g (${kgText} kg)</div>
+                </div>
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">已裝備數量</div>
+                    <div class="stat-box-value">${totalItems} / 10</div>
+                </div>
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">👕 穿戴裝備重量</div>
+                    <div class="stat-box-value">${wearableWeight.toLocaleString()} g</div>
+                </div>
+                <div class="inspector-stat-box">
+                    <div class="stat-box-label">🧰 其他配備重量</div>
+                    <div class="stat-box-value">${otherWeight.toLocaleString()} g</div>
+                </div>
+            </div>
+
+            <div class="inspector-notes-box">
+                <div class="notes-box-title">📜 遠征負重說明</div>
+                <div class="notes-box-text">${loadoutInfo.description || '戰術配備全數就緒，隨時可出擊對抗現代風車。'}</div>
+            </div>
+        </div>
+    `;
 }
 
 /**
@@ -384,7 +528,7 @@ async function handleSaveAndCopyPrompt() {
  * Generates formatted AI prompt markdown for Running Logs
  */
 function generateRunningAIPrompt(data) {
-    return `# 🛡️ Don Quijote OS - 遠征戰報錄入（跑步紀錄）
+    return `# 🛡️ Don Quijote OS - 遠征戰報錄入（Run）
 
 請 Gemini 系統架構師分析以下騎士遠征數據，並給予騎士精神點評與裝備磨損經驗點數建議：
 
@@ -415,7 +559,7 @@ function generateRunningAIPrompt(data) {
  * Generates formatted AI prompt markdown for CityWalk Logs
  */
 function generateCityWalkAIPrompt(data) {
-    return `# 🛡️ Don Quijote OS - 遠征戰報錄入（CityWalk 台北微旅行）
+    return `# 🛡️ Don Quijote OS - 遠征戰報錄入（CityWalk）
 
 請 Gemini 系統架構師分析以下城市騎士漫遊戰報，並撰寫一段荒繆又浪漫的遠征日誌摘要：
 

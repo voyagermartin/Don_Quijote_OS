@@ -228,6 +228,27 @@ body {
     z-index: 2;
 }
 
+.slots-category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    margin-bottom: 2px;
+}
+
+.category-icon {
+    font-size: 1.1rem;
+}
+
+.category-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--accent-gold);
+    letter-spacing: 1.2px;
+    font-weight: 700;
+}
+
 .eq-slot {
     background: var(--bg-slot);
     border: 1px solid var(--border-gold);
@@ -244,6 +265,12 @@ body {
     background: var(--bg-card-hover);
     box-shadow: var(--glow-gold), inset 0 0 12px rgba(212, 175, 55, 0.15);
     transform: translateY(-2px);
+}
+
+.eq-slot.selected {
+    border-color: var(--accent-amber);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(255, 157, 0, 0.1));
+    box-shadow: 0 0 15px rgba(255, 157, 0, 0.3), inset 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
 .slot-header {
@@ -277,12 +304,30 @@ body {
     font-style: italic;
 }
 
-/* Character Avatar Silhouette */
+.slot-item-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Character Avatar Silhouette (Interactive Mannequin) */
 .character-avatar {
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.character-avatar:hover {
+    background: rgba(212, 175, 55, 0.06);
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: var(--glow-gold);
+    transform: scale(1.02);
 }
 
 .avatar-frame {
@@ -290,13 +335,18 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .knight-svg {
     width: 190px;
     height: 300px;
     filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.character-avatar:hover .knight-svg {
+    filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.65));
 }
 
 .knight-title {
@@ -313,7 +363,42 @@ body {
     letter-spacing: 1px;
 }
 
-/* Equipment Panel (Blank / Inspector) */
+.avatar-badge {
+    display: flex;
+    gap: 12px;
+    background: rgba(12, 15, 23, 0.95);
+    border: 1px solid var(--border-gold);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.badge-weight {
+    color: var(--accent-amber);
+    font-weight: 600;
+}
+
+.badge-count {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.avatar-click-hint {
+    font-size: 0.74rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.5px;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, text-shadow 0.2s ease;
+}
+
+.character-avatar:hover .avatar-click-hint {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+/* Equipment Panel (Inspector Details) */
 .panel-section {
     background: var(--bg-card);
     border: 1px solid var(--border-gold);
@@ -327,13 +412,100 @@ body {
     min-height: 480px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
     background: rgba(8, 10, 15, 0.6);
     border: 1px dashed var(--border-gold);
     border-radius: 10px;
-    padding: 24px;
-    text-align: center;
+    padding: 20px;
+}
+
+.inspector-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+}
+
+.inspector-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-gold);
+    padding-bottom: 12px;
+}
+
+.inspector-item-name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--accent-gold);
+    line-height: 1.3;
+}
+
+.inspector-item-category {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.inspector-badge-rating {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+    color: #090a0e;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.inspector-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.inspector-stat-box {
+    background: rgba(12, 15, 23, 0.85);
+    border: 1px solid var(--border-muted);
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.stat-box-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-box-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2px;
+}
+
+.inspector-notes-box {
+    background: rgba(12, 15, 23, 0.85);
+    border: 1px solid var(--border-muted);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.notes-box-title {
+    font-size: 0.78rem;
+    color: var(--accent-gold);
+    font-family: var(--font-heading);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.notes-box-text {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
 }
 
 .empty-icon {
@@ -834,5 +1006,70 @@ body {
 .toast-notification.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Mobile Responsive Optimization */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+
+    .rpg-container {
+        gap: 16px;
+    }
+
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .loadout-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .loadout-label {
+        font-size: 0.78rem;
+    }
+
+    .loadout-buttons {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .loadout-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .btn-expedition-trigger {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .paperdoll-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
+    }
+
+    .character-avatar {
+        order: -1;
+    }
 }
 
