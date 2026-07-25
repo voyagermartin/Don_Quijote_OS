@@ -16,6 +16,10 @@
   1. 於 [app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 加入 `typeof document !== 'undefined'` 瀏覽器環境防護。
   2. 新增 [.claspignore](file:///f:/Projects/Don_Quijote_OS/.claspignore)，僅推送 GAS 後端腳本至雲端。
 - 修正 GAS Web App 直接存取網址時 `Unknown action: undefined` 錯誤：於 [gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) `doGet()` 補強 `action` 預設回退機制（當未傳遞 `?action=` 參數時預設執行 `getEquipment`）。
+- 建立隱私防護組件：於 [index.html](file:///f:/Projects/Don_Quijote_OS/index.html) 與 [src/index.html](file:///f:/Projects/Don_Quijote_OS/src/index.html) 加入 `noindex, nofollow` Meta 標籤，並建立 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt)，全面禁止 Google、Bing 等搜尋引擎爬蟲收錄。
+- 成功將程式碼推送到 GitHub 儲存庫 `https://github.com/voyagermartin/Don_Quijote_OS.git` (main 分支)。
+
+
 
 
 
