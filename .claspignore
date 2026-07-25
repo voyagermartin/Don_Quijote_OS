@@ -1,0 +1,7 @@
+# Allow pushing guarded app.js to overwrite remote app.gs
+**/*
+
+!appsscript.json
+!src/gas_setup.js
+!src/gas_api.js
+!src/app.js

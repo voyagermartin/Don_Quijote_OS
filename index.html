@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don Quijote OS - RPG Adventure Inventory</title>
+    <!-- Google Fonts for RPG Fantasy Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div class="rpg-container">
+        <!-- Header / Navigation Bar -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">🛡️</div>
+                <div>
+                    <h1 class="app-title">DON QUIJOTE OS</h1>
+                    <p class="app-subtitle">Life is the Greatest RPG • Tactical Expedition Gear</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <!-- Record Expedition Action Button -->
+                <button class="btn-expedition-trigger" id="btn-open-expedition">
+                    <span class="btn-icon">⚔️</span>
+                    <span class="btn-text">記錄今日遠征</span>
+                </button>
+
+                <!-- Loadout Switch Buttons -->
+                <nav class="loadout-nav">
+                    <span class="loadout-label">LOADOUT:</span>
+                    <div class="loadout-buttons">
+                        <button class="loadout-btn active" data-loadout="running">
+                            <span class="btn-icon">🏃</span>
+                            <span class="btn-text">Running</span>
+                        </button>
+                        <button class="loadout-btn" data-loadout="camino">
+                            <span class="btn-icon">🥾</span>
+                            <span class="btn-text">Camino</span>
+                        </button>
+                        <button class="loadout-btn" data-loadout="japan">
+                            <span class="btn-icon">🗾</span>
+                            <span class="btn-text">Japan</span>
+                        </button>
+                        <button class="loadout-btn" data-loadout="thailand">
+                            <span class="btn-icon">🐘</span>
+                            <span class="btn-text">Thailand</span>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-layout">
+            <!-- Left & Center: Character Equipment Screen -->
+            <section class="character-section">
+                <div class="section-header">
+                    <h2 class="section-title">KNIGHT EQUIPMENT</h2>
+                    <span class="status-badge">READY FOR EXPEDITION</span>
+                </div>
+
+                <div class="paperdoll-container">
+                    <!-- Background ambient ring & glow -->
+                    <div class="paperdoll-glow"></div>
+
+                    <!-- Left Equipment Slots Column -->
+                    <div class="slots-column slots-left">
+                        <div class="eq-slot" data-slot="head" id="slot-head">
+                            <div class="slot-header">
+                                <span class="slot-icon">🪖</span>
+                                <span class="slot-name">Head</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="body" id="slot-body">
+                            <div class="slot-header">
+                                <span class="slot-icon">🛡️</span>
+                                <span class="slot-name">Body</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="backpack" id="slot-backpack">
+                            <div class="slot-header">
+                                <span class="slot-icon">🎒</span>
+                                <span class="slot-name">Backpack</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="watch" id="slot-watch">
+                            <div class="slot-header">
+                                <span class="slot-icon">⌚</span>
+                                <span class="slot-name">Watch</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="trekking-pole" id="slot-trekking-pole">
+                            <div class="slot-header">
+                                <span class="slot-icon">🦯</span>
+                                <span class="slot-name">Trekking Pole</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Character Avatar Silhouette -->
+                    <div class="character-avatar">
+                        <div class="avatar-frame">
+                            <div class="silhouette-art">
+                                <svg viewBox="0 0 200 320" class="knight-svg">
+                                    <path d="M100 30 C110 30 118 38 118 50 C118 62 110 70 100 70 C90 70 82 62 82 50 C82 38 90 30 100 30 Z" fill="rgba(212, 175, 55, 0.2)" stroke="#d4af37" stroke-width="2" />
+                                    <path d="M70 80 L130 80 L145 170 L55 170 Z" fill="rgba(212, 175, 55, 0.15)" stroke="#d4af37" stroke-width="2" />
+                                    <path d="M65 175 L95 175 L92 290 L60 290 Z" fill="rgba(212, 175, 55, 0.1)" stroke="#d4af37" stroke-width="1.5" />
+                                    <path d="M105 175 L135 175 L140 290 L108 290 Z" fill="rgba(212, 175, 55, 0.1)" stroke="#d4af37" stroke-width="1.5" />
+                                    <!-- Windmill Crest Aura -->
+                                    <circle cx="100" cy="120" r="70" fill="none" stroke="rgba(212, 175, 55, 0.15)" stroke-width="1" stroke-dasharray="4 4" />
+                                </svg>
+                            </div>
+                            <div class="knight-title">DON QUIJOTE</div>
+                            <div class="knight-class">Level 1 Windmill Knight</div>
+                        </div>
+                    </div>
+
+                    <!-- Right Equipment Slots Column -->
+                    <div class="slots-column slots-right">
+                        <div class="eq-slot" data-slot="shoes" id="slot-shoes">
+                            <div class="slot-header">
+                                <span class="slot-icon">👟</span>
+                                <span class="slot-name">Shoes</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="socks" id="slot-socks">
+                            <div class="slot-header">
+                                <span class="slot-icon">🧦</span>
+                                <span class="slot-name">Socks</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="phone" id="slot-phone">
+                            <div class="slot-header">
+                                <span class="slot-icon">📱</span>
+                                <span class="slot-name">Phone</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="power-bank" id="slot-power-bank">
+                            <div class="slot-header">
+                                <span class="slot-icon">🔋</span>
+                                <span class="slot-name">Power Bank</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+
+                        <div class="eq-slot" data-slot="water" id="slot-water">
+                            <div class="slot-header">
+                                <span class="slot-icon">💧</span>
+                                <span class="slot-name">Water</span>
+                            </div>
+                            <div class="slot-content">
+                                <span class="slot-item-placeholder">Empty Slot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right: Equipment Panel Inspector (Blank / Ready state) -->
+            <aside class="panel-section">
+                <div class="section-header">
+                    <h2 class="section-title">EQUIPMENT INSPECTOR</h2>
+                    <span class="panel-status">STATS & JOURNAL</span>
+                </div>
+
+                <div class="equipment-panel" id="equipment-panel">
+                    <div class="panel-empty-state">
+                        <div class="empty-icon">📜</div>
+                        <h3 class="empty-title">Select an Gear Slot</h3>
+                        <p class="empty-desc">Click on any equipment slot to inspect item specifications, weight, ratings, and battle logs against modern windmills.</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <span>Don Quijote OS v0.1 • Phase 1 Core Blueprint</span>
+            <span>"We fight monsters weirder than windmills."</span>
+        </footer>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-notification" class="toast-notification"></div>
+
+    <!-- Expedition Log Modal Dialog -->
+    <div id="expedition-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">⚔️</span>
+                    <div>
+                        <h2 class="modal-title">RECORD EXPEDITION LOG</h2>
+                        <p class="modal-subtitle">遠征戰報錄入 • 記錄對抗現代風車的冒險經驗</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="btn-close-modal">&times;</button>
+            </div>
+
+            <!-- Modal Tab Selector -->
+            <div class="modal-tabs">
+                <button class="modal-tab-btn active" data-tab="running">
+                    <span>🏃‍♂️</span> 跑步紀錄
+                </button>
+                <button class="modal-tab-btn" data-tab="citywalk">
+                    <span>🌇</span> CityWalk 台北微旅行
+                </button>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="modal-body">
+                <!-- Equipment Selector (Common to both tabs) -->
+                <div class="form-section">
+                    <label class="form-label">
+                        <span>🎒 今日穿戴裝備（點擊多選勾選）：</span>
+                        <span class="label-hint">點擊切換選取狀態，提交時將自動累加里程</span>
+                    </label>
+                    <div class="gear-chips-container" id="modal-gear-chips">
+                        <!-- Dynamic Gear Chips Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Tab 1: Running Log Form -->
+                <form id="form-running" class="log-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>📅 日期</label>
+                            <input type="date" id="run-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>🏃 科目</label>
+                            <input type="text" id="run-subject" placeholder="例如: 慢跑 / 間歇 / 節奏跑">
+                        </div>
+                        <div class="form-group">
+                            <label>📋 課表內容</label>
+                            <input type="text" id="run-workout" placeholder="例如: 10K E跑 / 400m x 8">
+                        </div>
+                        <div class="form-group">
+                            <label>📍 地點</label>
+                            <input type="text" id="run-location" placeholder="例如: 大安森林公園 / 田徑場">
+                        </div>
+                        <div class="form-group">
+                            <label>🌤️ 天氣與氣溫</label>
+                            <input type="text" id="run-weather" placeholder="例如: 24°C 晴朗微風">
+                        </div>
+                        <div class="form-group">
+                            <label>📏 距離 (KM)</label>
+                            <input type="number" step="0.01" id="run-distance" placeholder="例如: 10.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>⏱️ 時間</label>
+                            <input type="text" id="run-duration" placeholder="例如: 55:30">
+                        </div>
+                        <div class="form-group">
+                            <label>⚡ 平均配速</label>
+                            <input type="text" id="run-pace" placeholder="例如: 5'15/km">
+                        </div>
+                        <div class="form-group">
+                            <label>🦶 平均步頻 (SPM)</label>
+                            <input type="number" id="run-cadence" placeholder="例如: 182">
+                        </div>
+                        <div class="form-group">
+                            <label>❤️ 心率區間 (Z1~Z5)</label>
+                            <input type="text" id="run-hr" placeholder="例如: Z2 (135~145 bpm)">
+                        </div>
+                        <div class="form-group">
+                            <label>🫁 VO2Max 跑力</label>
+                            <input type="text" id="run-vo2max" placeholder="例如: 52">
+                        </div>
+                        <div class="form-group">
+                            <label>🎯 技術專注點</label>
+                            <input type="text" id="run-tech" placeholder="例如: 前腳掌著地 / 核心挺直">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width margin-top">
+                        <label>💥 體感疲勞度 (0 ~ 10)：<span id="run-fatigue-val" class="value-highlight">5</span></label>
+                        <input type="range" min="0" max="10" value="5" id="run-fatigue" class="rpg-slider">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>🩺 身體狀況與反應</label>
+                        <input type="text" id="run-bodystate" placeholder="例如: 左膝微緊、整體狀態良好">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>📝 感想與風車對抗心得</label>
+                        <textarea id="run-notes" rows="3" placeholder="記錄今天的跑步體驗與對抗現實的心得..."></textarea>
+                    </div>
+                </form>
+
+                <!-- Tab 2: CityWalk Log Form (Hidden by default) -->
+                <form id="form-citywalk" class="log-form hidden">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>📅 日期</label>
+                            <input type="date" id="walk-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>🗺️ 微旅行主題</label>
+                            <input type="text" id="walk-theme" placeholder="例如: 大稻埕舊城巡邏">
+                        </div>
+                        <div class="form-group">
+                            <label>🚶 漫遊路線</label>
+                            <input type="text" id="walk-route" placeholder="例如: 北門站 -> 迪化街 -> 碼頭">
+                        </div>
+                        <div class="form-group">
+                            <label>📍 地點 / 區域</label>
+                            <input type="text" id="walk-location" placeholder="例如: 台北市大同區">
+                        </div>
+                        <div class="form-group">
+                            <label>🌤️ 天氣</label>
+                            <input type="text" id="walk-weather" placeholder="例如: 26°C 舒適陰天">
+                        </div>
+                        <div class="form-group">
+                            <label>📏 步行距離 (KM)</label>
+                            <input type="number" step="0.01" id="walk-distance" placeholder="例如: 6.8" required>
+                        </div>
+                        <div class="form-group">
+                            <label>⏱️ 探索時間</label>
+                            <input type="text" id="walk-duration" placeholder="例如: 2小時15分">
+                        </div>
+                        <div class="form-group">
+                            <label>👟 總步數</label>
+                            <input type="number" id="walk-steps" placeholder="例如: 11200">
+                        </div>
+                        <div class="form-group">
+                            <label>❤️ 平均心率</label>
+                            <input type="text" id="walk-hr" placeholder="例如: 98 bpm">
+                        </div>
+                        <div class="form-group">
+                            <label>🥤 途中補給</label>
+                            <input type="text" id="walk-supply" placeholder="例如: 青草茶 + 永樂市場包子">
+                        </div>
+                        <div class="form-group">
+                            <label>🎵 BGM 背景音樂</label>
+                            <input type="text" id="walk-bgm" placeholder="例如: Lofi Hip Hop / Flamenco">
+                        </div>
+                        <div class="form-group">
+                            <label>💡 今日一句話</label>
+                            <input type="text" id="walk-quote" placeholder="例如: 騎士不需要名駒，只需要探索的雙腳">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width margin-top">
+                        <label>💥 體感疲勞度 (0 ~ 10)：<span id="walk-fatigue-val" class="value-highlight">4</span></label>
+                        <input type="range" min="0" max="10" value="4" id="walk-fatigue" class="rpg-slider">
+                    </div>
+
+                    <!-- Star Ratings Grid -->
+                    <div class="ratings-grid">
+                        <div class="rating-box">
+                            <label>🥾 Camino 朝聖指數</label>
+                            <div class="star-rating" data-rating="walk-camino" data-value="4">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4" class="active">★</span><span data-val="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-box">
+                            <label>🧭 探索驚喜指數</label>
+                            <div class="star-rating" data-rating="walk-explore" data-value="5">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5" class="active">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-box">
+                            <label>🔄 想再訪指數</label>
+                            <div class="star-rating" data-rating="walk-revisit" data-value="5">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5" class="active">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>🩺 身體狀況</label>
+                        <input type="text" id="walk-bodystate" placeholder="例如: 輕鬆隨意、雙腳無恙">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>✨ 印象最深刻的事</label>
+                        <textarea id="walk-memorable" rows="2" placeholder="例如: 發現隱藏在巷弄的老咖啡館與巨型風車壁畫..."></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer Action -->
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" id="btn-cancel-modal">取消</button>
+                <button type="button" class="btn-submit-log" id="btn-save-copy-prompt">
+                    <span>📋</span> 儲存並複製 AI 分析 Prompt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/app.js"></script>
+</body>
+</html>
