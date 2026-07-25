@@ -38,13 +38,13 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 
 ## 4. MVP Scope (Version 0.1 / Task 0.2)
 第一版只做最核心的「配裝與戰報體驗」，包含：
-- **Character（騎士人物中央面板）**：可視化裝備插槽（Head, Body, Backpack, Watch, Shoes, Socks, Trekking Pole, Phone, Power Bank, Water）。
+- **Character（騎士人物中央面板）**：可視化裝備插槽（頭部、身體、鞋款、襪款、手錶 屬 **👕 穿戴裝備**；背包、登山杖、手機、行動電源、水壺 屬 **🧰 其他配備**）。中央人形具備互動點擊功能，動態顯示「🏋️ 裝備總重」與「🛡️ 已裝備數量」標籤，點擊可於 Inspector 開啟「騎士戰備總覽」。
 - **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，並與 Google Sheet `Equipment_DB` 雲端連動。
-- **Equipment Panel（裝備詳情面板）**：點擊裝備後顯示名稱、重量、評分、使用里程、備註、優缺點（與打怪心得）。
-- **Loadout（四組遠征預設切換）**：`Running` / `Camino` / `Japan` / `Thailand`。點擊切換時，全套裝備同步更換。
-- **Expedition Log Modal（遠征戰報錄入彈窗）**：提供 `🏃‍♂️ 跑步紀錄` 與 `🌇 CityWalk 台北微旅行` 雙頁籤表單、動態裝備多選 Chips、體感疲勞 Slider 與星級評分。
-- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` / `CityWalk_Logs`，並自動加總累加裝備「累積里程KM」。
-- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成專業戰報格式，一鍵複製供貼給 Gemini 分析。
+- **Equipment Panel（裝備詳情面板）**：點擊裝備格或中央人形後，切換顯示名稱、類別、單重、評分、累積里程、戰力評級與戰鬥備註。
+- **Loadout（兩組主打遠征預設切換）**：`Running` / `Camino`（支援手機行動端響應式排版）。點擊切換時，全套裝備同步更換並自動計算總重量。
+- **Expedition Log Modal（今日活動錄入彈窗）**：提供 `🏃‍♂️ Run` 與 `🌇 CityWalk` 雙頁籤表單。`Run` 表單支援完整跑力與心率遙測欄位（平均/跑段配速、平均/最大步頻 spm、移動效率%、垂直振幅 cm、觸地時間 ms、平均/最大心率 bpm、以及 Z1~Z5 心率區間時間占比 %）；提供動態裝備多選 Chips、體感疲勞 Slider 與星級評分。
+- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` (27 欄擴充欄位) / `CityWalk_Logs`，並自動加總累加裝備「累積里程KM」。
+- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測與心率區間占比的專業戰報格式，一鍵複製供貼給 Gemini 分析。
 - **GitHub Pages 全球雲端部署與隱私防護**：支援全雲端存取，並配置 `noindex` 及 `robots.txt` 全面防止搜尋引擎收錄。
 
 ---
@@ -109,7 +109,7 @@ DON_QUIJOTE_OS
 ├── assets/              # 圖片與圖示資源
 └── src/
     ├── index.html       # 主配裝介面原始檔
-    ├── style.css        # 深色奇幻 RPG 樣式表 (含 Modal / Sliders / Chips)
+    ├── style.css        # 深色奇幻 RPG 樣式表 (含 Modal / Sliders / Chips / HR Zones)
     ├── app.js           # Inventory JSON / Loadout / Modal / AI Prompt / GAS 串接邏輯
     ├── gas_setup.js     # GAS 雲端資料庫 DON_QUIJOTE_DB 自動初始化腳本
     └── gas_api.js       # GAS Web App 後端 API (getEquipment / saveLog / updateMileage)
@@ -124,7 +124,10 @@ DON_QUIJOTE_OS
 
 ---
 
-## 12. Development Log (開發日誌 - 2026-07-25)
-- **Task 0.2 完成**：完成 Google Apps Script 雲端資料庫 `DON_QUIJOTE_DB`（`Equipment_DB` / `Running_Logs` / `CityWalk_Logs`）與 Web App API ([src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js)) 部署。
-- **遠征戰報錄入模組**：於介面導入「⚔️ 記錄今日遠征」彈窗、雙頁籤表單、動態裝備 Chips 多選、疲勞度 Slider、星級評分組件與一鍵複製 AI Prompt 戰報邏輯。
-- **全雲端發布與防護**：成功部署至 GitHub Pages 全球免費雲端網址，並配置 `noindex` 及 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt) 雙重防爬蟲機制確保隱私。
+## 12. Development Log (開發日誌)
+- **2026-07-25 (Task 0.2 完成)**：完成 Google Apps Script 雲端資料庫 `DON_QUIJOTE_DB`（`Equipment_DB` / `Running_Logs` / `CityWalk_Logs`）與 Web App API ([src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js)) 部署。於介面導入「⚔️ 記錄今日遠征」彈窗、雙頁籤表單、動態裝備 Chips 多選、疲勞度 Slider、星級評分組件與一鍵複製 AI Prompt 戰報邏輯。成功部署至 GitHub Pages 全球免費雲端網址，並配置 `noindex` 及 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt) 雙重防爬蟲機制確保隱私。
+- **2026-07-25 (UI/Loadout/遙測數據大修訂與功能升級)**：
+  - **Loadout 行動端優化與簡化**：優化 Loadout 導覽列在手機行動端的響應式排版，並移除 Japan/Thailand 預設，專注於 Running 與 Camino。
+  - **裝備分欄重構與中央人形互動化**：將 10 格裝備劃分為「👕 穿戴裝備」與「🧰 其他配備」兩大類別；中央騎士人形升級為互動式面板，動態顯示總負重與裝備數量標籤，點擊可開啟「騎士戰備總覽」與單項裝備規格切換。
+  - **跑步紀錄遙測欄位大補齊**：於 Run 表單擴充跑段/平均配速、最大/平均步頻 (spm)、跑姿力學（移動效率 %、垂直振幅 cm、觸地時間 ms）、平均/最大心率 (bpm) 以及 Z1~Z5 心率區間時間占比 (%), AI Prompt 與 GAS 試算表同步升級支援 27 欄完整紀錄。
+  - **名稱優化與全端發布**：主要按鈕更名為「今日活動」、水更名為「水壺」、分頁更名為「Run」與「CityWalk」，並成功執行 clasp push 與 git push 部署至雲端與 GitHub 儲存庫。
