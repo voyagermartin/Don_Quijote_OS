@@ -1,4 +1,4 @@
-# 🛡️ Don Quijote OS Handbook v0.1.1
+# 🛡️ Don Quijote OS Handbook v0.1.2
 
 > *"Life is the Greatest RPG. We fight monsters weirder than windmills."*
 
@@ -36,22 +36,26 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 
 ---
 
-## 4. MVP Scope (Version 0.1)
-第一版只做最核心的「配裝體驗」，包含：
+## 4. MVP Scope (Version 0.1 / Task 0.2)
+第一版只做最核心的「配裝與戰報體驗」，包含：
 - **Character（騎士人物中央面板）**：可視化裝備插槽（Head, Body, Backpack, Watch, Shoes, Socks, Trekking Pole, Phone, Power Bank, Water）。
-- **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，暫不建立複雜資料庫。
+- **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，並與 Google Sheet `Equipment_DB` 雲端連動。
 - **Equipment Panel（裝備詳情面板）**：點擊裝備後顯示名稱、重量、評分、使用里程、備註、優缺點（與打怪心得）。
 - **Loadout（四組遠征預設切換）**：`Running` / `Camino` / `Japan` / `Thailand`。點擊切換時，全套裝備同步更換。
+- **Expedition Log Modal（遠征戰報錄入彈窗）**：提供 `🏃‍♂️ 跑步紀錄` 與 `🌇 CityWalk 台北微旅行` 雙頁籤表單、動態裝備多選 Chips、體感疲勞 Slider 與星級評分。
+- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` / `CityWalk_Logs`，並自動加總累加裝備「累積里程KM」。
+- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成專業戰報格式，一鍵複製供貼給 Gemini 分析。
+- **GitHub Pages 全球雲端部署與隱私防護**：支援全雲端存取，並配置 `noindex` 及 `robots.txt` 全面防止搜尋引擎收錄。
 
 ---
 
 ## 5. Not in MVP (暫延開發清單)
 以下功能**全部延期**，不得提前開發：
 - Packing Checklist (自動打包清單)
-- Journey Logs (遠征日誌)
+- Journey Logs (遠征日誌進階歷史查詢)
 - Equipment XP / Level (裝備經驗值與耐久度)
 - Backpack Total Weight (背包重量自動加總)
-- Cloud Sync / Login / Shopping (雲端同步與帳號系統)
+- Cloud Sync / Login / Shopping (雲端帳號登入與購物系統)
 
 > 💡 *所有突發奇想的新點子，一律放入 `TASKS.MD` 的 `Suggestions` 區塊，等待 PM (Martin) 確認。*
 
@@ -93,16 +97,22 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 
 ```
 DON_QUIJOTE_OS
-├── README.md
+├── index.html           # 根目錄全雲端 HTML 介面 (GitHub Pages 部署入口)
+├── robots.txt           # 隱私防護防爬蟲設定
 ├── HANDBOOK.md          # 本家法檔案
 ├── TASKS.md             # 待辦與建議區塊
 ├── CHANGELOG.md         # 遠征開發日誌
+├── .clasp.json          # GAS Clasp 設定檔
+├── .claspignore         # GAS Clasp 推送過濾設定
+├── appsscript.json      # GAS 專案設定檔
 ├── docs/                # 設計文檔
 ├── assets/              # 圖片與圖示資源
 └── src/
-    ├── index.html       # 主配裝介面
-    ├── style.css        # 深色奇幻 RPG 樣式
-    └── app.js           # Inventory JSON 與 Loadout 邏輯
+    ├── index.html       # 主配裝介面原始檔
+    ├── style.css        # 深色奇幻 RPG 樣式表 (含 Modal / Sliders / Chips)
+    ├── app.js           # Inventory JSON / Loadout / Modal / AI Prompt / GAS 串接邏輯
+    ├── gas_setup.js     # GAS 雲端資料庫 DON_QUIJOTE_DB 自動初始化腳本
+    └── gas_api.js       # GAS Web App 後端 API (getEquipment / saveLog / updateMileage)
 ```
 
 ---
@@ -111,3 +121,10 @@ DON_QUIJOTE_OS
 > *Don Quijote OS 並不是在管理裝備，它是在收藏人生。*
 > 
 > *每一雙跑步鞋、每一個背上朝聖之路的背包、每一支支撐過膝蓋的登山杖，都不只是物品。把它們以 RPG 的方式保存下來，並在下一次對抗風車時，再次成為你最可靠的盾牌！*
+
+---
+
+## 12. Development Log (開發日誌 - 2026-07-25)
+- **Task 0.2 完成**：完成 Google Apps Script 雲端資料庫 `DON_QUIJOTE_DB`（`Equipment_DB` / `Running_Logs` / `CityWalk_Logs`）與 Web App API ([src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js)) 部署。
+- **遠征戰報錄入模組**：於介面導入「⚔️ 記錄今日遠征」彈窗、雙頁籤表單、動態裝備 Chips 多選、疲勞度 Slider、星級評分組件與一鍵複製 AI Prompt 戰報邏輯。
+- **全雲端發布與防護**：成功部署至 GitHub Pages 全球免費雲端網址，並配置 `noindex` 及 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt) 雙重防爬蟲機制確保隱私。
