@@ -1,0 +1,3 @@
+# Prevent search engine crawlers from indexing Don Quijote OS
+User-agent: *
+Disallow: /
