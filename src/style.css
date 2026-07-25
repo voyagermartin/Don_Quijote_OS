@@ -806,6 +806,98 @@ body {
     display: none;
 }
 
+.form-section-title {
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    color: var(--accent-gold);
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
+.form-label-sub {
+    font-size: 0.82rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.hr-zones-section {
+    background: rgba(18, 22, 32, 0.5);
+    border: 1px solid var(--border-muted);
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.hr-zones-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .hr-zones-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .hr-zones-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.zone-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+}
+
+.zone-tag {
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.zone-tag.z1 { background: rgba(59, 201, 219, 0.2); color: #3bc9db; border: 1px solid rgba(59, 201, 219, 0.4); }
+.zone-tag.z2 { background: rgba(81, 207, 102, 0.2); color: #51cf66; border: 1px solid rgba(81, 207, 102, 0.4); }
+.zone-tag.z3 { background: rgba(255, 212, 59, 0.2); color: #ffd43b; border: 1px solid rgba(255, 212, 59, 0.4); }
+.zone-tag.z4 { background: rgba(255, 146, 43, 0.2); color: #ff922b; border: 1px solid rgba(255, 146, 43, 0.4); }
+.zone-tag.z5 { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.4); }
+
+.zone-input-group input {
+    background: rgba(8, 10, 15, 0.85);
+    border: 1px solid var(--border-muted);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    width: 100%;
+}
+
+.zone-input-group input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
+}
+
+.unit-symbol {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

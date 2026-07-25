@@ -270,6 +270,7 @@
 
                 <!-- Tab 1: Running Log Form -->
                 <form id="form-running" class="log-form">
+                    <div class="form-section-title">📌 基礎跑步資訊</div>
                     <div class="form-grid">
                         <div class="form-group">
                             <label>📅 日期</label>
@@ -300,24 +301,87 @@
                             <input type="text" id="run-duration" placeholder="例如: 55:30">
                         </div>
                         <div class="form-group">
-                            <label>⚡ 平均配速</label>
-                            <input type="text" id="run-pace" placeholder="例如: 5'15/km">
-                        </div>
-                        <div class="form-group">
-                            <label>🦶 平均步頻 (SPM)</label>
-                            <input type="number" id="run-cadence" placeholder="例如: 182">
-                        </div>
-                        <div class="form-group">
-                            <label>❤️ 心率區間 (Z1~Z5)</label>
-                            <input type="text" id="run-hr" placeholder="例如: Z2 (135~145 bpm)">
-                        </div>
-                        <div class="form-group">
                             <label>🫁 VO2Max 跑力</label>
                             <input type="text" id="run-vo2max" placeholder="例如: 52">
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">🏃‍♀️ 配速、步頻與跑姿力學</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>🏃‍♀️ 跑步配速（平均）</label>
+                            <input type="text" id="run-pace-avg" placeholder="例如: 5'15/km">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃‍♀️ 跑步配速（跑段）</label>
+                            <input type="text" id="run-pace-interval" placeholder="例如: 4'30/km">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃🏻‍♂️ 平均步頻 (spm)</label>
+                            <input type="number" id="run-cadence-avg" placeholder="例如: 182">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃🏼 最大步頻 (spm)</label>
+                            <input type="number" id="run-cadence-max" placeholder="例如: 198">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃🏼 平均移動效率 (%)</label>
+                            <input type="number" step="0.1" id="run-movement-efficiency" placeholder="例如: 8.5">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃🏼 平均垂直振幅 (cm)</label>
+                            <input type="number" step="0.1" id="run-vertical-oscillation" placeholder="例如: 7.4">
+                        </div>
+                        <div class="form-group">
+                            <label>🏃🏼 平均觸地時間 (毫秒)</label>
+                            <input type="number" id="run-ground-contact-time" placeholder="例如: 215">
                         </div>
                         <div class="form-group">
                             <label>🎯 技術專注點</label>
                             <input type="text" id="run-tech" placeholder="例如: 前腳掌著地 / 核心挺直">
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">❤️ 心率數據與區間時間占比</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>❤️ 平均心率 (bpm)</label>
+                            <input type="number" id="run-hr-avg" placeholder="例如: 155">
+                        </div>
+                        <div class="form-group">
+                            <label>💖 最大心率 (bpm)</label>
+                            <input type="number" id="run-hr-max" placeholder="例如: 178">
+                        </div>
+                    </div>
+
+                    <div class="hr-zones-section">
+                        <label class="form-label-sub">💞 心率區間時間占比 (%) <span class="label-hint">未達 Z1 區間者自動歸入低強度熱身</span></label>
+                        <div class="hr-zones-grid">
+                            <div class="zone-input-group">
+                                <span class="zone-tag z1">Z1 (141-160)</span>
+                                <input type="number" step="0.1" id="run-z1-pct" placeholder="0~100">
+                                <span class="unit-symbol">%</span>
+                            </div>
+                            <div class="zone-input-group">
+                                <span class="zone-tag z2">Z2 (161-174)</span>
+                                <input type="number" step="0.1" id="run-z2-pct" placeholder="0~100">
+                                <span class="unit-symbol">%</span>
+                            </div>
+                            <div class="zone-input-group">
+                                <span class="zone-tag z3">Z3 (175-179)</span>
+                                <input type="number" step="0.1" id="run-z3-pct" placeholder="0~100">
+                                <span class="unit-symbol">%</span>
+                            </div>
+                            <div class="zone-input-group">
+                                <span class="zone-tag z4">Z4 (180-188)</span>
+                                <input type="number" step="0.1" id="run-z4-pct" placeholder="0~100">
+                                <span class="unit-symbol">%</span>
+                            </div>
+                            <div class="zone-input-group">
+                                <span class="zone-tag z5">Z5 (188+)</span>
+                                <input type="number" step="0.1" id="run-z5-pct" placeholder="0~100">
+                                <span class="unit-symbol">%</span>
+                            </div>
                         </div>
                     </div>
 

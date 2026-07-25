@@ -458,9 +458,20 @@ async function handleSaveAndCopyPrompt() {
             weather: document.getElementById('run-weather')?.value || '',
             distance: document.getElementById('run-distance')?.value || 0,
             duration: document.getElementById('run-duration')?.value || '',
-            pace: document.getElementById('run-pace')?.value || '',
-            cadence: document.getElementById('run-cadence')?.value || '',
-            heartRate: document.getElementById('run-hr')?.value || '',
+            paceAvg: document.getElementById('run-pace-avg')?.value || '',
+            paceInterval: document.getElementById('run-pace-interval')?.value || '',
+            cadenceAvg: document.getElementById('run-cadence-avg')?.value || '',
+            cadenceMax: document.getElementById('run-cadence-max')?.value || '',
+            movementEfficiency: document.getElementById('run-movement-efficiency')?.value || '',
+            verticalOscillation: document.getElementById('run-vertical-oscillation')?.value || '',
+            groundContactTime: document.getElementById('run-ground-contact-time')?.value || '',
+            hrAvg: document.getElementById('run-hr-avg')?.value || '',
+            hrMax: document.getElementById('run-hr-max')?.value || '',
+            z1Pct: document.getElementById('run-z1-pct')?.value || '',
+            z2Pct: document.getElementById('run-z2-pct')?.value || '',
+            z3Pct: document.getElementById('run-z3-pct')?.value || '',
+            z4Pct: document.getElementById('run-z4-pct')?.value || '',
+            z5Pct: document.getElementById('run-z5-pct')?.value || '',
             vo2max: document.getElementById('run-vo2max')?.value || '',
             techFocus: document.getElementById('run-tech')?.value || '',
             fatigue: document.getElementById('run-fatigue')?.value || 5,
@@ -528,6 +539,12 @@ async function handleSaveAndCopyPrompt() {
  * Generates formatted AI prompt markdown for Running Logs
  */
 function generateRunningAIPrompt(data) {
+    const z1 = data.z1Pct ? `${data.z1Pct}%` : 'N/A';
+    const z2 = data.z2Pct ? `${data.z2Pct}%` : 'N/A';
+    const z3 = data.z3Pct ? `${data.z3Pct}%` : 'N/A';
+    const z4 = data.z4Pct ? `${data.z4Pct}%` : 'N/A';
+    const z5 = data.z5Pct ? `${data.z5Pct}%` : 'N/A';
+
     return `# 🛡️ Don Quijote OS - 遠征戰報錄入（Run）
 
 請 Gemini 系統架構師分析以下騎士遠征數據，並給予騎士精神點評與裝備磨損經驗點數建議：
@@ -537,9 +554,23 @@ function generateRunningAIPrompt(data) {
 - **📍 遠征地點**：${data.location || '未標示'}
 - **🌤️ 天氣與氣溫**：${data.weather || '未記錄'}
 - **📏 跑量距離**：${data.distance} KM
-- **⏱️ 總時間 / 配速**：${data.duration || 'N/A'} (平均配速 ${data.pace || 'N/A'})
-- **🦶 平均步頻**：${data.cadence || 'N/A'} SPM
-- **❤️ 心率區間**：${data.heartRate || 'N/A'}
+- **⏱️ 總時間**：${data.duration || 'N/A'}
+- **🏃‍♀️ 跑步配速（平均）**：${data.paceAvg || 'N/A'}
+- **🏃‍♀️ 跑步配速（跑段）**：${data.paceInterval || 'N/A'}
+- **🏃🏻‍♂️ 平均步頻**：${data.cadenceAvg ? data.cadenceAvg + ' spm' : 'N/A'}
+- **🏃🏼 最大步頻**：${data.cadenceMax ? data.cadenceMax + ' spm' : 'N/A'}
+- **🏃🏼 平均移動效率**：${data.movementEfficiency ? data.movementEfficiency + ' %' : 'N/A'}
+- **🏃🏼 平均垂直振幅**：${data.verticalOscillation ? data.verticalOscillation + ' cm' : 'N/A'}
+- **🏃🏼 平均觸地時間**：${data.groundContactTime ? data.groundContactTime + ' 毫秒' : 'N/A'}
+- **❤️ 平均心率**：${data.hrAvg ? data.hrAvg + ' bpm' : 'N/A'}
+- **💖 最大心率**：${data.hrMax ? data.hrMax + ' bpm' : 'N/A'}
+- **💞 心率區間時間占比**：
+  - Z1 (141-160 bpm)：${z1}
+  - Z2 (161-174 bpm)：${z2}
+  - Z3 (175-179 bpm)：${z3}
+  - Z4 (180-188 bpm)：${z4}
+  - Z5 (188+ bpm)：${z5}
+  *(註：其餘未記錄時間即為心率未達 Z1)*
 - **🫁 VO2Max 跑力**：${data.vo2max || 'N/A'}
 - **🎒 本次穿戴裝備**：${data.gear.length > 0 ? data.gear.join('、') : '無'}
 - **💥 體感疲勞度**：${data.fatigue} / 10
