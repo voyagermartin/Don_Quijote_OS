@@ -83,18 +83,36 @@ function getEquipmentList() {
   if (data.length <= 1) return [];
 
   var headers = data[0];
+  var idIdx = headers.indexOf('裝備ID');
+  var nameIdx = headers.indexOf('名稱');
+  var nicknameIdx = headers.indexOf('暱稱');
+  var catIdx = headers.indexOf('類別');
+  var brandIdx = headers.indexOf('品牌');
+  var mileageIdx = headers.indexOf('累積里程KM');
+  var statusIdx = headers.indexOf('狀態');
+
+  // Fallbacks if header matching fails
+  if (idIdx === -1) idIdx = 0;
+  if (nameIdx === -1) nameIdx = 1;
+  if (catIdx === -1) catIdx = nicknameIdx !== -1 ? 3 : 2;
+  if (brandIdx === -1) brandIdx = nicknameIdx !== -1 ? 4 : 3;
+  if (mileageIdx === -1) mileageIdx = nicknameIdx !== -1 ? 5 : 4;
+  if (statusIdx === -1) statusIdx = nicknameIdx !== -1 ? 6 : 5;
+
   var list = [];
 
   for (var i = 1; i < data.length; i++) {
     var row = data[i];
-    if (row[5] === '服役中' || row[5] === 'Active') {
+    var status = row[statusIdx];
+    if (status === '服役中' || status === 'Active') {
       list.push({
-        id: row[0],
-        name: row[1],
-        category: row[2],
-        brand: row[3],
-        mileage: Number(row[4]) || 0,
-        status: row[5]
+        id: row[idIdx],
+        name: row[nameIdx],
+        nickname: nicknameIdx !== -1 ? (row[nicknameIdx] || '') : '',
+        category: row[catIdx],
+        brand: row[brandIdx],
+        mileage: Number(row[mileageIdx]) || 0,
+        status: status
       });
     }
   }

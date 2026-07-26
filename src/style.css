@@ -294,8 +294,11 @@ body {
 
 .slot-content {
     display: flex;
-    align-items: center;
-    min-height: 22px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 28px;
+    gap: 2px;
 }
 
 .slot-item-placeholder {
@@ -304,10 +307,18 @@ body {
     font-style: italic;
 }
 
+.slot-item-nickname {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+    letter-spacing: 0.5px;
+}
+
 .slot-item-name {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
 }
 
 /* Character Avatar Silhouette (Interactive Mannequin) */
@@ -436,10 +447,20 @@ body {
     padding-bottom: 12px;
 }
 
+.inspector-item-nickname {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    line-height: 1.3;
+    margin-bottom: 2px;
+}
+
 .inspector-item-name {
     font-family: var(--font-heading);
-    font-size: 1.15rem;
-    color: var(--accent-gold);
+    font-size: 1.05rem;
+    color: var(--text-primary);
     line-height: 1.3;
 }
 
@@ -458,6 +479,121 @@ body {
     padding: 4px 10px;
     border-radius: 4px;
     letter-spacing: 0.5px;
+}
+
+.inspector-nickname-box {
+    background: rgba(12, 15, 23, 0.85);
+    border: 1px solid var(--border-gold);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: inset 0 0 8px rgba(212, 175, 55, 0.08);
+}
+
+.inspector-nickname-input {
+    width: 100%;
+    background: rgba(8, 10, 15, 0.9);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.inspector-nickname-input:focus {
+    border-color: var(--accent-amber);
+    box-shadow: var(--glow-gold);
+    background: rgba(15, 18, 28, 0.95);
+}
+
+.inspector-nickname-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Quick Nickname Editor Grid */
+.inspector-quick-nicknames-box {
+    background: rgba(12, 15, 23, 0.85);
+    border: 1px solid var(--border-gold);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.06);
+}
+
+.quick-nicknames-hint {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.quick-nicknames-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.quick-nickname-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: rgba(8, 10, 15, 0.6);
+    border: 1px solid var(--border-muted);
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.quick-nickname-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+.quick-slot-label {
+    font-size: 0.7rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+}
+
+.quick-item-name {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+}
+
+.quick-nickname-input {
+    flex: 1;
+    background: rgba(15, 18, 28, 0.95);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 0.82rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.quick-nickname-input:focus {
+    border-color: var(--accent-amber);
+    box-shadow: var(--glow-gold);
+}
+
+.quick-nickname-input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-style: italic;
 }
 
 .inspector-stat-grid {

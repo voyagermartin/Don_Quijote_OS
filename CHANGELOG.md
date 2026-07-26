@@ -17,7 +17,14 @@
   2. 新增 [.claspignore](file:///f:/Projects/Don_Quijote_OS/.claspignore)，僅推送 GAS 後端腳本至雲端。
 - 修正 GAS Web App 直接存取網址時 `Unknown action: undefined` 錯誤：於 [gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) `doGet()` 補強 `action` 預設回退機制（當未傳遞 `?action=` 參數時預設執行 `getEquipment`）。
 - 建立隱私防護組件：於 [index.html](file:///f:/Projects/Don_Quijote_OS/index.html) 與 [src/index.html](file:///f:/Projects/Don_Quijote_OS/src/index.html) 加入 `noindex, nofollow` Meta 標籤，並建立 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt)，全面禁止 Google、Bing 等搜尋引擎爬蟲收錄。
-- 成功將程式碼推送到 GitHub 儲存庫 `https://github.com/voyagermartin/Don_Quijote_OS.git` (main 分支)。
+## [0.1.2] - 2026-07-26
+### Added
+- 新增「裝備暱稱 (Equipment Nickname)」自訂欄位與 LocalStorage 本機持久化功能：
+  - 於右側 Inspector 詳情面板新增 `🏷️ 裝備暱稱 (Nickname)` 輸入框，支援騎士即時輸入並自動保存至 LocalStorage。
+  - 紙娃娃配裝面板裝備格動態連動高亮顯示自訂騎士暱稱 `「暱稱」`。
+  - 遠征日誌 Modal 裝備選擇 Chips 與 AI Prompt 戰報生成器自動帶入自訂暱稱格式 `「暱稱」 (原名)`。
+
+
 
 
 

@@ -15,16 +15,16 @@ const INVENTORY_DATA = {
         name: "Running / Speed Expedition",
         description: "Lightweight gear optimized for urban and trail running speed.",
         gear: {
-            head: { name: "Buff Reflective Headband", weight: 35, rating: "A+", mileage: 120, notes: "Absorbs sweat during intense battles." },
-            body: { name: "Salomon Bonatti Waterproof Jacket", weight: 200, rating: "S", mileage: 340, notes: "Windproof shield against harsh gusts." },
-            backpack: { name: "Salomon Active Skin 8 Vest", weight: 210, rating: "S", mileage: 450, notes: "Zero bounce, holds dual flasks." },
-            watch: { name: "Garmin Forerunner 955", weight: 52, rating: "S", mileage: 1280, notes: "GPS tracking for windmill encounters." },
-            "trekking-pole": { name: "Leki Trail Running Carbon Poles", weight: 280, rating: "A", mileage: 210, notes: "Foldable speed poles." },
-            shoes: { name: "Hoka Speedgoat 5", weight: 580, rating: "S", mileage: 520, notes: "Maximum cushion for rough paths." },
-            socks: { name: "Darn Tough Run Ultra-Light", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
-            phone: { name: "iPhone 15 Pro (Strava Mode)", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
-            "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
-            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
+            head: { name: "Buff Reflective Headband", nickname: "", weight: 35, rating: "A+", mileage: 120, notes: "Absorbs sweat during intense battles." },
+            body: { name: "Salomon Bonatti Waterproof Jacket", nickname: "", weight: 200, rating: "S", mileage: 340, notes: "Windproof shield against harsh gusts." },
+            backpack: { name: "Salomon Active Skin 8 Vest", nickname: "", weight: 210, rating: "S", mileage: 450, notes: "Zero bounce, holds dual flasks." },
+            watch: { name: "Garmin Forerunner 955", nickname: "", weight: 52, rating: "S", mileage: 1280, notes: "GPS tracking for windmill encounters." },
+            "trekking-pole": { name: "Leki Trail Running Carbon Poles", nickname: "", weight: 280, rating: "A", mileage: 210, notes: "Foldable speed poles." },
+            shoes: { name: "Hoka Speedgoat 5", nickname: "", weight: 580, rating: "S", mileage: 520, notes: "Maximum cushion for rough paths." },
+            socks: { name: "Darn Tough Run Ultra-Light", nickname: "", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
+            phone: { name: "iPhone 15 Pro (Strava Mode)", nickname: "", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
+            "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", nickname: "", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
+            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", nickname: "", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
         }
     },
     camino: {
@@ -32,16 +32,16 @@ const INVENTORY_DATA = {
         name: "Camino de Santiago Pilgrimage",
         description: "Endurance gear for long-distance pilgrimage across Spain.",
         gear: {
-            head: { name: "Tilley Broad Brim Sun Hat", weight: 95, rating: "A+", mileage: 600, notes: "UV protection under Spanish sun." },
-            body: { name: "Patagonia Capilene Cool Daily Tee", weight: 135, rating: "S", mileage: 850, notes: "Quick drying, odor control." },
-            backpack: { name: "Osprey Talon 33 Backpack", weight: 1090, rating: "S", mileage: 1200, notes: "The reliable pack of the Knight." },
-            watch: { name: "Garmin Fenix 7X Solar", weight: 89, rating: "S", mileage: 2100, notes: "Solar charged navigation." },
-            "trekking-pole": { name: "Black Diamond Trail Pro Shock", weight: 560, rating: "A+", mileage: 980, notes: "Absorbs descent impacts." },
-            shoes: { name: "Altra Lone Peak 7 Trail", weight: 620, rating: "S", mileage: 750, notes: "Wide toe box for long days." },
-            socks: { name: "Darn Tough Hiker Boot Full Cushion", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
-            phone: { name: "iPhone 15 Pro", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
-            "power-bank": { name: "Anker 325 Power Bank 20000mAh", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
-            water: { name: "CamelBak Crux 3L Reservoir (水壺)", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
+            head: { name: "Tilley Broad Brim Sun Hat", nickname: "", weight: 95, rating: "A+", mileage: 600, notes: "UV protection under Spanish sun." },
+            body: { name: "Patagonia Capilene Cool Daily Tee", nickname: "", weight: 135, rating: "S", mileage: 850, notes: "Quick drying, odor control." },
+            backpack: { name: "Osprey Talon 33 Backpack", nickname: "", weight: 1090, rating: "S", mileage: 1200, notes: "The reliable pack of the Knight." },
+            watch: { name: "Garmin Fenix 7X Solar", nickname: "", weight: 89, rating: "S", mileage: 2100, notes: "Solar charged navigation." },
+            "trekking-pole": { name: "Black Diamond Trail Pro Shock", nickname: "", weight: 560, rating: "A+", mileage: 980, notes: "Absorbs descent impacts." },
+            shoes: { name: "Altra Lone Peak 7 Trail", nickname: "", weight: 620, rating: "S", mileage: 750, notes: "Wide toe box for long days." },
+            socks: { name: "Darn Tough Hiker Boot Full Cushion", nickname: "", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
+            phone: { name: "iPhone 15 Pro", nickname: "", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
+            "power-bank": { name: "Anker 325 Power Bank 20000mAh", nickname: "", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
+            water: { name: "CamelBak Crux 3L Reservoir (水壺)", nickname: "", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
         }
     }
 };
@@ -65,6 +65,99 @@ let activeModalTab = 'running';
 let selectedGearList = [];
 let selectedSlotKey = null;
 
+/**
+ * Loads custom equipment nicknames from LocalStorage
+ */
+function loadNicknamesFromStorage() {
+    try {
+        const saved = localStorage.getItem('dq_equipment_nicknames');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.keys(parsed).forEach(loadoutKey => {
+                if (INVENTORY_DATA[loadoutKey]?.gear) {
+                    Object.keys(parsed[loadoutKey]).forEach(slotKey => {
+                        if (INVENTORY_DATA[loadoutKey].gear[slotKey]) {
+                            INVENTORY_DATA[loadoutKey].gear[slotKey].nickname = parsed[loadoutKey][slotKey] || "";
+                        }
+                    });
+                }
+            });
+        }
+    } catch (e) {
+        console.warn("Failed to load nicknames from localStorage", e);
+    }
+}
+
+/**
+ * Saves custom equipment nicknames to LocalStorage
+ */
+function saveNicknamesToStorage() {
+    try {
+        const dataToSave = {};
+        Object.keys(INVENTORY_DATA).forEach(loadoutKey => {
+            dataToSave[loadoutKey] = {};
+            const gearObj = INVENTORY_DATA[loadoutKey].gear || {};
+            Object.keys(gearObj).forEach(slotKey => {
+                dataToSave[loadoutKey][slotKey] = gearObj[slotKey].nickname || "";
+            });
+        });
+        localStorage.setItem('dq_equipment_nicknames', JSON.stringify(dataToSave));
+    } catch (e) {
+        console.warn("Failed to save nicknames to localStorage", e);
+    }
+}
+
+/**
+ * Fetches active equipment dataset from Google Apps Script Web App API (Equipment_DB)
+ */
+async function fetchEquipmentFromGAS() {
+    if (!GAS_WEBAPP_URL) {
+        console.log("💡 [GAS DB] GAS_WEBAPP_URL is empty. Using local INVENTORY_DATA & LocalStorage.");
+        return;
+    }
+
+    try {
+        console.log("🔄 [GAS DB] Fetching equipment dataset from cloud DB...");
+        const response = await fetch(`${GAS_WEBAPP_URL}?action=getEquipment`);
+        const resData = await response.json();
+
+        if (resData.status === 'success' && Array.isArray(resData.data)) {
+            console.log(`✅ [GAS DB] Successfully loaded ${resData.data.length} equipment items from cloud DB.`);
+            
+            resData.data.forEach(dbItem => {
+                const categoryKey = normalizeCategoryKey(dbItem.category);
+                if (categoryKey && INVENTORY_DATA[currentLoadout]?.gear?.[categoryKey]) {
+                    const targetGear = INVENTORY_DATA[currentLoadout].gear[categoryKey];
+                    if (dbItem.name) targetGear.name = dbItem.name;
+                    if (dbItem.nickname) targetGear.nickname = dbItem.nickname;
+                    if (dbItem.mileage !== undefined) targetGear.mileage = dbItem.mileage;
+                }
+            });
+
+            renderEquipmentSlots();
+            renderGearChips();
+        }
+    } catch (err) {
+        console.warn("⚠️ [GAS DB] Cloud equipment fetch failed:", err);
+    }
+}
+
+function normalizeCategoryKey(catStr) {
+    if (!catStr) return null;
+    const cat = catStr.toString().toLowerCase().trim();
+    if (cat.includes('head') || cat.includes('頭')) return 'head';
+    if (cat.includes('body') || cat.includes('身') || cat.includes('服飾')) return 'body';
+    if (cat.includes('shoe') || cat.includes('鞋')) return 'shoes';
+    if (cat.includes('sock') || cat.includes('襪')) return 'socks';
+    if (cat.includes('watch') || cat.includes('錶')) return 'watch';
+    if (cat.includes('pack') || cat.includes('包')) return 'backpack';
+    if (cat.includes('pole') || cat.includes('杖')) return 'trekking-pole';
+    if (cat.includes('phone') || cat.includes('機')) return 'phone';
+    if (cat.includes('power') || cat.includes('電源') || cat.includes('充')) return 'power-bank';
+    if (cat.includes('water') || cat.includes('水')) return 'water';
+    return null;
+}
+
 // ==========================================================================
 // 2. Initialization & Event Binding (Browser Environment Only)
 // ==========================================================================
@@ -72,6 +165,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         console.log("🛡️ Don Quijote OS initialized.");
         
+        loadNicknamesFromStorage();
+        fetchEquipmentFromGAS();
         initLoadoutButtons();
         initExpeditionModal();
         initSliders();
@@ -86,6 +181,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
  * Binds click listeners to Loadout Switcher buttons.
  */
 function initLoadoutButtons() {
+    if (typeof document === 'undefined') return;
     const loadoutButtons = document.querySelectorAll('.loadout-btn');
 
     loadoutButtons.forEach(btn => {
@@ -112,6 +208,7 @@ function initLoadoutButtons() {
  * Binds click events to individual slots and central mannequin avatar.
  */
 function initSlotAndMannequinEvents() {
+    if (typeof document === 'undefined') return;
     const slots = document.querySelectorAll('.eq-slot');
     slots.forEach(slot => {
         slot.addEventListener('click', () => {
@@ -137,6 +234,7 @@ function initSlotAndMannequinEvents() {
  * Renders gear items into the central character paperdoll slots and updates mannequin badge.
  */
 function renderEquipmentSlots() {
+    if (typeof document === 'undefined') return;
     const activeGear = INVENTORY_DATA[currentLoadout]?.gear || {};
     let totalWeight = 0;
     let itemHits = 0;
@@ -153,7 +251,11 @@ function renderEquipmentSlots() {
         if (slotEl) {
             const contentEl = slotEl.querySelector('.slot-content');
             if (contentEl && item) {
-                contentEl.innerHTML = `<span class="slot-item-name">${item.name}</span>`;
+                const nicknameHtml = item.nickname ? `<span class="slot-item-nickname">「${item.nickname}」</span>` : '';
+                contentEl.innerHTML = `
+                    ${nicknameHtml}
+                    <span class="slot-item-name">${item.name}</span>
+                `;
             }
         }
     });
@@ -177,6 +279,7 @@ function renderEquipmentSlots() {
  * Inspector Panel: Render single slot details
  */
 function inspectSlot(slotKey) {
+    if (typeof document === 'undefined') return;
     const inspectorEl = document.getElementById('equipment-panel');
     if (!inspectorEl) return;
 
@@ -197,10 +300,16 @@ function inspectSlot(slotKey) {
         <div class="inspector-card">
             <div class="inspector-card-header">
                 <div>
+                    ${gear.nickname ? `<div class="inspector-item-nickname">「${gear.nickname}」</div>` : ''}
                     <h3 class="inspector-item-name">${gear.name}</h3>
                     <div class="inspector-item-category">${info.category} • ${info.label}</div>
                 </div>
                 <span class="inspector-badge-rating">${gear.rating || 'A'}</span>
+            </div>
+
+            <div class="inspector-nickname-box">
+                <div class="notes-box-title">🏷️ 裝備暱稱 (Nickname)</div>
+                <input type="text" id="inspector-nickname-input" class="inspector-nickname-input" placeholder="自訂騎士暱稱 (例如：山羊神行靴)..." value="${gear.nickname || ''}" />
             </div>
 
             <div class="inspector-stat-grid">
@@ -220,12 +329,49 @@ function inspectSlot(slotKey) {
             </div>
         </div>
     `;
+
+    // Real-time Nickname editing listener
+    const nicknameInput = document.getElementById('inspector-nickname-input');
+    if (nicknameInput) {
+        nicknameInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            gear.nickname = val;
+            saveNicknamesToStorage();
+
+            // Update slot in paperdoll dynamically
+            const slotEl = document.getElementById(`slot-${slotKey}`);
+            if (slotEl) {
+                const contentEl = slotEl.querySelector('.slot-content');
+                if (contentEl) {
+                    const nicknameHtml = val ? `<span class="slot-item-nickname">「${val}」</span>` : '';
+                    contentEl.innerHTML = `${nicknameHtml}<span class="slot-item-name">${gear.name}</span>`;
+                }
+            }
+
+            // Update inspector card header nickname title live
+            const headerDiv = inspectorEl.querySelector('.inspector-card-header > div');
+            if (headerDiv) {
+                let nicknameHeader = headerDiv.querySelector('.inspector-item-nickname');
+                if (val) {
+                    if (!nicknameHeader) {
+                        nicknameHeader = document.createElement('div');
+                        nicknameHeader.className = 'inspector-item-nickname';
+                        headerDiv.insertBefore(nicknameHeader, headerDiv.firstChild);
+                    }
+                    nicknameHeader.textContent = `「${val}」`;
+                } else if (nicknameHeader) {
+                    nicknameHeader.remove();
+                }
+            }
+        });
+    }
 }
 
 /**
  * Inspector Panel: Render total knight loadout overview when mannequin is clicked
  */
 function inspectKnightOverview() {
+    if (typeof document === 'undefined') return;
     const inspectorEl = document.getElementById('equipment-panel');
     if (!inspectorEl) return;
 
@@ -251,6 +397,20 @@ function inspectKnightOverview() {
 
     const totalWeight = wearableWeight + otherWeight;
     const kgText = (totalWeight / 1000).toFixed(2);
+
+    const quickRowsHtml = Object.keys(activeGear).map(slotKey => {
+        const item = activeGear[slotKey];
+        const info = SLOT_CATEGORY_MAP[slotKey] || { label: slotKey };
+        return `
+            <div class="quick-nickname-row">
+                <div class="quick-nickname-info">
+                    <span class="quick-slot-label">${info.label}</span>
+                    <span class="quick-item-name" title="${item.name}">${item.name}</span>
+                </div>
+                <input type="text" class="quick-nickname-input" data-slot-key="${slotKey}" placeholder="自訂暱稱..." value="${item.nickname || ''}" />
+            </div>
+        `;
+    }).join('');
 
     inspectorEl.innerHTML = `
         <div class="inspector-card">
@@ -281,18 +441,52 @@ function inspectKnightOverview() {
                 </div>
             </div>
 
+            <div class="inspector-quick-nicknames-box">
+                <div class="notes-box-title">🏷️ 全套裝備暱稱速查與編輯 (Equipment Nicknames)</div>
+                <div class="quick-nicknames-hint">在此直接編輯 10 項裝備暱稱（隨打即存），或點擊單一裝備格進入詳情：</div>
+                <div class="quick-nicknames-list">
+                    ${quickRowsHtml}
+                </div>
+            </div>
+
             <div class="inspector-notes-box">
-                <div class="notes-box-title">📜 遠征負重說明</div>
-                <div class="notes-box-text">${loadoutInfo.description || '戰術配備全數就緒，隨時可出擊對抗現代風車。'}</div>
+                <div class="notes-box-title">📜 雲端資料庫與連動說明</div>
+                <div class="notes-box-text">
+                    ${GAS_WEBAPP_URL ? '✅ 已連動 GAS 雲端資料庫。' : '💡 目前使用本機展示模式。若欲於網頁讀取 Google Sheet 雲端試算表 `Equipment_DB` 裝備資料，請於 `src/app.js` 的 `GAS_WEBAPP_URL` 填入您的 Apps Script 部署網址。'}
+                </div>
             </div>
         </div>
     `;
+
+    // Real-time listener for quick nickname fields
+    const quickInputs = inspectorEl.querySelectorAll('.quick-nickname-input');
+    quickInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const slotKey = input.getAttribute('data-slot-key');
+            const val = e.target.value.trim();
+            if (activeGear[slotKey]) {
+                activeGear[slotKey].nickname = val;
+                saveNicknamesToStorage();
+
+                // Update slot in paperdoll dynamically
+                const slotEl = document.getElementById(`slot-${slotKey}`);
+                if (slotEl) {
+                    const contentEl = slotEl.querySelector('.slot-content');
+                    if (contentEl) {
+                        const nicknameHtml = val ? `<span class="slot-item-nickname">「${val}」</span>` : '';
+                        contentEl.innerHTML = `${nicknameHtml}<span class="slot-item-name">${activeGear[slotKey].name}</span>`;
+                    }
+                }
+            }
+        });
+    });
 }
 
 /**
  * Sets today's date in form inputs by default.
  */
 function setTodayDates() {
+    if (typeof document === 'undefined') return;
     const today = new Date().toISOString().split('T')[0];
     const runDate = document.getElementById('run-date');
     const walkDate = document.getElementById('walk-date');
@@ -304,6 +498,7 @@ function setTodayDates() {
 // 3. Expedition Log Modal Module
 // ==========================================================================
 function initExpeditionModal() {
+    if (typeof document === 'undefined') return;
     const modal = document.getElementById('expedition-modal');
     const btnOpen = document.getElementById('btn-open-expedition');
     const btnClose = document.getElementById('btn-close-modal');
@@ -367,6 +562,7 @@ function initExpeditionModal() {
  * Renders gear selector chips dynamically based on current loadout.
  */
 function renderGearChips() {
+    if (typeof document === 'undefined') return;
     const container = document.getElementById('modal-gear-chips');
     if (!container) return;
 
@@ -376,20 +572,21 @@ function renderGearChips() {
     const activeGear = INVENTORY_DATA[currentLoadout]?.gear || {};
 
     Object.values(activeGear).forEach(item => {
+        const chipName = item.nickname ? `「${item.nickname}」 ${item.name}` : item.name;
         const chip = document.createElement('div');
         chip.className = 'gear-chip selected'; // Selected by default
-        chip.setAttribute('data-gear-name', item.name);
-        chip.innerHTML = `<span>🛡️</span> <span>${item.name}</span>`;
+        chip.setAttribute('data-gear-name', chipName);
+        chip.innerHTML = `<span>🛡️</span> <span>${chipName}</span>`;
 
-        selectedGearList.push(item.name);
+        selectedGearList.push(chipName);
 
         chip.addEventListener('click', () => {
             if (chip.classList.contains('selected')) {
                 chip.classList.remove('selected');
-                selectedGearList = selectedGearList.filter(g => g !== item.name);
+                selectedGearList = selectedGearList.filter(g => g !== chipName);
             } else {
                 chip.classList.add('selected');
-                selectedGearList.push(item.name);
+                selectedGearList.push(chipName);
             }
         });
 
@@ -401,6 +598,7 @@ function renderGearChips() {
  * Range slider numerical display synchronization
  */
 function initSliders() {
+    if (typeof document === 'undefined') return;
     const runFatigue = document.getElementById('run-fatigue');
     const runVal = document.getElementById('run-fatigue-val');
     if (runFatigue && runVal) {
@@ -418,6 +616,7 @@ function initSliders() {
  * Star Rating Picker Component Handler
  */
 function initStarRatings() {
+    if (typeof document === 'undefined') return;
     const starContainers = document.querySelectorAll('.star-rating');
 
     starContainers.forEach(container => {

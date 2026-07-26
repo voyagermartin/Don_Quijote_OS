@@ -48,23 +48,23 @@ function setupEquipmentSheet(ss) {
   var sheetName = 'Equipment_DB';
   var sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
   
-  var headers = ['裝備ID', '名稱', '類別', '品牌', '累積里程KM', '狀態'];
+  var headers = ['裝備ID', '名稱', '暱稱', '類別', '品牌', '累積里程KM', '狀態'];
   
   sheet.clear();
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#1f293d').setFontColor('#d4af37');
 
   var sampleData = [
-    ['EQ-001', 'Salomon Bonatti Waterproof Jacket', 'Body', 'Salomon', 340, '服役中'],
-    ['EQ-002', 'Hoka Speedgoat 5', 'Shoes', 'Hoka', 520, '服役中'],
-    ['EQ-003', 'Garmin Forerunner 955', 'Watch', 'Garmin', 1280, '服役中'],
-    ['EQ-004', 'Osprey Talon 33 Backpack', 'Backpack', 'Osprey', 1200, '服役中'],
-    ['EQ-005', 'Leki Trail Running Carbon Poles', 'Trekking Pole', 'Leki', 210, '服役中'],
-    ['EQ-006', 'Darn Tough Run Ultra-Light Socks', 'Socks', 'Darn Tough', 300, '服役中'],
-    ['EQ-007', 'Buff Reflective Headband', 'Head', 'Buff', 120, '服役中'],
-    ['EQ-008', 'iPhone 15 Pro', 'Phone', 'Apple', 1500, '服役中'],
-    ['EQ-009', 'Nitecore NB10000 Power Bank', 'Power Bank', 'Nitecore', 600, '服役中'],
-    ['EQ-010', 'Hydrapak SoftFlask 500ml x2', 'Water', 'Hydrapak', 800, '服役中']
+    ['EQ-001', 'Salomon Bonatti Waterproof Jacket', '風暴戰甲', 'Body', 'Salomon', 340, '服役中'],
+    ['EQ-002', 'Hoka Speedgoat 5', '山羊神行靴', 'Shoes', 'Hoka', 520, '服役中'],
+    ['EQ-003', 'Garmin Forerunner 955', '時光羅盤', 'Watch', 'Garmin', 1280, '服役中'],
+    ['EQ-004', 'Osprey Talon 33 Backpack', '羅西南特背包', 'Backpack', 'Osprey', 1200, '服役中'],
+    ['EQ-005', 'Leki Trail Running Carbon Poles', '疾風突擊槍', 'Trekking Pole', 'Leki', 210, '服役中'],
+    ['EQ-006', 'Darn Tough Run Ultra-Light Socks', '不滅戰襪', 'Socks', 'Darn Tough', 300, '服役中'],
+    ['EQ-007', 'Buff Reflective Headband', '風暴避雷針', 'Head', 'Buff', 120, '服役中'],
+    ['EQ-008', 'iPhone 15 Pro', '萬能預言石', 'Phone', 'Apple', 1500, '服役中'],
+    ['EQ-009', 'Nitecore NB10000 Power Bank', '永恆雷電核心', 'Power Bank', 'Nitecore', 600, '服役中'],
+    ['EQ-010', 'Hydrapak SoftFlask 500ml x2', '生命之泉水囊', 'Water', 'Hydrapak', 800, '服役中']
   ];
 
   sheet.getRange(2, 1, sampleData.length, sampleData[0].length).setValues(sampleData);
