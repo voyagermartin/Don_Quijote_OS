@@ -571,18 +571,11 @@ body {
     max-width: 130px;
 }
 
-.quick-nickname-input {
-    flex: 1;
-    background: rgba(15, 18, 28, 0.95);
-    border: 1px solid var(--border-gold);
-    border-radius: 4px;
-    padding: 5px 8px;
+.quick-nickname-tag {
     font-size: 0.82rem;
+    font-weight: 700;
     color: var(--accent-gold);
-    font-weight: 600;
-    outline: none;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
+    text-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
 }
 
 .quick-nickname-input:focus {

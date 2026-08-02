@@ -15,16 +15,16 @@ const INVENTORY_DATA = {
         name: "Running / Speed Expedition",
         description: "Lightweight gear optimized for urban and trail running speed.",
         gear: {
-            head: { name: "Buff Reflective Headband", nickname: "", weight: 35, rating: "A+", mileage: 120, notes: "Absorbs sweat during intense battles." },
-            body: { name: "Salomon Bonatti Waterproof Jacket", nickname: "", weight: 200, rating: "S", mileage: 340, notes: "Windproof shield against harsh gusts." },
-            backpack: { name: "Salomon Active Skin 8 Vest", nickname: "", weight: 210, rating: "S", mileage: 450, notes: "Zero bounce, holds dual flasks." },
-            watch: { name: "Garmin Forerunner 955", nickname: "", weight: 52, rating: "S", mileage: 1280, notes: "GPS tracking for windmill encounters." },
-            "trekking-pole": { name: "Leki Trail Running Carbon Poles", nickname: "", weight: 280, rating: "A", mileage: 210, notes: "Foldable speed poles." },
-            shoes: { name: "Hoka Speedgoat 5", nickname: "", weight: 580, rating: "S", mileage: 520, notes: "Maximum cushion for rough paths." },
-            socks: { name: "Darn Tough Run Ultra-Light", nickname: "", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
-            phone: { name: "iPhone 15 Pro (Strava Mode)", nickname: "", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
-            "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", nickname: "", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
-            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", nickname: "", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
+            head: { name: "Buff Reflective Headband", nickname: "風暴避雷針", weight: 35, rating: "A+", mileage: 120, notes: "Absorbs sweat during intense battles." },
+            body: { name: "Salomon Bonatti Waterproof Jacket", nickname: "風暴戰甲", weight: 200, rating: "S", mileage: 340, notes: "Windproof shield against harsh gusts." },
+            backpack: { name: "Salomon Active Skin 8 Vest", nickname: "疾風背心", weight: 210, rating: "S", mileage: 450, notes: "Zero bounce, holds dual flasks." },
+            watch: { name: "Garmin Forerunner 955", nickname: "時光羅盤", weight: 52, rating: "S", mileage: 1280, notes: "GPS tracking for windmill encounters." },
+            "trekking-pole": { name: "Leki Trail Running Carbon Poles", nickname: "疾風突擊槍", weight: 280, rating: "A", mileage: 210, notes: "Foldable speed poles." },
+            shoes: { name: "Hoka Speedgoat 5", nickname: "山羊神行靴", weight: 580, rating: "S", mileage: 520, notes: "Maximum cushion for rough paths." },
+            socks: { name: "Darn Tough Run Ultra-Light", nickname: "不滅戰襪", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
+            phone: { name: "iPhone 15 Pro (Strava Mode)", nickname: "萬能預言石", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
+            "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", nickname: "永恆雷電核心", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
+            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", nickname: "生命之泉水囊", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
         }
     },
     camino: {
@@ -32,16 +32,16 @@ const INVENTORY_DATA = {
         name: "Camino de Santiago Pilgrimage",
         description: "Endurance gear for long-distance pilgrimage across Spain.",
         gear: {
-            head: { name: "Tilley Broad Brim Sun Hat", nickname: "", weight: 95, rating: "A+", mileage: 600, notes: "UV protection under Spanish sun." },
-            body: { name: "Patagonia Capilene Cool Daily Tee", nickname: "", weight: 135, rating: "S", mileage: 850, notes: "Quick drying, odor control." },
-            backpack: { name: "Osprey Talon 33 Backpack", nickname: "", weight: 1090, rating: "S", mileage: 1200, notes: "The reliable pack of the Knight." },
-            watch: { name: "Garmin Fenix 7X Solar", nickname: "", weight: 89, rating: "S", mileage: 2100, notes: "Solar charged navigation." },
-            "trekking-pole": { name: "Black Diamond Trail Pro Shock", nickname: "", weight: 560, rating: "A+", mileage: 980, notes: "Absorbs descent impacts." },
-            shoes: { name: "Altra Lone Peak 7 Trail", nickname: "", weight: 620, rating: "S", mileage: 750, notes: "Wide toe box for long days." },
-            socks: { name: "Darn Tough Hiker Boot Full Cushion", nickname: "", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
-            phone: { name: "iPhone 15 Pro", nickname: "", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
-            "power-bank": { name: "Anker 325 Power Bank 20000mAh", nickname: "", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
-            water: { name: "CamelBak Crux 3L Reservoir (水壺)", nickname: "", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
+            head: { name: "Tilley Broad Brim Sun Hat", nickname: "聖雅各遮陽帽", weight: 95, rating: "A+", mileage: 600, notes: "UV protection under Spanish sun." },
+            body: { name: "Patagonia Capilene Cool Daily Tee", nickname: "聖光戰袍", weight: 135, rating: "S", mileage: 850, notes: "Quick drying, odor control." },
+            backpack: { name: "Osprey Talon 33 Backpack", nickname: "羅西南特背包", weight: 1090, rating: "S", mileage: 1200, notes: "The reliable pack of the Knight." },
+            watch: { name: "Garmin Fenix 7X Solar", nickname: "太陽羅盤", weight: 89, rating: "S", mileage: 2100, notes: "Solar charged navigation." },
+            "trekking-pole": { name: "Black Diamond Trail Pro Shock", nickname: "朝聖杖", weight: 560, rating: "A+", mileage: 980, notes: "Absorbs descent impacts." },
+            shoes: { name: "Altra Lone Peak 7 Trail", nickname: "獨峰行者靴", weight: 620, rating: "S", mileage: 750, notes: "Wide toe box for long days." },
+            socks: { name: "Darn Tough Hiker Boot Full Cushion", nickname: "羊毛戰襪", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
+            phone: { name: "iPhone 15 Pro", nickname: "萬能預言石", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
+            "power-bank": { name: "Anker 325 Power Bank 20000mAh", nickname: "雷霆巨型核心", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
+            water: { name: "CamelBak Crux 3L Reservoir (水壺)", nickname: "朝聖水囊", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
         }
     }
 };
@@ -66,46 +66,12 @@ let selectedGearList = [];
 let selectedRoadConditions = [];
 let selectedSlotKey = null;
 
-/**
- * Loads custom equipment nicknames from LocalStorage
- */
 function loadNicknamesFromStorage() {
-    try {
-        const saved = localStorage.getItem('dq_equipment_nicknames');
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            Object.keys(parsed).forEach(loadoutKey => {
-                if (INVENTORY_DATA[loadoutKey]?.gear) {
-                    Object.keys(parsed[loadoutKey]).forEach(slotKey => {
-                        if (INVENTORY_DATA[loadoutKey].gear[slotKey]) {
-                            INVENTORY_DATA[loadoutKey].gear[slotKey].nickname = parsed[loadoutKey][slotKey] || "";
-                        }
-                    });
-                }
-            });
-        }
-    } catch (e) {
-        console.warn("Failed to load nicknames from localStorage", e);
-    }
+    // Deprecated: Nicknames are fetched directly from backend Equipment_DB / INVENTORY_DATA
 }
 
-/**
- * Saves custom equipment nicknames to LocalStorage
- */
 function saveNicknamesToStorage() {
-    try {
-        const dataToSave = {};
-        Object.keys(INVENTORY_DATA).forEach(loadoutKey => {
-            dataToSave[loadoutKey] = {};
-            const gearObj = INVENTORY_DATA[loadoutKey].gear || {};
-            Object.keys(gearObj).forEach(slotKey => {
-                dataToSave[loadoutKey][slotKey] = gearObj[slotKey].nickname || "";
-            });
-        });
-        localStorage.setItem('dq_equipment_nicknames', JSON.stringify(dataToSave));
-    } catch (e) {
-        console.warn("Failed to save nicknames to localStorage", e);
-    }
+    // Deprecated: Nicknames are managed in backend Equipment_DB / INVENTORY_DATA
 }
 
 /**
@@ -308,11 +274,6 @@ function inspectSlot(slotKey) {
                 <span class="inspector-badge-rating">${gear.rating || 'A'}</span>
             </div>
 
-            <div class="inspector-nickname-box">
-                <div class="notes-box-title">🏷️ 裝備暱稱 (Nickname)</div>
-                <input type="text" id="inspector-nickname-input" class="inspector-nickname-input" placeholder="自訂騎士暱稱 (例如：山羊神行靴)..." value="${gear.nickname || ''}" />
-            </div>
-
             <div class="inspector-stat-grid">
                 <div class="inspector-stat-box">
                     <div class="stat-box-label">裝備單重</div>
@@ -330,42 +291,6 @@ function inspectSlot(slotKey) {
             </div>
         </div>
     `;
-
-    // Real-time Nickname editing listener
-    const nicknameInput = document.getElementById('inspector-nickname-input');
-    if (nicknameInput) {
-        nicknameInput.addEventListener('input', (e) => {
-            const val = e.target.value.trim();
-            gear.nickname = val;
-            saveNicknamesToStorage();
-
-            // Update slot in paperdoll dynamically
-            const slotEl = document.getElementById(`slot-${slotKey}`);
-            if (slotEl) {
-                const contentEl = slotEl.querySelector('.slot-content');
-                if (contentEl) {
-                    const nicknameHtml = val ? `<span class="slot-item-nickname">「${val}」</span>` : '';
-                    contentEl.innerHTML = `${nicknameHtml}<span class="slot-item-name">${gear.name}</span>`;
-                }
-            }
-
-            // Update inspector card header nickname title live
-            const headerDiv = inspectorEl.querySelector('.inspector-card-header > div');
-            if (headerDiv) {
-                let nicknameHeader = headerDiv.querySelector('.inspector-item-nickname');
-                if (val) {
-                    if (!nicknameHeader) {
-                        nicknameHeader = document.createElement('div');
-                        nicknameHeader.className = 'inspector-item-nickname';
-                        headerDiv.insertBefore(nicknameHeader, headerDiv.firstChild);
-                    }
-                    nicknameHeader.textContent = `「${val}」`;
-                } else if (nicknameHeader) {
-                    nicknameHeader.remove();
-                }
-            }
-        });
-    }
 }
 
 /**
@@ -408,7 +333,7 @@ function inspectKnightOverview() {
                     <span class="quick-slot-label">${info.label}</span>
                     <span class="quick-item-name" title="${item.name}">${item.name}</span>
                 </div>
-                <input type="text" class="quick-nickname-input" data-slot-key="${slotKey}" placeholder="自訂暱稱..." value="${item.nickname || ''}" />
+                <span class="quick-nickname-tag">${item.nickname ? `「${item.nickname}」` : '—'}</span>
             </div>
         `;
     }).join('');
@@ -443,44 +368,21 @@ function inspectKnightOverview() {
             </div>
 
             <div class="inspector-quick-nicknames-box">
-                <div class="notes-box-title">🏷️ 全套裝備暱稱速查與編輯 (Equipment Nicknames)</div>
-                <div class="quick-nicknames-hint">在此直接編輯 10 項裝備暱稱（隨打即存），或點擊單一裝備格進入詳情：</div>
+                <div class="notes-box-title">🏷️ 全套裝備名稱與暱稱速查 (Equipment List)</div>
+                <div class="quick-nicknames-hint">裝備名稱與暱稱由雲端資料庫 \`Equipment_DB\` 統一管理，前台自動連動帶出：</div>
                 <div class="quick-nicknames-list">
                     ${quickRowsHtml}
                 </div>
             </div>
 
             <div class="inspector-notes-box">
-                <div class="notes-box-title">📜 雲端資料庫與連動說明</div>
+                <div class="notes-box-title">📜 雲端資料庫連動</div>
                 <div class="notes-box-text">
-                    ${GAS_WEBAPP_URL ? '✅ 已連動 GAS 雲端資料庫。' : '💡 目前使用本機展示模式。若欲於網頁讀取 Google Sheet 雲端試算表 `Equipment_DB` 裝備資料，請於 `src/app.js` 的 `GAS_WEBAPP_URL` 填入您的 Apps Script 部署網址。'}
+                    ${GAS_WEBAPP_URL ? '✅ 已連動 GAS 雲端資料庫。' : '💡 目前使用展示模式。雲端試算表 \`Equipment_DB\` 設定暱稱後，將自動載入本面板。'}
                 </div>
             </div>
         </div>
     `;
-
-    // Real-time listener for quick nickname fields
-    const quickInputs = inspectorEl.querySelectorAll('.quick-nickname-input');
-    quickInputs.forEach(input => {
-        input.addEventListener('input', (e) => {
-            const slotKey = input.getAttribute('data-slot-key');
-            const val = e.target.value.trim();
-            if (activeGear[slotKey]) {
-                activeGear[slotKey].nickname = val;
-                saveNicknamesToStorage();
-
-                // Update slot in paperdoll dynamically
-                const slotEl = document.getElementById(`slot-${slotKey}`);
-                if (slotEl) {
-                    const contentEl = slotEl.querySelector('.slot-content');
-                    if (contentEl) {
-                        const nicknameHtml = val ? `<span class="slot-item-nickname">「${val}」</span>` : '';
-                        contentEl.innerHTML = `${nicknameHtml}<span class="slot-item-name">${activeGear[slotKey].name}</span>`;
-                    }
-                }
-            }
-        });
-    });
 }
 
 /**

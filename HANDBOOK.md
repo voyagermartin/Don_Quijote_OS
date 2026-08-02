@@ -132,7 +132,7 @@ DON_QUIJOTE_OS
   - **跑步紀錄遙測欄位大補齊**：於 Run 表單擴充跑段/平均配速、最大/平均步頻 (spm)、跑姿力學（移動效率 %、垂直振幅 cm、觸地時間 ms）、平均/最大心率 (bpm) 以及 Z1~Z5 心率區間時間占比 (%), AI Prompt 與 GAS 試算表同步升級支援 27 欄完整紀錄。
   - **2026-07-25 (名稱優化與全端發布)**：主要按鈕更名為「今日活動」、水更名為「水壺」、分頁更名為「Run」與「CityWalk」，並成功執行 clasp push 與 git push 部署至雲端與 GitHub 儲存庫。
 - **2026-07-26 (Task 0.3 / 裝備暱稱自訂與雲端連動升級)**：
-  - **裝備暱稱 (Equipment Nicknames) 功能落地**：於右側 Inspector 面板新增單項裝備暱稱輸入框與「全套裝備暱稱速查與編輯」快捷列表，支援隨打即存與 `localStorage` 本機持久化；紙娃娃裝備格、遠征日誌 Chips 與 AI Prompt 戰報同步自動帶入自訂暱稱格式 `「暱稱」 官方名稱`。
+  - **裝備暱稱 (Equipment Nicknames) 由雲端資料庫統一管理**：暱稱於 Google Sheet `Equipment_DB` / `INVENTORY_DATA` 設定後由前台自動帶出，右側 Inspector 改為唯讀速查卡片，移除前台手動編輯框與 LocalStorage 覆蓋邏輯。
   - **GAS 雲端資料庫擴充與自動同步**：升級 `Equipment_DB` 試算表結構加入 `暱稱` 欄位，更新 `gas_api.js` API 及 `app.js` 的 `fetchEquipmentFromGAS()`，支援自 Google Sheet 自動抓取裝備與暱稱。
   - **前後端隔離與 clasp 推送防護**：修正 [.claspignore](file:///f:/Projects/Don_Quijote_OS/.claspignore) 推送設定，並為 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 全數 DOM 函式加入 `typeof document === 'undefined'` 安全防護，徹底修復 `ReferenceError: document is not defined` 錯誤。
 - **2026-08-02 (Task 0.4 / Taipei Grand Trail 遠征日誌與 GAS 資料庫連動)**：
