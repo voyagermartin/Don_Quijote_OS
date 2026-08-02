@@ -253,6 +253,9 @@
                 <button class="modal-tab-btn" data-tab="citywalk">
                     <span>🌇</span> CityWalk
                 </button>
+                <button class="modal-tab-btn" data-tab="taipeigrandtrail">
+                    <span>🥾</span> Taipei Grand Trail
+                </button>
             </div>
 
             <!-- Modal Body Content -->
@@ -489,6 +492,186 @@
                     <div class="form-group full-width">
                         <label>✨ 印象最深刻的事</label>
                         <textarea id="walk-memorable" rows="2" placeholder="例如: 發現隱藏在巷弄的老咖啡館與巨型風車壁畫..."></textarea>
+                    </div>
+                </form>
+
+                <!-- Tab 3: Taipei Grand Trail Log Form (Hidden by default) -->
+                <form id="form-taipeigrandtrail" class="log-form hidden">
+                    <div class="form-section-title">📌 基礎資訊</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>📅 日期</label>
+                            <input type="date" id="tgt-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>🥾 台北大縱走段數</label>
+                            <select id="tgt-section" class="rpg-select">
+                                <option value="第1段">第 1 段 (關渡 ➜ 二子坪)</option>
+                                <option value="第2段">第 2 段 (二子坪 ➜ 小油坑)</option>
+                                <option value="第3段">第 3 段 (小油坑 ➜ 風櫃口)</option>
+                                <option value="第4段">第 4 段 (風櫃口 ➜ 捷運大湖公園站)</option>
+                                <option value="第5段">第 5 段 (劍潭支線: 劍潭 ➜ 碧山嚴)</option>
+                                <option value="第6段">第 6 段 (捷運中華科技大學 ➜ 捷運麟光站)</option>
+                                <option value="第7段">第 7 段 (名德路 ➜ 貓空政大)</option>
+                                <option value="第8段">第 8 段 (河濱自行車道: 捷運動物園站 ➜ 捷運關渡站)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>🗺️ 路線描述</label>
+                            <input type="text" id="tgt-route" placeholder="例如: 捷運關渡站 -> 二子坪遊客服務站">
+                        </div>
+                        <div class="form-group">
+                            <label>🏁 起點 ➜ 終點</label>
+                            <input type="text" id="tgt-start-end" placeholder="例如: 關渡站 ➜ 二子坪">
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">🌤️ 環境與路況</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>🌡️ 氣溫與天氣</label>
+                            <input type="text" id="tgt-weather" placeholder="例如: 22°C 晴朗微風">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>⛰️ 路況特徵（點擊多選）：</label>
+                        <div class="road-chips-container" id="tgt-road-chips">
+                            <div class="road-chip" data-road="乾燥">☀️ 乾燥</div>
+                            <div class="road-chip" data-road="潮濕">💧 潮濕</div>
+                            <div class="road-chip" data-road="泥濘">🌧️ 泥濘</div>
+                            <div class="road-chip" data-road="石階">🪜 石階</div>
+                            <div class="road-chip" data-road="土徑">🌲 土徑</div>
+                            <div class="road-chip" data-road="拉繩">🧗 拉繩</div>
+                            <div class="road-chip" data-road="曝曬">🔥 曝曬</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">🏃‍♂️ 運動與登山遙測</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>📏 總距離 (KM)</label>
+                            <input type="number" step="0.01" id="tgt-distance" placeholder="例如: 13.2" required>
+                        </div>
+                        <div class="form-group">
+                            <label>⏱️ 總時間</label>
+                            <input type="text" id="tgt-total-time" placeholder="例如: 5小時20分">
+                        </div>
+                        <div class="form-group">
+                            <label>🚶‍♂️ 移動時間</label>
+                            <input type="text" id="tgt-moving-time" placeholder="例如: 4小時10分">
+                        </div>
+                        <div class="form-group">
+                            <label>☕ 停留時間</label>
+                            <input type="text" id="tgt-rest-time" placeholder="例如: 1小時10分">
+                        </div>
+                        <div class="form-group">
+                            <label>⚡ 平均速度</label>
+                            <input type="text" id="tgt-avg-speed" placeholder="例如: 3.2 km/h">
+                        </div>
+                        <div class="form-group">
+                            <label>👟 總步數</label>
+                            <input type="number" id="tgt-steps" placeholder="例如: 22500">
+                        </div>
+                        <div class="form-group">
+                            <label>📈 累積爬升 (m)</label>
+                            <input type="number" id="tgt-elevation-gain" placeholder="例如: 850">
+                        </div>
+                        <div class="form-group">
+                            <label>📉 累積下降 (m)</label>
+                            <input type="number" id="tgt-elevation-loss" placeholder="例如: 620">
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">❤️ 生理、疲勞與路線難度</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>❤️ 平均心率 (bpm)</label>
+                            <input type="number" id="tgt-hr-avg" placeholder="例如: 138">
+                        </div>
+                        <div class="form-group">
+                            <label>💖 最高心率 (bpm)</label>
+                            <input type="number" id="tgt-hr-max" placeholder="例如: 165">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width margin-top">
+                        <label>💥 體感疲勞度 (0 ~ 10)：<span id="tgt-fatigue-val" class="value-highlight">6</span></label>
+                        <input type="range" min="0" max="10" value="6" id="tgt-fatigue" class="rpg-slider">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>⛰️ 路線難度評估 (0 ~ 10)：<span id="tgt-difficulty-val" class="value-highlight">7</span></label>
+                        <input type="range" min="0" max="10" value="7" id="tgt-difficulty" class="rpg-slider">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>🩺 身體狀況觀察</label>
+                        <input type="text" id="tgt-bodystate" placeholder="例如: 股四頭肌微酸、右腳踝無不適">
+                    </div>
+
+                    <div class="form-section-title">🥪 補給與遠征體驗心得</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>🥤 補給紀錄</label>
+                            <input type="text" id="tgt-supply" placeholder="例如: 能量膠 x2 + 寶礦力 1L + 飯糰">
+                        </div>
+                        <div class="form-group">
+                            <label>📸 今日最佳照片描述</label>
+                            <input type="text" id="tgt-best-photo" placeholder="例如: 面向關渡平原的夕陽與騎士背影">
+                        </div>
+                        <div class="form-group">
+                            <label>💚 今日最喜歡的一段</label>
+                            <input type="text" id="tgt-favorite-section" placeholder="例如: 面天山步道林蔭石階">
+                        </div>
+                        <div class="form-group">
+                            <label>🔥 今日最痛苦的一段</label>
+                            <input type="text" id="tgt-hardest-section" placeholder="例如: 陡峭無遮蔽的高溫石階爬升">
+                        </div>
+                        <div class="form-group">
+                            <label>💡 今天學到的一件事</label>
+                            <input type="text" id="tgt-lesson-learned" placeholder="例如: 登山杖在長距離陡下能節省20%膝蓋衝擊">
+                        </div>
+                        <div class="form-group">
+                            <label>💬 今日一句話</label>
+                            <input type="text" id="tgt-quote" placeholder="例如: 台北大縱走是朝聖 Camino 最佳的前哨站">
+                        </div>
+                        <div class="form-group">
+                            <label>🎵 今日 BGM</label>
+                            <input type="text" id="tgt-bgm" placeholder="例如: Acoustic Guitar / Epic Adventure RPG OST">
+                        </div>
+                    </div>
+
+                    <!-- Star Ratings Grid -->
+                    <div class="ratings-grid">
+                        <div class="rating-box">
+                            <label>🥾 Camino 相似度</label>
+                            <div class="star-rating" data-rating="tgt-camino" data-value="4">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4" class="active">★</span><span data-val="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-box">
+                            <label>🏞️ 景觀指數</label>
+                            <div class="star-rating" data-rating="tgt-scenery" data-value="5">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5" class="active">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-box">
+                            <label>🧗 挑戰指數</label>
+                            <div class="star-rating" data-rating="tgt-challenge" data-value="4">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4" class="active">★</span><span data-val="5">★</span>
+                            </div>
+                        </div>
+                        <div class="rating-box">
+                            <label>🔄 再訪指數</label>
+                            <div class="star-rating" data-rating="tgt-revisit" data-value="5">
+                                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5" class="active">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>📝 復盤（下次可以更好的地方）</label>
+                        <textarea id="tgt-review" rows="3" placeholder="記錄裝備調整、水份補給時機、體能配速調整與下次遠征改善方案..."></textarea>
                     </div>
                 </form>
             </div>

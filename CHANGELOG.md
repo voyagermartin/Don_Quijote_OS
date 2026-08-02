@@ -22,7 +22,17 @@
 - 新增「裝備暱稱 (Equipment Nickname)」自訂欄位與 LocalStorage 本機持久化功能：
   - 於右側 Inspector 詳情面板新增 `🏷️ 裝備暱稱 (Nickname)` 輸入框，支援騎士即時輸入並自動保存至 LocalStorage。
   - 紙娃娃配裝面板裝備格動態連動高亮顯示自訂騎士暱稱 `「暱稱」`。
-  - 遠征日誌 Modal 裝備選擇 Chips 與 AI Prompt 戰報生成器自動帶入自訂暱稱格式 `「暱稱」 (原名)`。
+  - 新建 [.gitignore](file:///f:/Projects/Don_Quijote_OS/.gitignore) 檔案：配置 `__pycache__/`、`.venv/`、`node_modules/` 及系統與編輯器暫存檔之過濾規則。
+
+## [0.1.3] - 2026-08-02
+### Added (Task 0.4: Taipei Grand Trail 遠征日誌與 GAS 資料庫連動)
+- 新增 [gas_setup.js](file:///f:/Projects/Don_Quijote_OS/src/gas_setup.js) `setupTaipeiGrandTrailLogsSheet()`：自動建立第四個工作表 `TaipeiGrandTrail_Logs` (32 欄位)。
+- 擴充 [gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js)：新增 `saveTaipeiGrandTrailLog()` API 寫入台北大縱走紀錄，並升級 `updateEquipmentMileage()` 支援動態對應 `累積里程KM` 欄位與裝備暱稱匹配。
+- 升級 [src/index.html](file:///f:/Projects/Don_Quijote_OS/src/index.html) & [index.html](file:///f:/Projects/Don_Quijote_OS/index.html) 遠征彈窗：新增 `🥾 Taipei Grand Trail` 頁籤、縱走段數 1~8 段選單、起終點、路況 Chips 多選（乾燥/潮濕/泥濘/石階/土徑/拉繩/曝曬）、登山遙測、難度 Slider 與 4 組星級評分。
+- 更新 [app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 邏輯：新增 `initRoadChips()` 路況多選狀態管理、`generateTaipeiGrandTrailAIPrompt()` AI 戰報生成器，表單儲存時產出包含 Camino 朝聖預備訓練點評之 Prompt 並一鍵複製。
+- 更新 [HANDBOOK.md](file:///f:/Projects/Don_Quijote_OS/HANDBOOK.md) 與 [TASKS.md](file:///f:/Projects/Don_Quijote_OS/TASKS.md)。
+
+
 
 
 

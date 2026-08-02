@@ -42,9 +42,9 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 - **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，並與 Google Sheet `Equipment_DB` 雲端連動。
 - **Equipment Panel & Nicknames（裝備詳情與自訂暱稱面板）**：點擊裝備格或中央人形後，切換顯示名稱、類別、單重、評分、累積里程、戰力評級與戰鬥備註；支援「🏷️ 裝備暱稱 (Nickname)」自訂功能，Inspector 提供全套裝備快捷編輯列表與隨打即存機制，並透過 `localStorage` 進行本機持久化保存。
 - **Loadout（兩組主打遠征預設切換）**：`Running` / `Camino`（支援手機行動端響應式排版）。點擊切換時，全套裝備同步更換並自動計算總重量。
-- **Expedition Log Modal（今日活動錄入彈窗）**：提供 `🏃‍♂️ Run` 與 `🌇 CityWalk` 雙頁籤表單。`Run` 表單支援完整跑力與心率遙測欄位（平均/跑段配速、平均/最大步頻 spm、移動效率%、垂直振幅 cm、觸地時間 ms、平均/最大心率 bpm、以及 Z1~Z5 心率區間時間占比 %）；提供動態裝備多選 Chips、體感疲勞 Slider 與星級評分。
-- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` (27 欄擴充欄位) / `CityWalk_Logs`；`Equipment_DB` 支援 `暱稱` 欄位與 `getEquipment` 自動資料拉取連動機制。
-- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測與心率區間占比的專業戰報格式，一鍵複製供貼給 Gemini 分析。
+- **Expedition Log Modal（今日活動錄入彈窗）**：提供 `🏃‍♂️ Run`、`🌇 CityWalk` 與 `🥾 Taipei Grand Trail` 三頁籤表單。`Run` 表單支援完整跑力與心率遙測欄位；`Taipei Grand Trail` 支援段數 (1~8段)、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、心率/疲勞/難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
+- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` (27 欄) / `CityWalk_Logs` / `TaipeiGrandTrail_Logs` (32 欄)；`Equipment_DB` 支援 `暱稱` 欄位與自動里程累加連動機制。
+- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測與 Camino 訓練點評的專業戰報格式，一鍵複製供貼給 Gemini 分析。
 - **GitHub Pages 全球雲端部署與隱私防護**：支援全雲端存取，並配置 `noindex` 及 `robots.txt` 全面防止搜尋引擎收錄。
 
 ---
@@ -135,3 +135,8 @@ DON_QUIJOTE_OS
   - **裝備暱稱 (Equipment Nicknames) 功能落地**：於右側 Inspector 面板新增單項裝備暱稱輸入框與「全套裝備暱稱速查與編輯」快捷列表，支援隨打即存與 `localStorage` 本機持久化；紙娃娃裝備格、遠征日誌 Chips 與 AI Prompt 戰報同步自動帶入自訂暱稱格式 `「暱稱」 官方名稱`。
   - **GAS 雲端資料庫擴充與自動同步**：升級 `Equipment_DB` 試算表結構加入 `暱稱` 欄位，更新 `gas_api.js` API 及 `app.js` 的 `fetchEquipmentFromGAS()`，支援自 Google Sheet 自動抓取裝備與暱稱。
   - **前後端隔離與 clasp 推送防護**：修正 [.claspignore](file:///f:/Projects/Don_Quijote_OS/.claspignore) 推送設定，並為 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 全數 DOM 函式加入 `typeof document === 'undefined'` 安全防護，徹底修復 `ReferenceError: document is not defined` 錯誤。
+- **2026-08-02 (Task 0.4 / Taipei Grand Trail 遠征日誌與 GAS 資料庫連動)**：
+  - **台北大縱走專屬 Modal 頁籤與 32 欄位表單**：於「今日活動」彈窗新增 `🥾 Taipei Grand Trail` 頁籤、縱走段數 (1~8段) 下拉選單、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
+  - **GAS 雲端資料庫擴充與自動加總里程**：新增 `TaipeiGrandTrail_Logs` 試算表 (32 欄位)，擴充 `gas_api.js` API 處理 `saveTaipeiGrandTrailLog`，並優化 `updateEquipmentMileage` 動態對應標題欄位與暱稱匹配。
+  - **AI 戰報生成器升級**：實作 `generateTaipeiGrandTrailAIPrompt()`，表單提交時生成包含 Camino 朝聖訓練備戰點評、裝備 XP 發放與騎士復盤檢討提示詞並一鍵複製。
+

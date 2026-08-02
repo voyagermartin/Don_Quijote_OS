@@ -63,6 +63,7 @@ const SLOT_CATEGORY_MAP = {
 let currentLoadout = 'running';
 let activeModalTab = 'running';
 let selectedGearList = [];
+let selectedRoadConditions = [];
 let selectedSlotKey = null;
 
 /**
@@ -490,8 +491,10 @@ function setTodayDates() {
     const today = new Date().toISOString().split('T')[0];
     const runDate = document.getElementById('run-date');
     const walkDate = document.getElementById('walk-date');
+    const tgtDate = document.getElementById('tgt-date');
     if (runDate) runDate.value = today;
     if (walkDate) walkDate.value = today;
+    if (tgtDate) tgtDate.value = today;
 }
 
 // ==========================================================================
@@ -533,6 +536,7 @@ function initExpeditionModal() {
     const tabBtns = document.querySelectorAll('.modal-tab-btn');
     const formRunning = document.getElementById('form-running');
     const formCitywalk = document.getElementById('form-citywalk');
+    const formTaipeigrandtrail = document.getElementById('form-taipeigrandtrail');
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -542,15 +546,14 @@ function initExpeditionModal() {
             tabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            if (tab === 'running') {
-                formRunning.classList.remove('hidden');
-                formCitywalk.classList.add('hidden');
-            } else {
-                formCitywalk.classList.remove('hidden');
-                formRunning.classList.add('hidden');
-            }
+            if (formRunning) formRunning.classList.toggle('hidden', tab !== 'running');
+            if (formCitywalk) formCitywalk.classList.toggle('hidden', tab !== 'citywalk');
+            if (formTaipeigrandtrail) formTaipeigrandtrail.classList.toggle('hidden', tab !== 'taipeigrandtrail');
         });
     });
+
+    // Initialize Road Condition Chips selection
+    initRoadChips();
 
     // Save & Copy Prompt Handler
     if (btnSaveCopy) {
@@ -610,6 +613,40 @@ function initSliders() {
     if (walkFatigue && walkVal) {
         walkFatigue.addEventListener('input', (e) => walkVal.textContent = e.target.value);
     }
+
+    const tgtFatigue = document.getElementById('tgt-fatigue');
+    const tgtFatigueVal = document.getElementById('tgt-fatigue-val');
+    if (tgtFatigue && tgtFatigueVal) {
+        tgtFatigue.addEventListener('input', (e) => tgtFatigueVal.textContent = e.target.value);
+    }
+
+    const tgtDifficulty = document.getElementById('tgt-difficulty');
+    const tgtDifficultyVal = document.getElementById('tgt-difficulty-val');
+    if (tgtDifficulty && tgtDifficultyVal) {
+        tgtDifficulty.addEventListener('input', (e) => tgtDifficultyVal.textContent = e.target.value);
+    }
+}
+
+/**
+ * Initializes road condition chips interactive selector
+ */
+function initRoadChips() {
+    if (typeof document === 'undefined') return;
+    const roadChips = document.querySelectorAll('.road-chip');
+    selectedRoadConditions = [];
+
+    roadChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const roadVal = chip.getAttribute('data-road');
+            if (chip.classList.contains('selected')) {
+                chip.classList.remove('selected');
+                selectedRoadConditions = selectedRoadConditions.filter(r => r !== roadVal);
+            } else {
+                chip.classList.add('selected');
+                selectedRoadConditions.push(roadVal);
+            }
+        });
+    });
 }
 
 /**
@@ -679,7 +716,7 @@ async function handleSaveAndCopyPrompt() {
         };
 
         promptMarkdown = generateRunningAIPrompt(payload);
-    } else {
+    } else if (activeModalTab === 'citywalk') {
         const caminoContainer = document.querySelector('.star-rating[data-rating="walk-camino"]');
         const exploreContainer = document.querySelector('.star-rating[data-rating="walk-explore"]');
         const revisitContainer = document.querySelector('.star-rating[data-rating="walk-revisit"]');
@@ -707,6 +744,48 @@ async function handleSaveAndCopyPrompt() {
         };
 
         promptMarkdown = generateCityWalkAIPrompt(payload);
+    } else if (activeModalTab === 'taipeigrandtrail') {
+        const caminoContainer = document.querySelector('.star-rating[data-rating="tgt-camino"]');
+        const sceneryContainer = document.querySelector('.star-rating[data-rating="tgt-scenery"]');
+        const challengeContainer = document.querySelector('.star-rating[data-rating="tgt-challenge"]');
+        const revisitContainer = document.querySelector('.star-rating[data-rating="tgt-revisit"]');
+
+        payload = {
+            date: document.getElementById('tgt-date')?.value || new Date().toISOString().split('T')[0],
+            section: document.getElementById('tgt-section')?.value || '第1段',
+            route: document.getElementById('tgt-route')?.value || '',
+            startEnd: document.getElementById('tgt-start-end')?.value || '',
+            weather: document.getElementById('tgt-weather')?.value || '',
+            roadConditions: selectedRoadConditions,
+            distance: document.getElementById('tgt-distance')?.value || 0,
+            totalTime: document.getElementById('tgt-total-time')?.value || '',
+            movingTime: document.getElementById('tgt-moving-time')?.value || '',
+            restTime: document.getElementById('tgt-rest-time')?.value || '',
+            avgSpeed: document.getElementById('tgt-avg-speed')?.value || '',
+            steps: document.getElementById('tgt-steps')?.value || '',
+            elevationGain: document.getElementById('tgt-elevation-gain')?.value || '',
+            elevationLoss: document.getElementById('tgt-elevation-loss')?.value || '',
+            gear: selectedGearList,
+            hrAvg: document.getElementById('tgt-hr-avg')?.value || '',
+            hrMax: document.getElementById('tgt-hr-max')?.value || '',
+            fatigue: document.getElementById('tgt-fatigue')?.value || 6,
+            difficulty: document.getElementById('tgt-difficulty')?.value || 7,
+            bodyState: document.getElementById('tgt-bodystate')?.value || '',
+            supply: document.getElementById('tgt-supply')?.value || '',
+            bestPhoto: document.getElementById('tgt-best-photo')?.value || '',
+            favoriteSection: document.getElementById('tgt-favorite-section')?.value || '',
+            hardestSection: document.getElementById('tgt-hardest-section')?.value || '',
+            lessonLearned: document.getElementById('tgt-lesson-learned')?.value || '',
+            quote: document.getElementById('tgt-quote')?.value || '',
+            caminoIndex: parseInt(caminoContainer?.getAttribute('data-value') || 4),
+            sceneryIndex: parseInt(sceneryContainer?.getAttribute('data-value') || 5),
+            challengeIndex: parseInt(challengeContainer?.getAttribute('data-value') || 4),
+            revisitIndex: parseInt(revisitContainer?.getAttribute('data-value') || 5),
+            bgm: document.getElementById('tgt-bgm')?.value || '',
+            review: document.getElementById('tgt-review')?.value || ''
+        };
+
+        promptMarkdown = generateTaipeiGrandTrailAIPrompt(payload);
     }
 
     // Attempt backend save via GAS Web App API if configured
@@ -815,6 +894,52 @@ function generateCityWalkAIPrompt(data) {
 請提供：
 1. 📜 **騎士典藏遠征摘要**（將本次 CityWalk 寫成一段西班牙騎士浪漫冒險日誌）
 2. 🎒 **裝備探索經驗值評估**
+`;
+}
+
+/**
+ * Generates formatted AI prompt markdown for Taipei Grand Trail Logs
+ */
+function generateTaipeiGrandTrailAIPrompt(data) {
+    const roads = data.roadConditions && data.roadConditions.length > 0 ? data.roadConditions.join('、') : '未標示';
+    const gears = data.gear && data.gear.length > 0 ? data.gear.join('、') : '無';
+
+    return `# 🛡️ Don Quijote OS - 遠征戰報錄入（Taipei Grand Trail 台北大縱走）
+
+請 Gemini 系統架構師分析以下台北大縱走遠征戰報，針對 Camino 朝聖預備訓練評估、裝備表現與騎士復盤給予深度指導與經驗點數：
+
+- **📅 遠征日期**：${data.date}
+- **🥾 縱走段數**：${data.section || '未選擇'}
+- **🗺️ 路線與路段**：${data.route || '未填寫'} (${data.startEnd || '起點➜終點'})
+- **🌤️ 天氣與氣溫**：${data.weather || '未記錄'}
+- **⛰️ 路況特徵**：${roads}
+- **📏 遠征里程**：${data.distance} KM
+- **⏱️ 總時間 / 移動 / 停留**：${data.totalTime || 'N/A'} (移動: ${data.movingTime || 'N/A'} / 停留: ${data.restTime || 'N/A'})
+- **⚡ 平均速度 / 步數**：${data.avgSpeed || 'N/A'} (${data.steps ? data.steps + ' 步' : 'N/A'})
+- **📈 爬升 / 下降**：+${data.elevationGain || 0} m / -${data.elevationLoss || 0} m
+- **🎒 本次穿戴裝備**：${gears}
+- **❤️ 心率數據**：平均 ${data.hrAvg ? data.hrAvg + ' bpm' : 'N/A'} (最高 ${data.hrMax ? data.hrMax + ' bpm' : 'N/A'})
+- **💥 體感疲勞 / 路線難度**：疲勞 ${data.fatigue}/10 | 難度 ${data.difficulty}/10
+- **🩺 身體狀況**：${data.bodyState || '良好'}
+- **🥪 補給紀錄**：${data.supply || '無'}
+- **📸 最佳照片描述**：${data.bestPhoto || '無'}
+- **💚 最喜歡的一段**：${data.favoriteSection || '無'}
+- **🔥 最痛苦的一段**：${data.hardestSection || '無'}
+- **💡 今天學到的一件事**：${data.lessonLearned || '無'}
+- **💬 今日一句話**：${data.quote || '台北大縱走是遠征西班牙朝聖之路最佳前哨站！'}
+- **🎵 背景 BGM**：${data.bgm || '無'}
+- **⭐ 遠征指數評分**：
+  - Camino 相似度：${'★'.repeat(data.caminoIndex)} (${data.caminoIndex}/5)
+  - 景觀指數：${'★'.repeat(data.sceneryIndex)} (${data.sceneryIndex}/5)
+  - 挑戰指數：${'★'.repeat(data.challengeIndex)} (${data.challengeIndex}/5)
+  - 再訪指數：${'★'.repeat(data.revisitIndex)} (${data.revisitIndex}/5)
+- **📝 騎士復盤與改善檢討**：${data.review || '無'}
+
+---
+請提供：
+1. 🥾 **Camino 朝聖訓練備戰點評**（針對步頻、坡度、負重與體能做 Camino 戰力轉換評估）
+2. 🛡️ **裝備磨損與經驗值 (XP) 點數發放**
+3. ⚔️ **騎士復盤檢討建議與下一次縱走準備策略**
 `;
 }
 

@@ -42,6 +42,8 @@ function doPost(e) {
       result = saveRunningLog(logData);
     } else if (type === 'citywalk') {
       result = saveCityWalkLog(logData);
+    } else if (type === 'taipeigrandtrail' || type === 'taipei_grand_trail') {
+      result = saveTaipeiGrandTrailLog(logData);
     } else {
       return jsonResponse({ status: 'error', message: 'Invalid log type: ' + type });
     }
@@ -215,6 +217,63 @@ function saveCityWalkLog(data) {
 }
 
 /**
+ * Saves a Taipei Grand Trail Log entry and updates gear mileage
+ */
+function saveTaipeiGrandTrailLog(data) {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName('TaipeiGrandTrail_Logs');
+  if (!sheet) throw new Error('TaipeiGrandTrail_Logs sheet not found.');
+
+  var gearStr = Array.isArray(data.gear) ? data.gear.join(', ') : (data.gear || '');
+  var roadStr = Array.isArray(data.roadConditions) ? data.roadConditions.join(', ') : (data.roadConditions || '');
+  var dist = Number(data.distance) || 0;
+
+  var newRow = [
+    data.date || new Date().toISOString().split('T')[0],
+    data.section || '',
+    data.route || '',
+    data.startEnd || '',
+    data.weather || '',
+    roadStr,
+    dist,
+    data.totalTime || '',
+    data.movingTime || '',
+    data.restTime || '',
+    data.avgSpeed || '',
+    data.steps || '',
+    data.elevationGain || '',
+    data.elevationLoss || '',
+    gearStr,
+    data.hrAvg || '',
+    data.hrMax || '',
+    data.fatigue || 0,
+    data.difficulty || 0,
+    data.bodyState || '',
+    data.supply || '',
+    data.bestPhoto || '',
+    data.favoriteSection || '',
+    data.hardestSection || '',
+    data.lessonLearned || '',
+    data.quote || '',
+    data.caminoIndex || 0,
+    data.sceneryIndex || 0,
+    data.challengeIndex || 0,
+    data.revisitIndex || 0,
+    data.bgm || '',
+    data.review || ''
+  ];
+
+  sheet.appendRow(newRow);
+
+  // Update cumulative mileage for checked equipment
+  if (dist > 0 && Array.isArray(data.gear)) {
+    updateEquipmentMileage(ss, data.gear, dist);
+  }
+
+  return { message: 'Taipei Grand Trail log saved successfully.', row: sheet.getLastRow() };
+}
+
+/**
  * Batch updates cumulative mileage for specified gear items
  */
 function updateEquipmentMileage(ss, gearNames, addedKm) {
@@ -222,15 +281,28 @@ function updateEquipmentMileage(ss, gearNames, addedKm) {
   if (!sheet) return;
 
   var data = sheet.getDataRange().getValues();
-  for (var i = 1; i < data.length; i++) {
-    var gearName = data[i][1];
-    var gearId = data[i][0];
+  if (data.length <= 1) return;
 
-    // Check if gear name or ID is in the checked list
-    if (gearNames.indexOf(gearName) !== -1 || gearNames.indexOf(gearId) !== -1) {
-      var currentMileage = Number(data[i][4]) || 0;
+  var headers = data[0];
+  var mileageIdx = headers.indexOf('累積里程KM');
+  if (mileageIdx === -1) mileageIdx = 5;
+
+  for (var i = 1; i < data.length; i++) {
+    var gearId = data[i][0];
+    var gearName = data[i][1];
+    var gearNickname = data[i][2];
+
+    var match = gearNames.some(function(g) {
+      if (!g) return false;
+      var str = g.toString();
+      return str === gearName || str === gearId || str === gearNickname || str.indexOf(gearName) !== -1;
+    });
+
+    if (match) {
+      var currentMileage = Number(data[i][mileageIdx]) || 0;
       var newMileage = currentMileage + addedKm;
-      sheet.getRange(i + 1, 5).setValue(newMileage); // Column 5 is '累積里程KM'
+      sheet.getRange(i + 1, mileageIdx + 1).setValue(newMileage);
     }
   }
 }
+

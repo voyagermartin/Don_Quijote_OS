@@ -27,6 +27,9 @@ function initDonQuijoteDB() {
   // 3. Setup CityWalk_Logs Sheet
   setupCityWalkLogsSheet(ss);
 
+  // 4. Setup TaipeiGrandTrail_Logs Sheet
+  setupTaipeiGrandTrailLogsSheet(ss);
+
   // Remove default "Sheet1" if custom tabs exist
   var defaultSheet = ss.getSheetByName('Sheet1') || ss.getSheetByName('工作表1');
   if (defaultSheet && ss.getSheets().length > 1) {
@@ -108,5 +111,27 @@ function setupCityWalkLogsSheet(ss) {
   sheet.clear();
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#1f293d').setFontColor('#3bc9db');
+  sheet.setFrozenRows(1);
+}
+
+/**
+ * Creates TaipeiGrandTrail_Logs sheet with standard 32 columns.
+ */
+function setupTaipeiGrandTrailLogsSheet(ss) {
+  var sheetName = 'TaipeiGrandTrail_Logs';
+  var sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
+  
+  var headers = [
+    '日期', '段數', '路線', '起點終點', '氣溫天氣', '路況', 
+    '距離KM', '總時間', '移動時間', '停留時間', '平均速度', '步數', 
+    '累積爬升M', '累積下降M', '裝備', '平均心率', '最高心率', 
+    '體感疲勞', '路線難度', '身體狀況', '補給紀錄', 
+    '今日最佳照片', '今日最喜歡的一段', '今日最痛苦的一段', '今天學到的一件事', '今日一句話', 
+    'Camino相似度', '景觀指數', '挑戰指數', '再訪指數', '今日BGM', '復盤'
+  ];
+
+  sheet.clear();
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#1f293d').setFontColor('#51cf66');
   sheet.setFrozenRows(1);
 }
