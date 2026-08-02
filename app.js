@@ -4,7 +4,7 @@
  */
 
 // Configuration for GAS Web App Endpoint (Will be populated upon deployment)
-const GAS_WEBAPP_URL = ""; 
+const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxVNWSL4omtaWcTEpQUwKAOwHBLbtDLky7xw8VNPx_LxvJfbEeC1XG8ABHAKp0DReU-0g/exec"; 
 
 // ==========================================================================
 // 1. MVP Test Inventory Data (JSON Specification)
