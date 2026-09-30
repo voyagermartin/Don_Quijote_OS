@@ -882,18 +882,19 @@ async function handleSaveAndCopyPrompt() {
  * Generates formatted AI prompt markdown for Running Logs
  */
 function generateRunningAIPrompt(data) {
-    const z1 = data.z1Pct ? `${data.z1Pct}%` : 'N/A';
-    const z2 = data.z2Pct ? `${data.z2Pct}%` : 'N/A';
-    const z3 = data.z3Pct ? `${data.z3Pct}%` : 'N/A';
-    const z4 = data.z4Pct ? `${data.z4Pct}%` : 'N/A';
-    const z5 = data.z5Pct ? `${data.z5Pct}%` : 'N/A';
+    const z1 = (data.z1Pct !== '' && data.z1Pct !== undefined && data.z1Pct !== null) ? `${data.z1Pct}%` : '0%';
+    const z2 = (data.z2Pct !== '' && data.z2Pct !== undefined && data.z2Pct !== null) ? `${data.z2Pct}%` : '0%';
+    const z3 = (data.z3Pct !== '' && data.z3Pct !== undefined && data.z3Pct !== null) ? `${data.z3Pct}%` : '0%';
+    const z4 = (data.z4Pct !== '' && data.z4Pct !== undefined && data.z4Pct !== null) ? `${data.z4Pct}%` : '0%';
+    const z5 = (data.z5Pct !== '' && data.z5Pct !== undefined && data.z5Pct !== null) ? `${data.z5Pct}%` : '0%';
+
+    const subjectStr = data.subject || '無';
+    const workoutStr = data.workout ? ` (${data.workout})` : '';
 
     return `# 🛡️ Don Quijote OS - 遠征戰報錄入（Run）
 
-請 Gemini 系統架構師分析以下騎士遠征數據，並給予騎士精神點評與裝備磨損經驗點數建議：
-
 - **📅 遠征日期**：${data.date}
-- **🏃 科目 / 課表**：${data.subject || '無'} (${data.workout || '自由跑'})
+- **🏃 科目 / 課表**：${subjectStr}${workoutStr}
 - **📍 遠征地點**：${data.location || '未標示'}
 - **🌤️ 天氣與氣溫**：${data.weather || '未記錄'}
 - **📏 跑量距離**：${data.distance} KM
@@ -915,17 +916,11 @@ function generateRunningAIPrompt(data) {
   - Z5 (188+ bpm)：${z5}
   *(註：其餘未記錄時間即為心率未達 Z1)*
 - **🫁 VO2Max 跑力**：${data.vo2max || 'N/A'}
-- **🎒 本次穿戴裝備**：${data.gear.length > 0 ? data.gear.join('、') : '無'}
+- **🎒 本次穿戴裝備**：${data.gear && data.gear.length > 0 ? data.gear.join('、') : '無'}
 - **💥 體感疲勞度**：${data.fatigue} / 10
 - **🎯 技術專注點**：${data.techFocus || '無'}
 - **🩺 身體狀況**：${data.bodyState || '正常'}
 - **📝 對抗風車感想**：${data.notes || '今日順利完成遠征，準備迎戰下一次風車！'}
-
----
-請提供：
-1. ⚔️ **騎士精神點評**（以 Don Quijote 冒險風格激勵騎士）
-2. 🛡️ **裝備保養與經驗點數 (XP) 計算建議**
-3. 🏃 **下一次遠征恢復與訓練策略**
 `;
 }
 
