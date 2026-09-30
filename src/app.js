@@ -505,25 +505,48 @@ async function syncGarminLatestData() {
     syncBtn.classList.add('loading');
     syncBtn.innerHTML = '<span class="garmin-spin-icon">⏳</span> 抓取數據中...';
 
+    const endpoints = [
+        'https://don-quijote-os.onrender.com/api/garmin/latest',
+        'http://localhost:8000/api/garmin/latest'
+    ];
+
+    let garminData = null;
+    let lastErrorMsg = '';
+
+    for (const url of endpoints) {
+        try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 10000);
+
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timer);
+
+            if (!response.ok) {
+                const errJson = await response.json().catch(() => ({}));
+                lastErrorMsg = errJson.message || `HTTP ${response.status}`;
+                continue;
+            }
+
+            const result = await response.json();
+            if (result.status === 'success' && result.data) {
+                garminData = result.data;
+                break;
+            }
+        } catch (err) {
+            lastErrorMsg = err.message || '連線逾時或網路錯誤';
+        }
+    }
+
     try {
-        const response = await fetch('http://localhost:8000/api/garmin/latest');
-        if (!response.ok) {
-            const errJson = await response.json().catch(() => ({}));
-            throw new Error(errJson.message || `HTTP ${response.status}`);
+        if (!garminData) {
+            throw new Error(lastErrorMsg || '無法取得 Garmin 數據');
         }
 
-        const result = await response.json();
-        if (result.status !== 'success' || !result.data) {
-            throw new Error(result.message || '無法取得 Garmin 數據');
-        }
-
-        const garminData = result.data;
         populateGarminDataToForm(garminData);
-
         showToast('✅ Garmin 數據已自動帶入！請選擇今日裝備與填寫心得');
     } catch (err) {
         console.error('Garmin sync error:', err);
-        showToast(`❌ 同步失敗: ${err.message || '本機 Garmin 服務未啟動 (localhost:8000)'}`);
+        showToast(`❌ 同步失敗: ${err.message || 'Garmin API 服務暫時無法連線'}`);
     } finally {
         syncBtn.classList.remove('loading');
         syncBtn.innerHTML = '<span class="garmin-spin-icon">🔄</span> 同步 Garmin 965 最新活動';
