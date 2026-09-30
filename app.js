@@ -557,14 +557,19 @@ function populateGarminDataToForm(data) {
     };
 
     if (targetTab === 'running') {
+        if (data.location) setVal('run-location', data.location);
+        if (data.weather) setVal('run-weather', data.weather);
         setVal('run-date', data.date);
         setVal('run-subject', data.activityName || '跑步');
         setVal('run-distance', data.distanceKm);
         setVal('run-duration', data.movingDurationFormatted || data.durationFormatted);
+        setVal('run-vo2max', data.vo2Max);
         setVal('run-pace-avg', data.avgPace);
+        setVal('run-pace-interval', data.intervalPace);
         setVal('run-hr-avg', data.avgHr);
         setVal('run-hr-max', data.maxHr);
         setVal('run-cadence-avg', data.avgCadence);
+        setVal('run-cadence-max', data.maxCadence);
 
         if (data.hrZones) {
             setVal('run-z1-pct', data.hrZones.z1);
@@ -575,6 +580,7 @@ function populateGarminDataToForm(data) {
         }
 
         if (data.mechanics) {
+            setVal('run-movement-efficiency', data.mechanics.movementEfficiency);
             setVal('run-vertical-oscillation', data.mechanics.verticalOscillation);
             setVal('run-ground-contact-time', data.mechanics.groundContactTime);
         }

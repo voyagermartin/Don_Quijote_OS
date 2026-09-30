@@ -73,16 +73,51 @@ def fetch_garmin_latest():
     
     avg_speed = act.get("averageSpeed", 0.0) or 0.0
     pace_str = calculate_pace(dist_m, moving_s if moving_s > 0 else dur_s, avg_speed)
-    
+
+    # 計算跑段配速 (Interval / Split Pace)
+    interval_pace = None
+    splits = act.get("splitSummaries", [])
+    for s in splits:
+        stype = s.get("splitType", "")
+        if stype in ["INTERVAL_ACTIVE", "RWD_RUN"]:
+            spd = s.get("averageSpeed")
+            if spd and spd > 0:
+                interval_pace = calculate_pace(s.get("distance"), s.get("duration"), spd)
+                break
+
+    if not interval_pace and act.get("fastestSplit_1000"):
+        interval_pace = calculate_pace(1000, act.get("fastestSplit_1000"))
+
+    # 天氣與氣溫
+    min_temp = act.get("minTemperature")
+    max_temp = act.get("maxTemperature")
+    weather_str = None
+    if min_temp is not None and max_temp is not None:
+        avg_temp = int(round((min_temp + max_temp) / 2.0))
+        weather_str = f"{avg_temp}°C"
+    elif max_temp is not None:
+        weather_str = f"{int(round(max_temp))}°C"
+
+    # 地點
+    location = act.get("locationName") or act.get("activityName")
+
+    # VO2Max
+    vo2_max = int(round(act.get("vO2MaxValue"))) if act.get("vO2MaxValue") else None
+
+    # 心率與步頻
     avg_hr = act.get("averageHR")
     max_hr = act.get("maxHR")
-    
     cadence = act.get("averageRunningCadenceInStepsPerMinute") or act.get("averageCadence")
+    max_cadence = act.get("maxRunningCadenceInStepsPerMinute") or act.get("maxDoubleCadence")
+
+    # 爬升/下降
     elev_gain = act.get("elevationGain")
     elev_loss = act.get("elevationLoss")
     
+    # 跑姿力學
     vert_osc = act.get("avgVerticalOscillation")
     gct = act.get("avgGroundContactTime")
+    movement_efficiency = act.get("avgVerticalRatio")
 
     # 心率區間占比 (%)
     z1 = act.get("hrTimeInZone_1", 0.0) or 0.0
@@ -104,6 +139,9 @@ def fetch_garmin_latest():
         "activityId": act.get("activityId"),
         "activityName": act.get("activityName", ""),
         "activityType": type_key,
+        "location": location,
+        "weather": weather_str,
+        "vo2Max": vo2_max,
         "date": date_part,
         "startTime": time_part,
         "distanceKm": dist_km,
@@ -112,13 +150,16 @@ def fetch_garmin_latest():
         "durationSeconds": dur_s,
         "movingDurationSeconds": moving_s,
         "avgPace": pace_str,
+        "intervalPace": interval_pace,
         "avgHr": int(round(avg_hr)) if avg_hr else None,
         "maxHr": int(round(max_hr)) if max_hr else None,
         "avgCadence": round(cadence, 1) if cadence else None,
+        "maxCadence": int(round(max_cadence)) if max_cadence else None,
         "elevationGain": int(round(elev_gain)) if elev_gain is not None else None,
         "elevationLoss": int(round(elev_loss)) if elev_loss is not None else None,
         "hrZones": hr_zones,
         "mechanics": {
+            "movementEfficiency": round(movement_efficiency, 1) if movement_efficiency else None,
             "verticalOscillation": round(vert_osc, 2) if vert_osc else None,
             "groundContactTime": round(gct, 1) if gct else None
         }
