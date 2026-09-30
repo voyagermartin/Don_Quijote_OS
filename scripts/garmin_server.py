@@ -1,17 +1,34 @@
 #!/usr/bin/env python3
 """
-Garmin Connect 本機 API 服務 (Don Quijote OS)
-提供 http://localhost:8000/api/garmin/latest 端點
-供前台網頁一鍵同步 Garmin 最新活動遙測數據
+Garmin Connect API 微服務 (Don Quijote OS)
+提供 http://0.0.0.0:PORT/api/garmin/latest 端點
+支援 Render / 雲端平台環境變數 GARMIN_TOKENS_BASE64 免密自動驗證
 """
 
+import base64
+import io
 import json
 import os
 import sys
+import zipfile
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from garminconnect import Garmin
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
+
+def setup_tokens_from_env():
+    tokens_b64 = os.environ.get("GARMIN_TOKENS_BASE64")
+    if tokens_b64:
+        try:
+            token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
+            os.makedirs(token_dir, exist_ok=True)
+            zip_bytes = base64.b64decode(tokens_b64.strip())
+            buffer = io.BytesIO(zip_bytes)
+            with zipfile.ZipFile(buffer, "r") as zf:
+                zf.extractall(token_dir)
+            print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並解碼本機通行證 Token！")
+        except Exception as e:
+            print(f"⚠️ 從 GARMIN_TOKENS_BASE64 載入 Token 時發生錯誤: {e}")
 
 def format_duration(seconds):
     if not seconds:
@@ -37,9 +54,12 @@ def calculate_pace(distance_m, duration_s, speed_mps=None):
     return f"{mins}'{secs:02d}\"/km"
 
 def fetch_garmin_latest():
+    # 若有環境變數，先解碼準備好 .garmin_tokens/
+    setup_tokens_from_env()
+
     token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
-    if not os.path.exists(token_dir):
-        raise Exception(f"找不到權杖目錄 {token_dir}，請先執行 `python scripts/get_garmin_token.py` 授權登入。")
+    if not os.path.exists(token_dir) or not os.listdir(token_dir):
+        raise Exception(f"找不到權杖目錄 {token_dir}，請先執行 `python scripts/get_garmin_token.py` 授權或設定 GARMIN_TOKENS_BASE64 環境變數。")
 
     garmin = Garmin()
     garmin.login(tokenstore=token_dir)
@@ -210,11 +230,13 @@ def main():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-    server_address = ("", PORT)
+    setup_tokens_from_env()
+
+    server_address = ("0.0.0.0", PORT)
     httpd = HTTPServer(server_address, GarminAPIRequestHandler)
     print("==========================================")
-    print(f"🛡️ Garmin 本機 API 服務已啟動: http://localhost:{PORT}")
-    print(f"📡 API 端點: http://localhost:{PORT}/api/garmin/latest")
+    print(f"🛡️ Garmin API 微服務已啟動 [0.0.0.0:{PORT}]")
+    print(f"📡 API 端點: /api/garmin/latest")
     print("==========================================")
     try:
         httpd.serve_forever()
