@@ -30,4 +30,6 @@ Desktop.ini
 # Garmin Tokens & Credentials
 .garmin_tokens/
 ~/.garminconnect
+token_render_clean.txt
+
 

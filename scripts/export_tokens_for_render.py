@@ -2,7 +2,7 @@
 """
 Garmin 通行證 Base64 導出腳本 (用於 Render 雲端部署)
 讀取本機 .garmin_tokens/ 資料夾，打包並轉碼為 Base64 字串
-以便貼至 Render 雲端後台之 GARMIN_TOKENS_BASE64 環境變數。
+將結果寫入 token_render_clean.txt，以便複製貼至 Render 環境變數 GARMIN_TOKENS_BASE64。
 """
 
 import base64
@@ -29,20 +29,26 @@ def export_tokens():
                 rel_path = os.path.relpath(abs_path, token_dir)
                 zf.write(abs_path, rel_path)
 
-    b64_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    b64_str = base64.b64encode(buffer.getvalue()).decode("utf-8").strip()
+
+    # 寫入單行乾淨的 UTF-8 檔案
+    output_file = os.path.join(os.getcwd(), "token_render_clean.txt")
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(b64_str)
 
     print("==================================================")
-    print("🔑 Garmin 本機通行證 Base64 金鑰已生成！")
+    print("🔑 Garmin 本機通行證 Base64 金鑰已成功匯出！")
+    print(f"📄 已儲存至乾淨文字檔: {output_file}")
     print("==================================================")
-    print("📋 請複製下方這一大串 Base64 字串：\n")
+    print("📋 請複製下方這一大串完整 Base64 字串：\n")
     print(b64_str)
     print("\n==================================================")
     print("⚙️ Render 後台設定說明：")
-    print("1. 前往 Render Dashboard -> 選擇您的 Web Service")
+    print("1. 前往 Render Dashboard -> 選擇您的 Web Service (don-quijote-os)")
     print("2. 進入 Environment 頁籤 -> Add Environment Variable")
     print("3. Key 輸入:   GARMIN_TOKENS_BASE64")
-    print("4. Value 貼上: (即上方那一串 Base64 字串)")
-    print("5. 儲存設定，雲端服務即可免密登入 Garmin Connect！")
+    print("4. Value 貼上: (即上方字串或 token_render_clean.txt 的內容)")
+    print("5. 儲存設定，雲端服務即刻啟用！")
     print("==================================================")
 
 if __name__ == "__main__":

@@ -25,12 +25,19 @@ def setup_tokens_from_env():
         token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
         os.makedirs(token_dir, exist_ok=True)
 
-        cleaned_b64 = tokens_b64.strip().replace("\n", "").replace("\r", "").strip('"').strip("'")
-        zip_bytes = base64.b64decode(cleaned_b64)
+        # 1. 徹底去除所有空白、換行與單雙引號
+        raw_token = tokens_b64.strip().replace("\r", "").replace("\n", "").replace(" ", "").strip('"').strip("'")
+        
+        # 2. 自動補齊 Base64 padding (4 的倍數)
+        missing_padding = len(raw_token) % 4
+        if missing_padding:
+            raw_token += '=' * (4 - missing_padding)
+
+        zip_bytes = base64.b64decode(raw_token)
         buffer = io.BytesIO(zip_bytes)
         with zipfile.ZipFile(buffer, "r") as zf:
             zf.extractall(token_dir)
-        print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並壓縮解碼通行證！")
+        print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並解碼通行證！")
         return True, "OK"
     except Exception as e:
         return False, f"GARMIN_TOKENS_BASE64 解碼/解壓失敗: {e}"
