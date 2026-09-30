@@ -1,4 +1,4 @@
-# 🛡️ Don Quijote OS Handbook v0.1.2
+# 🛡️ Don Quijote OS Handbook v0.1.6
 
 > *"Life is the Greatest RPG. We fight monsters weirder than windmills."*
 
@@ -36,7 +36,7 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 
 ---
 
-## 4. MVP Scope (Version 0.1 / Task 0.2)
+## 4. MVP Scope (Version 0.1 / Task 0.2 ~ Task 0.6)
 第一版只做最核心的「配裝與戰報體驗」，包含：
 - **Character（騎士人物中央面板）**：可視化裝備插槽（頭部、身體、鞋款、襪款、手錶 屬 **👕 穿戴裝備**；背包、登山杖、手機、行動電源、水壺 屬 **🧰 其他配備**）。中央人形具備互動點擊功能，動態顯示「🏋️ 裝備總重」與「🛡️ 已裝備數量」標籤，點擊可於 Inspector 開啟「騎士戰備總覽」。
 - **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，並與 Google Sheet `Equipment_DB` 雲端連動。
@@ -44,7 +44,8 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 - **Loadout（兩組主打遠征預設切換）**：`Running` / `Camino`（支援手機行動端響應式排版）。點擊切換時，全套裝備同步更換並自動計算總重量。
 - **Expedition Log Modal（今日活動錄入彈窗）**：提供 `🏃‍♂️ Run`、`🌇 CityWalk` 與 `🥾 Taipei Grand Trail` 三頁籤表單。`Run` 表單支援完整跑力與心率遙測欄位；`Taipei Grand Trail` 支援段數 (1~8段)、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、心率/疲勞/難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
 - **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` (27 欄) / `CityWalk_Logs` / `TaipeiGrandTrail_Logs` (32 欄)；`Equipment_DB` 支援 `暱稱` 欄位與自動里程累加連動機制。
-- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測與 Camino 訓練點評的專業戰報格式，一鍵複製供貼給 Gemini 分析。
+- **Garmin Connect Integration & Cloud API（Garmin 遙測與雲端同步模組 / Task 0.5 & 0.6）**：提供本機 CLI 通行證登入驗證 (`garminconnect` / TokenStore)，部署輕量微服務 (`scripts/garmin_server.py`)，支援 Render 雲端平台 `GARMIN_TOKENS_BASE64` 自動解碼與 Base64 Padding 容錯補齊機制。前台彈窗整合「🔄 同步 Garmin 965 最新活動」按鈕與 35 秒長連線抗冷啟動、自動智慧帶入 15+ 項遙測數據（含日期、地點、氣溫、距離、總/移動時間、平均/跑段配速、平均/最高心率、平均/最大步頻、Z1~Z5 心率區間占比 %、移動效率 %、垂直振幅、觸地時間及 VO2Max 跑力）。
+- **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測數據的精簡專業戰報格式，一鍵複製供貼給 Gemini 系統架構師分析。
 - **GitHub Pages 全球雲端部署與隱私防護**：支援全雲端存取，並配置 `noindex` 及 `robots.txt` 全面防止搜尋引擎收錄。
 
 ---
@@ -102,14 +103,55 @@ DON_QUIJOTE_OS
 ├── HANDBOOK.md          # 本家法檔案
 ├── TASKS.md             # 待辦與建議區塊
 ├── CHANGELOG.md         # 遠征開發日誌
+├── requirements.txt     # Python 雲端服務依賴項目 (garminconnect)
 ├── .clasp.json          # GAS Clasp 設定檔
 ├── .claspignore         # GAS Clasp 推送過濾設定
 ├── appsscript.json      # GAS 專案設定檔
 ├── docs/                # 設計文檔
 ├── assets/              # 圖片與圖示資源
+├── scripts/             # Python 腳本與微服務模組
+│   ├── get_garmin_token.py          # Garmin 本機登入授權腳本
+│   ├── fetch_latest_activity.py     # Garmin 最新活動抓取與對照測試腳本
+│   ├── garmin_server.py             # Garmin 本機/雲端 CORS API 微服務 (0.0.0.0:PORT)
+│   └── export_tokens_for_render.py  # Render 雲端 Base64 金鑰匯出腳本
 └── src/
-    ├── index.html       # 主配裝介面原始檔
-    ├── style.css        # 深色奇幻 RPG 樣式表 (含 Modal / Sliders / Chips / HR Zones)
+    ├── index.html       # 主配裝介面原始檔 (含 Garmin 同步按鈕)
+    ├── style.css        # 深色奇幻 RPG 樣式表 (含 Modal / Sliders / Chips / Garmin 旋轉按鈕)
+    ├── app.js           # Inventory / Loadout / Modal / Garmin API 串接與表單自動帶入邏輯
+    ├── gas_setup.js     # GAS 雲端資料庫 DON_QUIJOTE_DB 自動初始化腳本
+    └── gas_api.js       # GAS Web App 後端 API (getEquipment / saveLog / updateMileage)
+```
+
+---
+
+## 11. Core Philosophy (核心靈魂)
+> *Don Quijote OS 並不是在管理裝備，它是在收藏人生。*
+> 
+> *每一雙跑步鞋、每一個背上朝聖之路的背包、每一支支撐過膝蓋的登山杖，都不只是物品。把它們以 RPG 的方式保存下來，並在下一次對抗風車時，再次成為你最可靠的盾牌！*
+
+---
+
+## 12. Development Log (開發日誌)
+- **2026-07-25 (Task 0.2 完成)**：完成 Google Apps Script 雲端資料庫 `DON_QUIJOTE_DB`（`Equipment_DB` / `Running_Logs` / `CityWalk_Logs`）與 Web App API ([src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js)) 部署。於介面導入「⚔️ 記錄今日遠征」彈窗、雙頁籤表單、動態裝備 Chips 多選、疲勞度 Slider、星級評分組件與一鍵複製 AI Prompt 戰報邏輯。成功部署至 GitHub Pages 全球免費雲端網址，並配置 `noindex` 及 [robots.txt](file:///f:/Projects/Don_Quijote_OS/robots.txt) 雙重防爬蟲機制確保隱私。
+- **2026-07-25 (UI/Loadout/遙測數據大修訂與功能升級)**：
+  - **Loadout 行動端優化與簡化**：優化 Loadout 導覽列在手機行動端的響應式排版，並移除 Japan/Thailand 預設，專注於 Running 與 Camino。
+  - **裝備分欄重構與中央人形互動化**：將 10 格裝備劃分為「👕 穿戴裝備」與「🧰 其他配備」兩大類別；中央騎士人形升級為互動式面板，動態顯示總負重與裝備數量標籤，點擊可開啟「騎士戰備總覽」與單項裝備規格切換。
+  - **跑步紀錄遙測欄位大補齊**：於 Run 表單擴充跑段/平均配速、最大/平均步頻 (spm)、跑姿力學（移動效率 %、垂直振幅 cm、觸地時間 ms）、平均/最大心率 (bpm) 以及 Z1~Z5 心率區間時間占比 (%), AI Prompt 與 GAS 試算表同步升級支援 27 欄完整紀錄。
+  - **2026-07-25 (名稱優化與全端發布)**：主要按鈕更名為「今日活動」、水更名為「水壺」、分頁更名為「Run」與「CityWalk」，並成功執行 clasp push 與 git push 部署至雲端與 GitHub 儲存庫。
+- **2026-07-26 (Task 0.3 / 裝備暱稱自訂與雲端連動升級)**：
+  - **裝備暱稱 (Equipment Nicknames) 由雲端資料庫統一管理**：暱稱於 Google Sheet `Equipment_DB` / `INVENTORY_DATA` 設定後由前台自動帶出，右側 Inspector 改為唯讀速查卡片，移除前台手動編輯框與 LocalStorage 覆蓋邏輯。
+  - **GAS 雲端資料庫擴充與自動同步**：升級 `Equipment_DB` 試算表結構加入 `暱稱` 欄位，更新 `gas_api.js` API 及 `app.js` 的 `fetchEquipmentFromGAS()`，支援自 Google Sheet 自動抓取裝備與暱稱。
+  - **前後端隔離與 clasp 推送防護**：修正 [.claspignore](file:///f:/Projects/Don_Quijote_OS/.claspignore) 推送設定，並為 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 全數 DOM 函式加入 `typeof document === 'undefined'` 安全防護，徹底修復 `ReferenceError: document is not defined` 錯誤。
+- **2026-08-02 (Task 0.4 / Taipei Grand Trail 遠征日誌與 GAS 資料庫連動)**：
+  - **台北大縱走專屬 Modal 頁籤與 32 欄位表單**：於「今日活動」彈窗新增 `🥾 Taipei Grand Trail` 頁籤、縱走段數 (1~8段) 下拉選單、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
+  - **GAS 雲端資料庫擴充與自動加總里程**：新增 `TaipeiGrandTrail_Logs` 試算表 (32 欄位)，擴充 `gas_api.js` API 處理 `saveTaipeiGrandTrailLog`，並優化 `updateEquipmentMileage` 動態對應標題欄位與暱稱匹配。
+  - **AI 戰報生成器升級**：實作 `generateTaipeiGrandTrailAIPrompt()`，表單提交時生成包含 Camino 朝聖訓練備戰點評、裝備 XP 發放與騎士復盤檢討提示詞並一鍵複製。
+- **2026-09-30 (Task 0.5 & Task 0.6 / Garmin Connect 授權、微服務與 Don Quijote OS 前台一鍵同步)**：
+  - **Garmin 本機授權與 CLI 工具鏈**：安裝 `garminconnect` 套件，建立 [scripts/get_garmin_token.py](file:///f:/Projects/Don_Quijote_OS/scripts/get_garmin_token.py) 本機免密登入與 TokenStore 儲存，建置 [scripts/fetch_latest_activity.py](file:///f:/Projects/Don_Quijote_OS/scripts/fetch_latest_activity.py) 進行數據抽樣測試並產出 [scripts/latest_activity_sample.json](file:///f:/Projects/Don_Quijote_OS/scripts/latest_activity_sample.json)。
+  - **Render 雲端 API 微服務**：開發 [scripts/garmin_server.py](file:///f:/Projects/Don_Quijote_OS/scripts/garmin_server.py) (支援 0.0.0.0 綁定與 `PORT` 環境變數)；實作 `GARMIN_TOKENS_BASE64` 雲端環境變數自動解碼與 Padding 容錯修補機制；撰寫 [scripts/export_tokens_for_render.py](file:///f:/Projects/Don_Quijote_OS/scripts/export_tokens_for_render.py) 生成 [token_render_clean.txt](file:///f:/Projects/Don_Quijote_OS/token_render_clean.txt) 金鑰檔。
+  - **前台一鍵自動填表與 15+ 項遙測帶入**：於 Modal 標頭加入 `【🔄 同步 Garmin 965 最新活動】` 按鈕，支援連線 Render 雲端 (`https://don-quijote-os.onrender.com`) 與本機 (`http://localhost:8000`) 雙向備援，設定 35 秒抗冷啟動連線。智慧切換 Run / CityWalk / Taipei Grand Trail 分頁，全數自動帶入日期、地點、氣溫、距離、總/移動時間、平均/跑段配速、平均/最高心率、平均/最大步頻、Z1~Z5 心率區間占比 (%)、移動效率 %、垂直振幅、觸地時間與 VO2Max。
+  - **AI Prompt 範本收斂**：優化 `generateRunningAIPrompt()` 為精簡純數據模板，便於一鍵複製給 Gemini 系統架構師進行騎士精神與裝備磨損經驗點數 (XP) 分析。
+ers / Chips / HR Zones)
     ├── app.js           # Inventory JSON / Loadout / Modal / AI Prompt / GAS 串接邏輯
     ├── gas_setup.js     # GAS 雲端資料庫 DON_QUIJOTE_DB 自動初始化腳本
     └── gas_api.js       # GAS Web App 後端 API (getEquipment / saveLog / updateMileage)
