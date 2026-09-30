@@ -18,17 +18,22 @@ PORT = int(os.environ.get("PORT", 8000))
 
 def setup_tokens_from_env():
     tokens_b64 = os.environ.get("GARMIN_TOKENS_BASE64")
-    if tokens_b64:
-        try:
-            token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
-            os.makedirs(token_dir, exist_ok=True)
-            zip_bytes = base64.b64decode(tokens_b64.strip())
-            buffer = io.BytesIO(zip_bytes)
-            with zipfile.ZipFile(buffer, "r") as zf:
-                zf.extractall(token_dir)
-            print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並解碼本機通行證 Token！")
-        except Exception as e:
-            print(f"⚠️ 從 GARMIN_TOKENS_BASE64 載入 Token 時發生錯誤: {e}")
+    if not tokens_b64:
+        return False, "環境變數 GARMIN_TOKENS_BASE64 未設定，請至 Render Dashboard -> Environment 新增。"
+
+    try:
+        token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
+        os.makedirs(token_dir, exist_ok=True)
+
+        cleaned_b64 = tokens_b64.strip().replace("\n", "").replace("\r", "").strip('"').strip("'")
+        zip_bytes = base64.b64decode(cleaned_b64)
+        buffer = io.BytesIO(zip_bytes)
+        with zipfile.ZipFile(buffer, "r") as zf:
+            zf.extractall(token_dir)
+        print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並壓縮解碼通行證！")
+        return True, "OK"
+    except Exception as e:
+        return False, f"GARMIN_TOKENS_BASE64 解碼/解壓失敗: {e}"
 
 def format_duration(seconds):
     if not seconds:
@@ -54,12 +59,11 @@ def calculate_pace(distance_m, duration_s, speed_mps=None):
     return f"{mins}'{secs:02d}\"/km"
 
 def fetch_garmin_latest():
-    # 若有環境變數，先解碼準備好 .garmin_tokens/
-    setup_tokens_from_env()
+    success, env_msg = setup_tokens_from_env()
 
     token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
     if not os.path.exists(token_dir) or not os.listdir(token_dir):
-        raise Exception(f"找不到權杖目錄 {token_dir}，請先執行 `python scripts/get_garmin_token.py` 授權或設定 GARMIN_TOKENS_BASE64 環境變數。")
+        raise Exception(f"通行證權杖目錄未就緒 ({env_msg})。請在 Render 環境變數設定 GARMIN_TOKENS_BASE64。")
 
     garmin = Garmin()
     garmin.login(tokenstore=token_dir)

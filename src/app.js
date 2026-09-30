@@ -516,7 +516,9 @@ async function syncGarminLatestData() {
     for (const url of endpoints) {
         try {
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 10000);
+            // 雲端免費版喚醒冷啟動需要時間，設定 35 秒長連線
+            const timeoutMs = url.includes('render') ? 35000 : 5000;
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
 
             const response = await fetch(url, { signal: controller.signal });
             clearTimeout(timer);
