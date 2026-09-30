@@ -461,6 +461,138 @@ function initExpeditionModal() {
     if (btnSaveCopy) {
         btnSaveCopy.addEventListener('click', handleSaveAndCopyPrompt);
     }
+
+    // Sync Garmin 965 Button Handler
+    const btnSyncGarmin = document.getElementById('btn-sync-garmin');
+    if (btnSyncGarmin) {
+        btnSyncGarmin.addEventListener('click', syncGarminLatestData);
+    }
+}
+
+/**
+ * Switch active modal tab programmatically.
+ */
+function switchModalTab(tabName) {
+    if (typeof document === 'undefined') return;
+    const tabBtns = document.querySelectorAll('.modal-tab-btn');
+    const formRunning = document.getElementById('form-running');
+    const formCitywalk = document.getElementById('form-citywalk');
+    const formTaipeigrandtrail = document.getElementById('form-taipeigrandtrail');
+
+    activeModalTab = tabName;
+
+    tabBtns.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabName) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    if (formRunning) formRunning.classList.toggle('hidden', tabName !== 'running');
+    if (formCitywalk) formCitywalk.classList.toggle('hidden', tabName !== 'citywalk');
+    if (formTaipeigrandtrail) formTaipeigrandtrail.classList.toggle('hidden', tabName !== 'taipeigrandtrail');
+}
+
+/**
+ * Sync latest Garmin activity from local Python microservice (http://localhost:8000/api/garmin/latest).
+ */
+async function syncGarminLatestData() {
+    if (typeof document === 'undefined') return;
+    const syncBtn = document.getElementById('btn-sync-garmin');
+    if (!syncBtn) return;
+
+    syncBtn.classList.add('loading');
+    syncBtn.innerHTML = '<span class="garmin-spin-icon">⏳</span> 抓取數據中...';
+
+    try {
+        const response = await fetch('http://localhost:8000/api/garmin/latest');
+        if (!response.ok) {
+            const errJson = await response.json().catch(() => ({}));
+            throw new Error(errJson.message || `HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (result.status !== 'success' || !result.data) {
+            throw new Error(result.message || '無法取得 Garmin 數據');
+        }
+
+        const garminData = result.data;
+        populateGarminDataToForm(garminData);
+
+        showToast('✅ Garmin 數據已自動帶入！請選擇今日裝備與填寫心得');
+    } catch (err) {
+        console.error('Garmin sync error:', err);
+        showToast(`❌ 同步失敗: ${err.message || '本機 Garmin 服務未啟動 (localhost:8000)'}`);
+    } finally {
+        syncBtn.classList.remove('loading');
+        syncBtn.innerHTML = '<span class="garmin-spin-icon">🔄</span> 同步 Garmin 965 最新活動';
+    }
+}
+
+/**
+ * Populate Garmin activity metrics into expedition log modal forms.
+ */
+function populateGarminDataToForm(data) {
+    if (typeof document === 'undefined') return;
+
+    const actType = (data.activityType || '').toLowerCase();
+    let targetTab = 'running';
+    if (actType.includes('walk') || actType.includes('citywalk')) {
+        targetTab = 'citywalk';
+    } else if (actType.includes('hike') || actType.includes('hiking') || actType.includes('trail')) {
+        targetTab = 'taipeigrandtrail';
+    } else {
+        targetTab = 'running';
+    }
+
+    switchModalTab(targetTab);
+
+    const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined && val !== null) {
+            el.value = val;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    };
+
+    if (targetTab === 'running') {
+        setVal('run-date', data.date);
+        setVal('run-subject', data.activityName || '跑步');
+        setVal('run-distance', data.distanceKm);
+        setVal('run-duration', data.movingDurationFormatted || data.durationFormatted);
+        setVal('run-pace-avg', data.avgPace);
+        setVal('run-hr-avg', data.avgHr);
+        setVal('run-hr-max', data.maxHr);
+        setVal('run-cadence-avg', data.avgCadence);
+
+        if (data.hrZones) {
+            setVal('run-z1-pct', data.hrZones.z1);
+            setVal('run-z2-pct', data.hrZones.z2);
+            setVal('run-z3-pct', data.hrZones.z3);
+            setVal('run-z4-pct', data.hrZones.z4);
+            setVal('run-z5-pct', data.hrZones.z5);
+        }
+
+        if (data.mechanics) {
+            setVal('run-vertical-oscillation', data.mechanics.verticalOscillation);
+            setVal('run-ground-contact-time', data.mechanics.groundContactTime);
+        }
+    } else if (targetTab === 'citywalk') {
+        setVal('walk-date', data.date);
+        setVal('walk-theme', data.activityName || 'CityWalk 漫遊');
+        setVal('walk-distance', data.distanceKm);
+        setVal('walk-duration', data.movingDurationFormatted || data.durationFormatted);
+        if (data.avgHr) setVal('walk-hr', `${data.avgHr} bpm`);
+    } else if (targetTab === 'taipeigrandtrail') {
+        setVal('tgt-date', data.date);
+        setVal('tgt-distance', data.distanceKm);
+        setVal('tgt-duration', data.movingDurationFormatted || data.durationFormatted);
+        setVal('tgt-ascent', data.elevationGain);
+        setVal('tgt-descent', data.elevationLoss);
+        setVal('tgt-hr-avg', data.avgHr);
+        setVal('tgt-hr-max', data.maxHr);
+    }
 }
 
 /**

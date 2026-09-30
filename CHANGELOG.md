@@ -32,6 +32,19 @@
 - 更新 [app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 邏輯：新增 `initRoadChips()` 路況多選狀態管理、`generateTaipeiGrandTrailAIPrompt()` AI 戰報生成器，表單儲存時產出包含 Camino 朝聖預備訓練點評之 Prompt 並一鍵複製。
 - 更新 [HANDBOOK.md](file:///f:/Projects/Don_Quijote_OS/HANDBOOK.md) 與 [TASKS.md](file:///f:/Projects/Don_Quijote_OS/TASKS.md)。
 
+## [0.1.4] - 2026-09-30
+### Added
+- **Garmin Connect 本機授權與測試腳本**：
+  - 安裝 `garminconnect` Python 套件。
+  - 新增 [scripts/get_garmin_token.py](file:///f:/Projects/Don_Quijote_OS/scripts/get_garmin_token.py)：提供 Garmin 帳密驗證、OAuth tokens 自動儲存至本機 `.garmin_tokens/` 目錄。
+  - 新增 [scripts/fetch_latest_activity.py](file:///f:/Projects/Don_Quijote_OS/scripts/fetch_latest_activity.py)：自動讀取本機通行證免密登入、抓取最新 Garmin 活動數據並整齊印出遙測戰報，同時導出完整 [scripts/latest_activity_sample.json](file:///f:/Projects/Don_Quijote_OS/scripts/latest_activity_sample.json) 樣例對照檔。
+  - 更新 [.gitignore](file:///f:/Projects/Don_Quijote_OS/.gitignore)：加入 `.garmin_tokens/` 與 `~/.garminconnect` 規則，防止金鑰與權杖洩漏。
+- **Task 0.6: Garmin 本機 API 微服務與 Don Quijote OS 前台一鍵同步**：
+  - 新增 [scripts/garmin_server.py](file:///f:/Projects/Don_Quijote_OS/scripts/garmin_server.py)：採用零外部依賴 Python `http.server` 建立本機輕量 API 服務 (`http://localhost:8000/api/garmin/latest`)，支援 CORS 跨域請求。
+  - 更新 [src/index.html](file:///f:/Projects/Don_Quijote_OS/src/index.html) & [index.html](file:///f:/Projects/Don_Quijote_OS/index.html) / [src/style.css](file:///f:/Projects/Don_Quijote_OS/src/style.css) & [style.css](file:///f:/Projects/Don_Quijote_OS/style.css)：於 Modal 標頭加入 `【🔄 同步 Garmin 965 最新活動】` 戰術按鈕與加載動畫。
+  - 更新 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) & [app.js](file:///f:/Projects/Don_Quijote_OS/app.js)：實現一鍵 Fetch Garmin 遙測數據，自動切換對應頁籤 (Run/CityWalk/TaipeiGrandTrail) 並自動填入日期、距離、配速、步頻、心率、Z1~Z5 心率區間占比 (%)、垂直振幅及觸地時間。
+
+
 
 
 

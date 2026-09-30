@@ -26,3 +26,8 @@ Desktop.ini
 # Temporary & Log files
 *.log
 *.tmp
+
+# Garmin Tokens & Credentials
+.garmin_tokens/
+~/.garminconnect
+

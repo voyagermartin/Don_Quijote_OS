@@ -805,6 +805,50 @@ body {
     color: var(--text-secondary);
 }
 
+.modal-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-garmin-sync {
+    background: linear-gradient(135deg, #1b3a4b 0%, #065a82 100%);
+    color: #00f0ff;
+    border: 1px solid #00c3ff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-garmin-sync:hover {
+    background: linear-gradient(135deg, #065a82 0%, #1c7293 100%);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-garmin-sync.loading {
+    opacity: 0.75;
+    cursor: wait;
+    pointer-events: none;
+}
+
+.btn-garmin-sync.loading .garmin-spin-icon {
+    display: inline-block;
+    animation: garminSpin 1s linear infinite;
+}
+
+@keyframes garminSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .modal-close-btn {
     background: transparent;
     border: none;

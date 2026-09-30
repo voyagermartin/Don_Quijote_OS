@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""
+Garmin Connect 本機 API 服務 (Don Quijote OS)
+提供 http://localhost:8000/api/garmin/latest 端點
+供前台網頁一鍵同步 Garmin 最新活動遙測數據
+"""
+
+import json
+import os
+import sys
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from garminconnect import Garmin
+
+PORT = 8000
+
+def format_duration(seconds):
+    if not seconds:
+        return "00:00:00"
+    total_sec = int(round(seconds))
+    hours = total_sec // 3600
+    minutes = (total_sec % 3600) // 60
+    secs = total_sec % 60
+    if hours > 0:
+        return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+    return f"{minutes:02d}:{secs:02d}"
+
+def calculate_pace(distance_m, duration_s, speed_mps=None):
+    if distance_m and distance_m > 0 and duration_s and duration_s > 0:
+        sec_per_km = duration_s / (distance_m / 1000.0)
+    elif speed_mps and speed_mps > 0:
+        sec_per_km = 1000.0 / speed_mps
+    else:
+        return "N/A"
+    
+    mins = int(sec_per_km // 60)
+    secs = int(sec_per_km % 60)
+    return f"{mins}'{secs:02d}\"/km"
+
+def fetch_garmin_latest():
+    token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
+    if not os.path.exists(token_dir):
+        raise Exception(f"找不到權杖目錄 {token_dir}，請先執行 `python scripts/get_garmin_token.py` 授權登入。")
+
+    garmin = Garmin()
+    garmin.login(tokenstore=token_dir)
+    
+    activities = garmin.get_activities(0, 1)
+    if not activities:
+        raise Exception("未找到任何 Garmin 活動紀錄。")
+        
+    act = activities[0]
+    
+    # 解析日期與時間
+    start_time_str = act.get("startTimeLocal", "")
+    date_part = ""
+    time_part = ""
+    if " " in start_time_str:
+        date_part, time_part = start_time_str.split(" ", 1)
+    elif "T" in start_time_str:
+        date_part, time_part = start_time_str.split("T", 1)
+    else:
+        date_part = start_time_str
+
+    type_info = act.get("activityType", {})
+    type_key = type_info.get("typeKey", "running") if isinstance(type_info, dict) else str(type_info)
+    
+    dist_m = act.get("distance", 0.0) or 0.0
+    dist_km = round(dist_m / 1000.0, 2)
+    
+    dur_s = act.get("duration", 0.0) or 0.0
+    moving_s = act.get("movingDuration", 0.0) or dur_s
+    elapsed_s = act.get("elapsedDuration", 0.0) or dur_s
+    
+    avg_speed = act.get("averageSpeed", 0.0) or 0.0
+    pace_str = calculate_pace(dist_m, moving_s if moving_s > 0 else dur_s, avg_speed)
+    
+    avg_hr = act.get("averageHR")
+    max_hr = act.get("maxHR")
+    
+    cadence = act.get("averageRunningCadenceInStepsPerMinute") or act.get("averageCadence")
+    elev_gain = act.get("elevationGain")
+    elev_loss = act.get("elevationLoss")
+    
+    vert_osc = act.get("avgVerticalOscillation")
+    gct = act.get("avgGroundContactTime")
+
+    # 心率區間占比 (%)
+    z1 = act.get("hrTimeInZone_1", 0.0) or 0.0
+    z2 = act.get("hrTimeInZone_2", 0.0) or 0.0
+    z3 = act.get("hrTimeInZone_3", 0.0) or 0.0
+    z4 = act.get("hrTimeInZone_4", 0.0) or 0.0
+    z5 = act.get("hrTimeInZone_5", 0.0) or 0.0
+    total_z_time = z1 + z2 + z3 + z4 + z5
+    
+    hr_zones = {
+        "z1": round((z1 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
+        "z2": round((z2 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
+        "z3": round((z3 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
+        "z4": round((z4 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
+        "z5": round((z5 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
+    }
+
+    return {
+        "activityId": act.get("activityId"),
+        "activityName": act.get("activityName", ""),
+        "activityType": type_key,
+        "date": date_part,
+        "startTime": time_part,
+        "distanceKm": dist_km,
+        "durationFormatted": format_duration(dur_s),
+        "movingDurationFormatted": format_duration(moving_s),
+        "durationSeconds": dur_s,
+        "movingDurationSeconds": moving_s,
+        "avgPace": pace_str,
+        "avgHr": int(round(avg_hr)) if avg_hr else None,
+        "maxHr": int(round(max_hr)) if max_hr else None,
+        "avgCadence": round(cadence, 1) if cadence else None,
+        "elevationGain": int(round(elev_gain)) if elev_gain is not None else None,
+        "elevationLoss": int(round(elev_loss)) if elev_loss is not None else None,
+        "hrZones": hr_zones,
+        "mechanics": {
+            "verticalOscillation": round(vert_osc, 2) if vert_osc else None,
+            "groundContactTime": round(gct, 1) if gct else None
+        }
+    }
+
+class GarminAPIRequestHandler(BaseHTTPRequestHandler):
+    def _send_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self._send_cors_headers()
+        self.end_headers()
+
+    def do_GET(self):
+        if self.path == "/api/garmin/latest":
+            try:
+                data = fetch_garmin_latest()
+                response = {
+                    "status": "success",
+                    "data": data
+                }
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self._send_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps(response, ensure_ascii=False).encode("utf-8"))
+            except Exception as e:
+                response = {
+                    "status": "error",
+                    "message": str(e)
+                }
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self._send_cors_headers()
+                self.end_headers()
+                self.wfile.write(json.dumps(response, ensure_ascii=False).encode("utf-8"))
+        else:
+            self.send_response(404)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "error", "message": "Not Found"}, ensure_ascii=False).encode("utf-8"))
+
+def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    server_address = ("", PORT)
+    httpd = HTTPServer(server_address, GarminAPIRequestHandler)
+    print("==========================================")
+    print(f"🛡️ Garmin 本機 API 服務已啟動: http://localhost:{PORT}")
+    print(f"📡 API 端點: http://localhost:{PORT}/api/garmin/latest")
+    print("==========================================")
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\n🛑 伺服器已停止。")
+        httpd.server_close()
+
+if __name__ == "__main__":
+    main()

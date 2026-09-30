@@ -139,4 +139,8 @@ DON_QUIJOTE_OS
   - **台北大縱走專屬 Modal 頁籤與 32 欄位表單**：於「今日活動」彈窗新增 `🥾 Taipei Grand Trail` 頁籤、縱走段數 (1~8段) 下拉選單、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
   - **GAS 雲端資料庫擴充與自動加總里程**：新增 `TaipeiGrandTrail_Logs` 試算表 (32 欄位)，擴充 `gas_api.js` API 處理 `saveTaipeiGrandTrailLog`，並優化 `updateEquipmentMileage` 動態對應標題欄位與暱稱匹配。
   - **AI 戰報生成器升級**：實作 `generateTaipeiGrandTrailAIPrompt()`，表單提交時生成包含 Camino 朝聖訓練備戰點評、裝備 XP 發放與騎士復盤檢討提示詞並一鍵複製。
+- **2026-09-30 (Task 0.6 / Garmin 本機 API 微服務與 Don Quijote OS 前台一鍵同步)**：
+  - **Garmin 本機授權與 API 微服務**：開發 [scripts/get_garmin_token.py](file:///f:/Projects/Don_Quijote_OS/scripts/get_garmin_token.py) 本機驗證與 [scripts/garmin_server.py](file:///f:/Projects/Don_Quijote_OS/scripts/garmin_server.py) HTTP 服務（提供 `http://localhost:8000/api/garmin/latest`，支援 CORS 跨域請求）。
+  - **前台一鍵自動填表 UI/UX**：於「今日活動」Modal 標頭新增 `【🔄 同步 Garmin 965 最新活動】` 戰術按鈕與 Loading 旋轉動畫。
+  - **智慧活動識別與遙測自動帶入**：點擊後自動識別 `running` / `walking` / `hiking` 切換表單分頁，並填入日期、距離、移動/總時間、平均配速、平均/最高心率、步頻、Z1~Z5 心率區間占比 (%)、垂直振幅及觸地時間，完美與 Don Quijote OS 表單整合。
 
