@@ -46,6 +46,11 @@
   - 更新 [src/index.html](file:///f:/Projects/Don_Quijote_OS/src/index.html) & [index.html](file:///f:/Projects/Don_Quijote_OS/index.html) / [src/style.css](file:///f:/Projects/Don_Quijote_OS/src/style.css) & [style.css](file:///f:/Projects/Don_Quijote_OS/style.css)：於 Modal 標頭加入 `【🔄 同步 Garmin 965 最新活動】` 戰術按鈕與加載動畫。
   - 更新 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) & [app.js](file:///f:/Projects/Don_Quijote_OS/app.js)：實現一鍵 Fetch Garmin 遙測數據，自動切換對應頁籤 (Run/CityWalk/TaipeiGrandTrail) 並自動填入日期、距離、配速、步頻、心率、Z1~Z5 心率區間占比 (%)、垂直振幅及觸地時間。
 
+## [0.1.5] - 2026-10-06
+### Added
+- **Garmin 活動綁定裝備 (Gear) 自動抓取與連動**：
+  - 更新 [scripts/garmin_server.py](file:///f:/Projects/Don_Quijote_OS/scripts/garmin_server.py)：調用 `garmin.get_activity_gear(act_id)` 解析活動關聯裝備清單，新增 `"gear"` 陣列於回傳 API JSON 物件中。
+  - 更新 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) & [app.js](file:///f:/Projects/Don_Quijote_OS/app.js)：同步時自動讀取 `data.gear` 裝備名稱，自動與現有裝備 Chips 匹配勾選，若無現成晶片則動態建立 `🛡️ [Garmin] 裝備名稱` 標籤並自動勾選。
 
 
 

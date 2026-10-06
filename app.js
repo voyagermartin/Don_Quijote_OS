@@ -14,35 +14,13 @@ const INVENTORY_DATA = {
         id: "loadout_running",
         name: "Running / Speed Expedition",
         description: "Lightweight gear optimized for urban and trail running speed.",
-        gear: {
-            head: { name: "Buff Reflective Headband", nickname: "風暴避雷針", weight: 35, rating: "A+", mileage: 120, notes: "Absorbs sweat during intense battles." },
-            body: { name: "Salomon Bonatti Waterproof Jacket", nickname: "風暴戰甲", weight: 200, rating: "S", mileage: 340, notes: "Windproof shield against harsh gusts." },
-            backpack: { name: "Salomon Active Skin 8 Vest", nickname: "疾風背心", weight: 210, rating: "S", mileage: 450, notes: "Zero bounce, holds dual flasks." },
-            watch: { name: "Garmin Forerunner 955", nickname: "時光羅盤", weight: 52, rating: "S", mileage: 1280, notes: "GPS tracking for windmill encounters." },
-            "trekking-pole": { name: "Leki Trail Running Carbon Poles", nickname: "疾風突擊槍", weight: 280, rating: "A", mileage: 210, notes: "Foldable speed poles." },
-            shoes: { name: "Hoka Speedgoat 5", nickname: "山羊神行靴", weight: 580, rating: "S", mileage: 520, notes: "Maximum cushion for rough paths." },
-            socks: { name: "Darn Tough Run Ultra-Light", nickname: "不滅戰襪", weight: 45, rating: "A+", mileage: 300, notes: "Blister-proof guarantee." },
-            phone: { name: "iPhone 15 Pro (Strava Mode)", nickname: "萬能預言石", weight: 187, rating: "A", mileage: 1500, notes: "Primary navigation & camera." },
-            "power-bank": { name: "Nitecore NB10000 Ultra Lightweight", nickname: "永恆雷電核心", weight: 150, rating: "S", mileage: 600, notes: "Carbon fiber casing." },
-            water: { name: "Hydrapak SoftFlask 500ml x2 (水壺)", nickname: "生命之泉水囊", weight: 70, rating: "A", mileage: 800, notes: "BPA-free collapsible flasks." }
-        }
+        gear: {}
     },
     camino: {
         id: "loadout_camino",
         name: "Camino de Santiago Pilgrimage",
         description: "Endurance gear for long-distance pilgrimage across Spain.",
-        gear: {
-            head: { name: "Tilley Broad Brim Sun Hat", nickname: "聖雅各遮陽帽", weight: 95, rating: "A+", mileage: 600, notes: "UV protection under Spanish sun." },
-            body: { name: "Patagonia Capilene Cool Daily Tee", nickname: "聖光戰袍", weight: 135, rating: "S", mileage: 850, notes: "Quick drying, odor control." },
-            backpack: { name: "Osprey Talon 33 Backpack", nickname: "羅西南特背包", weight: 1090, rating: "S", mileage: 1200, notes: "The reliable pack of the Knight." },
-            watch: { name: "Garmin Fenix 7X Solar", nickname: "太陽羅盤", weight: 89, rating: "S", mileage: 2100, notes: "Solar charged navigation." },
-            "trekking-pole": { name: "Black Diamond Trail Pro Shock", nickname: "朝聖杖", weight: 560, rating: "A+", mileage: 980, notes: "Absorbs descent impacts." },
-            shoes: { name: "Altra Lone Peak 7 Trail", nickname: "獨峰行者靴", weight: 620, rating: "S", mileage: 750, notes: "Wide toe box for long days." },
-            socks: { name: "Darn Tough Hiker Boot Full Cushion", nickname: "羊毛戰襪", weight: 90, rating: "S", mileage: 900, notes: "Merino wool warmth & cushion." },
-            phone: { name: "iPhone 15 Pro", nickname: "萬能預言石", weight: 187, rating: "A", mileage: 1500, notes: "Buen Camino guide & offline maps." },
-            "power-bank": { name: "Anker 325 Power Bank 20000mAh", nickname: "雷霆巨型核心", weight: 465, rating: "A+", mileage: 1100, notes: "Multi-day continuous power." },
-            water: { name: "CamelBak Crux 3L Reservoir (水壺)", nickname: "朝聖水囊", weight: 230, rating: "A", mileage: 1400, notes: "Hydration tube access." }
-        }
+        gear: {}
     }
 };
 
@@ -78,35 +56,9 @@ function saveNicknamesToStorage() {
  * Fetches active equipment dataset from Google Apps Script Web App API (Equipment_DB)
  */
 async function fetchEquipmentFromGAS() {
-    if (!GAS_WEBAPP_URL) {
-        console.log("💡 [GAS DB] GAS_WEBAPP_URL is empty. Using local INVENTORY_DATA & LocalStorage.");
-        return;
-    }
-
-    try {
-        console.log("🔄 [GAS DB] Fetching equipment dataset from cloud DB...");
-        const response = await fetch(`${GAS_WEBAPP_URL}?action=getEquipment`);
-        const resData = await response.json();
-
-        if (resData.status === 'success' && Array.isArray(resData.data)) {
-            console.log(`✅ [GAS DB] Successfully loaded ${resData.data.length} equipment items from cloud DB.`);
-            
-            resData.data.forEach(dbItem => {
-                const categoryKey = normalizeCategoryKey(dbItem.category);
-                if (categoryKey && INVENTORY_DATA[currentLoadout]?.gear?.[categoryKey]) {
-                    const targetGear = INVENTORY_DATA[currentLoadout].gear[categoryKey];
-                    if (dbItem.name) targetGear.name = dbItem.name;
-                    if (dbItem.nickname) targetGear.nickname = dbItem.nickname;
-                    if (dbItem.mileage !== undefined) targetGear.mileage = dbItem.mileage;
-                }
-            });
-
-            renderEquipmentSlots();
-            renderGearChips();
-        }
-    } catch (err) {
-        console.warn("⚠️ [GAS DB] Cloud equipment fetch failed:", err);
-    }
+    console.log("💡 [Equipment DB] Clean inventory state active. Awaiting Garmin or custom user entry.");
+    renderEquipmentSlots();
+    renderGearChips();
 }
 
 function normalizeCategoryKey(catStr) {
@@ -506,8 +458,8 @@ async function syncGarminLatestData() {
     syncBtn.innerHTML = '<span class="garmin-spin-icon">⏳</span> 抓取數據中...';
 
     const endpoints = [
-        'https://don-quijote-os.onrender.com/api/garmin/latest',
-        'http://localhost:8000/api/garmin/latest'
+        'http://localhost:8000/api/garmin/latest',
+        'https://don-quijote-os.onrender.com/api/garmin/latest'
     ];
 
     let garminData = null;
@@ -545,7 +497,14 @@ async function syncGarminLatestData() {
         }
 
         populateGarminDataToForm(garminData);
-        showToast('✅ Garmin 數據已自動帶入！請選擇今日裝備與填寫心得');
+        let toastMsg = '✅ Garmin 數據已自動帶入！';
+        if (Array.isArray(garminData.gear) && garminData.gear.length > 0) {
+            const gearLabels = garminData.gear.map(g => (typeof g === 'object' && g !== null) ? g.displayName : g);
+            toastMsg += ` 綁定裝備：${gearLabels.join(', ')}`;
+        } else {
+            toastMsg += ' 請確認今日裝備與填寫心得';
+        }
+        showToast(toastMsg);
     } catch (err) {
         console.error('Garmin sync error:', err);
         showToast(`❌ 同步失敗: ${err.message || 'Garmin API 服務暫時無法連線'}`);
@@ -623,6 +582,188 @@ function populateGarminDataToForm(data) {
         setVal('tgt-descent', data.elevationLoss);
         setVal('tgt-hr-avg', data.avgHr);
         setVal('tgt-hr-max', data.maxHr);
+    }
+
+    // 自動勾選/填入 Garmin 活動綁定之裝備與暱稱 (data.gear)
+    if (Array.isArray(data.gear) && data.gear.length > 0) {
+        syncGarminGearChips(data.gear);
+    }
+}
+
+/**
+ * Maps Garmin gear type or gear name to inventory slot key (shoes, watch, backpack, etc.)
+ */
+function findMatchingSlotKey(gItem) {
+    let name = '';
+    let type = '';
+
+    if (typeof gItem === 'string') {
+        name = gItem.toLowerCase();
+    } else if (typeof gItem === 'object' && gItem !== null) {
+        name = `${gItem.name || ''} ${gItem.nickname || ''} ${gItem.displayName || ''}`.toLowerCase();
+        type = (gItem.gearType || '').toLowerCase();
+    }
+
+    if (type.includes('shoe') || type.includes('footwear') || 
+        name.includes('mizuno') || name.includes('hoka') || name.includes('nike') || 
+        name.includes('adidas') || name.includes('asics') || name.includes('saucony') || 
+        name.includes('brooks') || name.includes('altra') || name.includes('puma') || 
+        name.includes('revolt') || name.includes('speedgoat') || name.includes('shoe')) {
+        return 'shoes';
+    }
+
+    if (type.includes('watch') || name.includes('garmin') || name.includes('forerunner') || 
+        name.includes('fenix') || name.includes('coros') || name.includes('suunto') || name.includes('watch')) {
+        return 'watch';
+    }
+
+    if (type.includes('pack') || type.includes('vest') || name.includes('salomon') || 
+        name.includes('osprey') || name.includes('gregory') || name.includes('vest') || name.includes('pack')) {
+        return 'backpack';
+    }
+
+    if (type.includes('head') || name.includes('buff') || name.includes('cap') || name.includes('hat')) {
+        return 'head';
+    }
+
+    if (type.includes('cloth') || type.includes('jacket') || name.includes('jacket') || name.includes('tee') || name.includes('shirt')) {
+        return 'body';
+    }
+
+    if (type.includes('pole') || name.includes('leki') || name.includes('black diamond') || name.includes('pole')) {
+        return 'trekking-pole';
+    }
+
+    if (type.includes('sock') || name.includes('darn tough') || name.includes('injinji') || name.includes('sock')) {
+        return 'socks';
+    }
+
+    return null;
+}
+
+/**
+ * Automatically sync and select gear chips according to Garmin activity gear.
+ */
+function syncGarminGearChips(garminGearList) {
+    if (typeof document === 'undefined' || !Array.isArray(garminGearList)) return;
+
+    // 1. 將 Garmin 回傳的裝備動態覆蓋寫入目前 Loadout 的 INVENTORY_DATA 對應欄位
+    garminGearList.forEach(gItem => {
+        let name = '';
+        let nickname = '';
+        let displayName = '';
+
+        if (typeof gItem === 'string') {
+            displayName = gItem.trim();
+            const match = displayName.match(/^[「『]([^」』]+)[」』]\s*(.+)$/);
+            if (match) {
+                nickname = match[1].trim();
+                name = match[2].trim();
+            } else {
+                name = displayName;
+            }
+        } else if (typeof gItem === 'object' && gItem !== null) {
+            name = (gItem.name || '').trim();
+            nickname = (gItem.nickname || '').trim();
+            displayName = (gItem.displayName || (nickname ? `「${nickname}」 ${name}` : name)).trim();
+        }
+
+        const slotKey = findMatchingSlotKey(gItem) || 'shoes';
+        if (slotKey) {
+            if (!INVENTORY_DATA[currentLoadout].gear) {
+                INVENTORY_DATA[currentLoadout].gear = {};
+            }
+            INVENTORY_DATA[currentLoadout].gear[slotKey] = {
+                name: name || displayName,
+                nickname: nickname || null,
+                weight: 0,
+                rating: 'S',
+                mileage: 0
+            };
+        }
+    });
+
+    // 2. 重新渲染介面與裝備 Chips，確保最新裝備與暱稱反映至 UI 上
+    renderGearChips();
+    renderPaperDoll();
+    renderInspector();
+
+    // 3. 勾選與高亮所有 Garmin 回傳對應的裝備 Chips
+    const container = document.getElementById('modal-gear-chips');
+    if (!container) return;
+
+    const chipElements = Array.from(container.querySelectorAll('.gear-chip'));
+    selectedGearList = [];
+
+    chipElements.forEach(chip => chip.classList.remove('selected'));
+
+    garminGearList.forEach(gItem => {
+        let gName = '';
+        let gNickname = '';
+        let gDisplayName = '';
+
+        if (typeof gItem === 'string') {
+            gName = gItem.trim();
+            gDisplayName = gItem.trim();
+        } else if (typeof gItem === 'object' && gItem !== null) {
+            gName = (gItem.name || '').trim();
+            gNickname = (gItem.nickname || '').trim();
+            gDisplayName = (gItem.displayName || gName || '').trim();
+        }
+
+        const cleanName = gName.toLowerCase();
+        const cleanNickname = gNickname.toLowerCase();
+        const cleanDisplayName = gDisplayName.toLowerCase();
+
+        let matched = false;
+
+        chipElements.forEach(chip => {
+            const chipText = (chip.getAttribute('data-gear-name') || chip.textContent || '').toLowerCase().trim();
+            if (
+                (cleanName && chipText.includes(cleanName)) ||
+                (cleanNickname && chipText.includes(cleanNickname)) ||
+                (cleanDisplayName && chipText.includes(cleanDisplayName)) ||
+                (cleanName && cleanName.includes(chipText))
+            ) {
+                chip.classList.add('selected');
+                const fullName = chip.getAttribute('data-gear-name') || chip.textContent.trim();
+                if (!selectedGearList.includes(fullName)) {
+                    selectedGearList.push(fullName);
+                }
+                matched = true;
+            }
+        });
+
+        if (!matched && gDisplayName) {
+            const chipLabel = `🛡️ [Garmin] ${gDisplayName}`;
+            if (!selectedGearList.includes(chipLabel)) {
+                const chip = document.createElement('div');
+                chip.className = 'gear-chip selected';
+                chip.setAttribute('data-gear-name', chipLabel);
+                chip.innerHTML = `<span>🛡️</span> <span>${gDisplayName}</span>`;
+
+                chip.addEventListener('click', () => {
+                    if (chip.classList.contains('selected')) {
+                        chip.classList.remove('selected');
+                        selectedGearList = selectedGearList.filter(g => g !== chipLabel);
+                    } else {
+                        chip.classList.add('selected');
+                        selectedGearList.push(chipLabel);
+                    }
+                });
+
+                container.appendChild(chip);
+                selectedGearList.push(chipLabel);
+            }
+        }
+    });
+
+    if (selectedGearList.length === 0) {
+        chipElements.forEach(chip => {
+            chip.classList.add('selected');
+            const fullName = chip.getAttribute('data-gear-name') || chip.textContent.trim();
+            selectedGearList.push(fullName);
+        });
     }
 }
 
@@ -742,6 +883,15 @@ function initStarRatings() {
     });
 }
 
+function getSelectedGearList() {
+    if (typeof document === 'undefined') return selectedGearList;
+    const inputEl = document.getElementById('modal-equipment-input');
+    if (inputEl && inputEl.value.trim()) {
+        return inputEl.value.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    return selectedGearList;
+}
+
 /**
  * Collects form data, attempts GAS API save, formats AI Prompt, and copies to Clipboard.
  */
@@ -754,7 +904,7 @@ async function handleSaveAndCopyPrompt() {
             date: document.getElementById('run-date')?.value || new Date().toISOString().split('T')[0],
             subject: document.getElementById('run-subject')?.value || '',
             workout: document.getElementById('run-workout')?.value || '',
-            gear: selectedGearList,
+            gear: getSelectedGearList(),
             location: document.getElementById('run-location')?.value || '',
             weather: document.getElementById('run-weather')?.value || '',
             distance: document.getElementById('run-distance')?.value || 0,
@@ -795,7 +945,7 @@ async function handleSaveAndCopyPrompt() {
             distance: document.getElementById('walk-distance')?.value || 0,
             duration: document.getElementById('walk-duration')?.value || '',
             steps: document.getElementById('walk-steps')?.value || '',
-            gear: selectedGearList,
+            gear: getSelectedGearList(),
             heartRate: document.getElementById('walk-hr')?.value || '',
             fatigue: document.getElementById('walk-fatigue')?.value || 4,
             bodyState: document.getElementById('walk-bodystate')?.value || '',
@@ -830,7 +980,7 @@ async function handleSaveAndCopyPrompt() {
             steps: document.getElementById('tgt-steps')?.value || '',
             elevationGain: document.getElementById('tgt-elevation-gain')?.value || '',
             elevationLoss: document.getElementById('tgt-elevation-loss')?.value || '',
-            gear: selectedGearList,
+            gear: getSelectedGearList(),
             hrAvg: document.getElementById('tgt-hr-avg')?.value || '',
             hrMax: document.getElementById('tgt-hr-max')?.value || '',
             fatigue: document.getElementById('tgt-fatigue')?.value || 6,

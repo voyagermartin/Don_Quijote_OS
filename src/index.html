@@ -268,15 +268,16 @@
 
             <!-- Modal Body Content -->
             <div class="modal-body">
-                <!-- Equipment Selector (Common to both tabs) -->
+                <!-- Equipment Selector (Common to all tabs) -->
                 <div class="form-section">
                     <label class="form-label">
-                        <span>🎒 今日穿戴裝備（點擊多選勾選）：</span>
-                        <span class="label-hint">點擊切換選取狀態，提交時將自動累加里程</span>
+                        <span>🎒 今日穿戴裝備（Garmin 自動帶入 / 可自由點選或編輯）：</span>
+                        <span class="label-hint">同步 Garmin 自動帶入綁定裝備，亦可手動輸入補充</span>
                     </label>
                     <div class="gear-chips-container" id="modal-gear-chips">
                         <!-- Dynamic Gear Chips Rendered by JS -->
                     </div>
+                    <input type="text" id="modal-equipment-input" class="form-input" placeholder="例如: 「Banana」 MIZUNO REVOLT 3" style="margin-top: 8px; width: 100%; box-sizing: border-box;">
                 </div>
 
                 <!-- Tab 1: Running Log Form -->
@@ -694,6 +695,6 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=clean_015"></script>
 </body>
 </html>

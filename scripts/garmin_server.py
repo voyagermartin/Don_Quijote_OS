@@ -166,10 +166,54 @@ def fetch_garmin_latest():
         "z5": round((z5 / total_z_time) * 100, 1) if total_z_time > 0 else 0.0,
     }
 
+    # 抓取活動關聯的 Garmin 裝備 (Gear) 與自訂暱稱 (Nickname)
+    gear_items = []
+    act_id = act.get("activityId")
+    if act_id:
+        try:
+            gears_res = garmin.get_activity_gear(act_id)
+            if isinstance(gears_res, list):
+                items = gears_res
+            elif isinstance(gears_res, dict):
+                items = gears_res.get("gearItems", gears_res.get("gears", [gears_res]))
+            else:
+                items = []
+
+            for item in items:
+                if isinstance(item, dict):
+                    custom_model = (
+                        item.get("customMakeModel") or
+                        item.get("name") or
+                        item.get("modelName") or
+                        item.get("gearModelName")
+                    )
+                    nickname = item.get("displayName")
+                    gear_type = item.get("gearTypeName")
+
+                    if custom_model:
+                        custom_model = str(custom_model).strip()
+                    if nickname:
+                        nickname = str(nickname).strip()
+
+                    if nickname and custom_model and nickname != custom_model:
+                        full_label = f"「{nickname}」 {custom_model}"
+                    else:
+                        full_label = nickname or custom_model or "未命名裝備"
+
+                    gear_items.append({
+                        "name": custom_model or full_label,
+                        "nickname": nickname if (nickname and nickname != custom_model) else None,
+                        "displayName": full_label,
+                        "gearType": gear_type
+                    })
+        except Exception as e:
+            print(f"⚠️ 抓取 Garmin 裝備時發生非致命錯誤: {e}")
+
     return {
         "activityId": act.get("activityId"),
         "activityName": act.get("activityName", ""),
         "activityType": type_key,
+        "gear": gear_items,
         "location": location,
         "weather": weather_str,
         "vo2Max": vo2_max,
