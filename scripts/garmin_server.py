@@ -33,11 +33,25 @@ def setup_tokens_from_env():
         if missing_padding:
             raw_token += '=' * (4 - missing_padding)
 
-        zip_bytes = base64.b64decode(raw_token)
-        buffer = io.BytesIO(zip_bytes)
+        decoded_bytes = base64.b64decode(raw_token)
+
+        # 3. 嘗試做為 JSON 直接寫入 garmin_tokens.json
+        try:
+            json_text = decoded_bytes.decode("utf-8")
+            json_obj = json.loads(json_text)
+            target_json = os.path.join(token_dir, "garmin_tokens.json")
+            with open(target_json, "w", encoding="utf-8") as f:
+                json.dump(json_obj, f, indent=2)
+            print("🔑 成功從 GARMIN_TOKENS_BASE64 (JSON) 載入通行證！")
+            return True, "OK"
+        except Exception:
+            pass
+
+        # 4. 嘗試做為 ZIP 解壓
+        buffer = io.BytesIO(decoded_bytes)
         with zipfile.ZipFile(buffer, "r") as zf:
             zf.extractall(token_dir)
-        print("🔑 成功從 GARMIN_TOKENS_BASE64 環境變數載入並解碼通行證！")
+        print("🔑 成功從 GARMIN_TOKENS_BASE64 (ZIP) 解碼載入通行證！")
         return True, "OK"
     except Exception as e:
         return False, f"GARMIN_TOKENS_BASE64 解碼/解壓失敗: {e}"

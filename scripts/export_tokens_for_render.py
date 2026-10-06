@@ -16,22 +16,16 @@ def export_tokens():
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     token_dir = os.path.join(os.getcwd(), ".garmin_tokens")
-    if not os.path.exists(token_dir) or not os.listdir(token_dir):
-        print(f"❌ 找不到權杖目錄 {token_dir} 或內容空白！")
+    token_json_path = os.path.join(token_dir, "garmin_tokens.json")
+
+    if not os.path.exists(token_json_path):
+        print(f"❌ 找不到權杖檔案 {token_json_path}！")
         print("💡 請先於本機執行 `python scripts/get_garmin_token.py` 完成 Garmin 登入。")
         sys.exit(1)
 
-    buffer = io.BytesIO()
-    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-        for root, dirs, files in os.walk(token_dir):
-            for file in files:
-                abs_path = os.path.join(root, file)
-                rel_path = os.path.relpath(abs_path, token_dir)
-                zf.write(abs_path, rel_path)
+    with open(token_json_path, "rb") as f:
+        b64_str = base64.b64encode(f.read()).decode("utf-8").strip()
 
-    b64_str = base64.b64encode(buffer.getvalue()).decode("utf-8").strip()
-
-    # 寫入單行乾淨的 UTF-8 檔案
     output_file = os.path.join(os.getcwd(), "token_render_clean.txt")
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(b64_str)
