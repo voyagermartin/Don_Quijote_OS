@@ -587,6 +587,11 @@ function populateGarminDataToForm(data) {
     // 自動勾選/填入 Garmin 活動綁定之裝備與暱稱 (data.gear)
     if (Array.isArray(data.gear) && data.gear.length > 0) {
         syncGarminGearChips(data.gear);
+        const inputEl = document.getElementById('modal-equipment-input');
+        if (inputEl) {
+            const gearLabels = data.gear.map(g => (typeof g === 'object' && g !== null) ? g.displayName : g);
+            inputEl.value = gearLabels.join(', ');
+        }
     }
 }
 
@@ -685,8 +690,7 @@ function syncGarminGearChips(garminGearList) {
 
     // 2. 重新渲染介面與裝備 Chips，確保最新裝備與暱稱反映至 UI 上
     renderGearChips();
-    renderPaperDoll();
-    renderInspector();
+    renderEquipmentSlots();
 
     // 3. 勾選與高亮所有 Garmin 回傳對應的裝備 Chips
     const container = document.getElementById('modal-gear-chips');
