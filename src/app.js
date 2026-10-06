@@ -1008,10 +1008,10 @@ async function handleSaveAndCopyPrompt() {
         try {
             await fetch(GAS_WEBAPP_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ type: activeModalTab, data: payload })
             });
-            console.log(" Log saved to GAS Database successfully.");
+            console.log("✅ Log saved to GAS Database successfully.");
         } catch (err) {
             console.warn("⚠️ GAS API submit notice: Running offline or endpoint pending deployment.", err);
         }
