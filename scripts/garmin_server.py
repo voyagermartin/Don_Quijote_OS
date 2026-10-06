@@ -266,7 +266,19 @@ class GarminAPIRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path == "/api/garmin/latest":
+        if self.path in ["/", "/index.html"]:
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self._send_cors_headers()
+            self.end_headers()
+            info = {
+                "status": "success",
+                "service": "Don Quijote OS - Garmin API Microservice",
+                "endpoint": "/api/garmin/latest",
+                "message": "Garmin API 微服務已就緒！請存取 /api/garmin/latest"
+            }
+            self.wfile.write(json.dumps(info, ensure_ascii=False).encode("utf-8"))
+        elif self.path == "/api/garmin/latest":
             try:
                 data = fetch_garmin_latest()
                 response = {
