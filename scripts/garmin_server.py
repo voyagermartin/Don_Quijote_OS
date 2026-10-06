@@ -87,7 +87,17 @@ def fetch_garmin_latest():
         raise Exception(f"通行證權杖目錄未就緒 ({env_msg})。請在 Render 環境變數設定 GARMIN_TOKENS_BASE64。")
 
     garmin = Garmin()
-    garmin.login(tokenstore=token_dir)
+    try:
+        garmin.login(tokenstore=token_dir)
+    except Exception as err:
+        email = os.environ.get("GARMIN_EMAIL")
+        password = os.environ.get("GARMIN_PASSWORD")
+        if email and password:
+            print(f"⚠️ Token 登入失敗 ({err})，嘗試使用 GARMIN_EMAIL / GARMIN_PASSWORD 自動重新登入...")
+            garmin = Garmin(email=email, password=password)
+            garmin.login(tokenstore=token_dir)
+        else:
+            raise Exception(f"Garmin Token 已過期 ({err})。請更新 GARMIN_TOKENS_BASE64 或在環境變數設定 GARMIN_EMAIL 與 GARMIN_PASSWORD 以供自動刷新。")
     
     activities = garmin.get_activities(0, 1)
     if not activities:
