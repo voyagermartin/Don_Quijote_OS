@@ -52,6 +52,25 @@
   - 更新 [scripts/garmin_server.py](file:///f:/Projects/Don_Quijote_OS/scripts/garmin_server.py)：調用 `garmin.get_activity_gear(act_id)` 解析活動關聯裝備清單，新增 `"gear"` 陣列於回傳 API JSON 物件中。
   - 更新 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) & [app.js](file:///f:/Projects/Don_Quijote_OS/app.js)：同步時自動讀取 `data.gear` 裝備名稱，自動與現有裝備 Chips 匹配勾選，若無現成晶片則動態建立 `🛡️ [Garmin] 裝備名稱` 標籤並自動勾選。
 
+## [0.1.6] - 2026-10-11
+### Changed (Task 0.7.1: 今日活動錄入介面字體級數與可讀性舒適度優化)
+- **Modal 標頭與操作按鈕視覺放大**：
+  - 彈窗標題調大至 `1.45rem`，副標題提升至 `0.95rem`，間距調整更加開闊。
+  - 「🔄 同步 Garmin 965 最新活動」按鈕字級調大至 `0.98rem`，內距加大至 `10px 18px`，提升手機點擊觸控熱區。
+  - 分頁頁籤按鈕 (Run / CityWalk / Taipei Grand Trail) 字級調大至 `1.05rem`，強化選中時的金光陰影對比。
+- **表單輸入框、選單與標籤層次升級**：
+  - 所有表單輸入框 (text, number, date)、文字區塊 (textarea) 與下拉選單全面升級至 `16px`（徹底防止 iOS/Safari 觸發強制畫面放大），內距舒適擴增至 `11px 15px`。
+  - 欄位標籤 (Labels) 全面調大至 `1rem` 並加粗至 `600`，裝備區標籤放大至 `1.02rem`，提升視覺層次。
+  - 數值單位符號 (km, bpm, %, m 等) 放大至 `0.95rem`，避免文字過小。
+  - 心率區間 (Z1~Z5) 標籤與數值框尺寸加大，排版更清晰。
+- **裝備與路況 Chips 及 Sliders 觸控優化**：
+  - 裝備 Chips 與路況 Chips 字級放大至 `0.95rem`，內距擴增至 `8px 16px`，點擊目標更大更友善。
+  - 體感疲勞度與路線難度 Slider 數值放大至 `1.25rem` 加粗並帶琥珀光暈；滑桿高度增至 `8px`，拖曳紐擴大至 `22px`。
+- **戰術送出按鈕強化**：
+  - 「📋 儲存活動並產生 AI 戰報」按鈕字級放大至 `1.1rem`，內距提升至 `13px 28px`，字距拉開，儀式感顯著提升。
+- **行動端響應式增強**：
+  - 於 `@media (max-width: 768px)` 補強 Modal 滿版適配、header 換行堆疊、分頁滑動與按鈕 100% 寬度觸控佈局。
+
 
 
 
