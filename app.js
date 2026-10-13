@@ -56,7 +56,42 @@ function saveNicknamesToStorage() {
  * Fetches active equipment dataset from Google Apps Script Web App API (Equipment_DB)
  */
 async function fetchEquipmentFromGAS() {
-    console.log("💡 [Equipment DB] Clean inventory state active. Awaiting Garmin or custom user entry.");
+    if (!GAS_WEBAPP_URL) {
+        console.log("💡 [Equipment DB] Clean inventory state active. Awaiting Garmin or custom user entry.");
+        renderEquipmentSlots();
+        renderGearChips();
+        return;
+    }
+
+    try {
+        console.log("🔄 [GAS DB] Fetching active equipment from cloud DB...");
+        const response = await fetch(`${GAS_WEBAPP_URL}?action=getEquipment`);
+        const resData = await response.json();
+
+        if (resData.status === 'success' && Array.isArray(resData.data) && resData.data.length > 0) {
+            console.log(`✅ [GAS DB] Loaded ${resData.data.length} equipment items from Equipment_DB:`, resData.data);
+            
+            resData.data.forEach(dbItem => {
+                const slotKey = normalizeCategoryKey(dbItem.category) || findMatchingSlotKey(dbItem.name || dbItem.nickname);
+                if (slotKey) {
+                    if (!INVENTORY_DATA[currentLoadout].gear) {
+                        INVENTORY_DATA[currentLoadout].gear = {};
+                    }
+                    INVENTORY_DATA[currentLoadout].gear[slotKey] = {
+                        name: dbItem.name,
+                        nickname: dbItem.nickname || null,
+                        weight: 0,
+                        rating: 'S',
+                        mileage: dbItem.mileage || 0,
+                        id: dbItem.id
+                    };
+                }
+            });
+        }
+    } catch (err) {
+        console.warn("⚠️ [GAS DB] Notice loading equipment from GAS: ", err);
+    }
+
     renderEquipmentSlots();
     renderGearChips();
 }

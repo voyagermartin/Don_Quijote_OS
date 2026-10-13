@@ -123,6 +123,25 @@ function getEquipmentList() {
 }
 
 /**
+ * Helper to parse gear input into string array regardless of format
+ */
+function parseGearList(gear) {
+  if (Array.isArray(gear)) {
+    return gear.map(function(item) {
+      if (!item) return '';
+      if (typeof item === 'object') {
+        return item.displayName || (item.nickname ? ('「' + item.nickname + '」 ' + (item.name || '')) : item.name) || '';
+      }
+      return item.toString().trim();
+    }).filter(Boolean);
+  }
+  if (typeof gear === 'string' && gear.trim()) {
+    return gear.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+  }
+  return [];
+}
+
+/**
  * Saves a Running Log entry and updates gear mileage
  */
 function saveRunningLog(data) {
@@ -130,7 +149,8 @@ function saveRunningLog(data) {
   var sheet = ss.getSheetByName('Running_Logs');
   if (!sheet) throw new Error('Running_Logs sheet not found.');
 
-  var gearStr = Array.isArray(data.gear) ? data.gear.join(', ') : (data.gear || '');
+  var gearArr = parseGearList(data.gear);
+  var gearStr = gearArr.join(', ');
   var dist = Number(data.distance) || 0;
 
   var newRow = [
@@ -166,8 +186,8 @@ function saveRunningLog(data) {
   sheet.appendRow(newRow);
 
   // Update cumulative mileage for checked equipment (or auto-register missing equipment)
-  if (Array.isArray(data.gear) && data.gear.length > 0) {
-    updateEquipmentMileage(ss, data.gear, dist);
+  if (gearArr.length > 0) {
+    updateEquipmentMileage(ss, gearArr, dist);
   }
 
   return { message: 'Running log saved successfully.', row: sheet.getLastRow() };
@@ -181,7 +201,8 @@ function saveCityWalkLog(data) {
   var sheet = ss.getSheetByName('CityWalk_Logs');
   if (!sheet) throw new Error('CityWalk_Logs sheet not found.');
 
-  var gearStr = Array.isArray(data.gear) ? data.gear.join(', ') : (data.gear || '');
+  var gearArr = parseGearList(data.gear);
+  var gearStr = gearArr.join(', ');
   var dist = Number(data.distance) || 0;
 
   var newRow = [
@@ -209,8 +230,8 @@ function saveCityWalkLog(data) {
   sheet.appendRow(newRow);
 
   // Update cumulative mileage for checked equipment (or auto-register missing equipment)
-  if (Array.isArray(data.gear) && data.gear.length > 0) {
-    updateEquipmentMileage(ss, data.gear, dist);
+  if (gearArr.length > 0) {
+    updateEquipmentMileage(ss, gearArr, dist);
   }
 
   return { message: 'CityWalk log saved successfully.', row: sheet.getLastRow() };
@@ -224,7 +245,8 @@ function saveTaipeiGrandTrailLog(data) {
   var sheet = ss.getSheetByName('TaipeiGrandTrail_Logs');
   if (!sheet) throw new Error('TaipeiGrandTrail_Logs sheet not found.');
 
-  var gearStr = Array.isArray(data.gear) ? data.gear.join(', ') : (data.gear || '');
+  var gearArr = parseGearList(data.gear);
+  var gearStr = gearArr.join(', ');
   var roadStr = Array.isArray(data.roadConditions) ? data.roadConditions.join(', ') : (data.roadConditions || '');
   var dist = Number(data.distance) || 0;
 
@@ -266,8 +288,8 @@ function saveTaipeiGrandTrailLog(data) {
   sheet.appendRow(newRow);
 
   // Update cumulative mileage for checked equipment (or auto-register missing equipment)
-  if (Array.isArray(data.gear) && data.gear.length > 0) {
-    updateEquipmentMileage(ss, data.gear, dist);
+  if (gearArr.length > 0) {
+    updateEquipmentMileage(ss, gearArr, dist);
   }
 
   return { message: 'Taipei Grand Trail log saved successfully.', row: sheet.getLastRow() };
@@ -278,13 +300,31 @@ function saveTaipeiGrandTrailLog(data) {
  */
 function updateEquipmentMileage(ss, gearNames, addedKm) {
   var sheet = ss.getSheetByName('Equipment_DB');
-  if (!sheet) return;
+  if (!sheet) {
+    sheet = ss.insertSheet('Equipment_DB');
+  }
+
+  var defaultHeaders = ['裝備ID', '名稱', '暱稱', '類別', '品牌', '累積里程KM', '狀態'];
+
+  // Ensure header row exists
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(defaultHeaders);
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold').setBackground('#1f293d').setFontColor('#d4af37');
+    sheet.setFrozenRows(1);
+  } else {
+    var firstRow = sheet.getRange(1, 1, 1, defaultHeaders.length).getValues()[0];
+    if (!firstRow[0] || firstRow[0].toString().trim() === '') {
+      sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+      sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold').setBackground('#1f293d').setFontColor('#d4af37');
+      sheet.setFrozenRows(1);
+    }
+  }
 
   if (!Array.isArray(gearNames) || gearNames.length === 0) return;
   var km = Number(addedKm) || 0;
 
   var data = sheet.getDataRange().getValues();
-  var headers = data.length > 0 ? data[0] : ['裝備ID', '名稱', '暱稱', '類別', '品牌', '累積里程KM', '狀態'];
+  var headers = data.length > 0 ? data[0] : defaultHeaders;
 
   var idIdx = headers.indexOf('裝備ID');
   var nameIdx = headers.indexOf('名稱');
@@ -297,16 +337,16 @@ function updateEquipmentMileage(ss, gearNames, addedKm) {
   if (idIdx === -1) idIdx = 0;
   if (nameIdx === -1) nameIdx = 1;
   if (nicknameIdx === -1) nicknameIdx = 2;
-  if (catIdx === -1) catIdx = 3;
-  if (brandIdx === -1) brandIdx = 4;
-  if (mileageIdx === -1) mileageIdx = 5;
-  if (statusIdx === -1) statusIdx = 6;
+  if (catIdx === -1) catIdx = (nicknameIdx !== -1) ? 3 : 2;
+  if (brandIdx === -1) brandIdx = (nicknameIdx !== -1) ? 4 : 3;
+  if (mileageIdx === -1) mileageIdx = (nicknameIdx !== -1) ? 5 : 4;
+  if (statusIdx === -1) statusIdx = (nicknameIdx !== -1) ? 6 : 5;
 
   // Track existing items in sheet
   var trackedGear = [];
   for (var i = 1; i < data.length; i++) {
     var row = data[i];
-    if (!row || row.length === 0) continue;
+    if (!row || row.length === 0 || !row[0]) continue;
     trackedGear.push({
       rowIndex: i + 1,
       id: (row[idIdx] || '').toString().trim(),

@@ -1,4 +1,4 @@
-# 🛡️ Don Quijote OS Handbook v0.1.8
+# 🛡️ Don Quijote OS Handbook v0.1.9
 
 > *"Life is the Greatest RPG. We fight monsters weirder than windmills."*
 
@@ -160,7 +160,12 @@ DON_QUIJOTE_OS
 - **2026-10-11 (Task 0.7.1 / 今日活動錄入介面字體級數與可讀性舒適度優化)**：
   - **Modal 標頭與操作按鈕視覺放大**：彈窗標題調大至 `1.45rem`，副標題提升至 `0.95rem`，間距開闊；「🔄 同步 Garmin 965 最新活動」按鈕字級調大至 `0.98rem`、內距加大至 `10px 18px`，提升手機點擊觸控熱區；分頁頁籤按鈕 (Run / CityWalk / Taipei Grand Trail) 字級調大至 `1.05rem`，強化金光文字陰影對比。
   - **表單輸入框、選單與標籤層次升級**：所有表單輸入框 (text, number, date)、文字區塊 (textarea)、下拉選單與自訂裝備欄位全面強制設定為 `16px`（徹底防止 iOS/Safari 觸發強制畫面放大），呼吸感內距擴增至 `11px 15px`；欄位標籤調大至 `1rem` 並加粗至 `600`，裝備區標籤放大至 `1.02rem`，分區標題升至 `1.08rem`；數值單位符號 (km, bpm, %, m 等) 放大至 `0.95rem`；心率區間 (Z1~Z5) 標籤與數值框尺寸加大。
-  - **裝備與路況 Chips 及 Sliders 觸控優化**：裝備與路況 Chips 字級放大至 `0.95rem`，內距擴增至 `8px 16px`；體感疲勞度與路線難度 Slider 數值放大至 `1.25rem` 加粗並帶琥珀光暈，滑桿高度增至 `8px`，拖曳紐擴大至 `22px`；星級評分圖示放大至 `1.35rem`。
   - **戰術送出按鈕、行動端響應式與防快取機制**：「📋 儲存活動並產生 AI 戰報」按鈕字級放大至 `1.1rem`、內距提升至 `13px 28px`，字距拉開；於 `@media (max-width: 768px)` 補強 Modal 滿版適配、header 換行堆疊、分頁滑動與按鈕 100% 寬度觸控佈局；在引入樣式處加入 `style.css?v=0.1.6` 徹底解決行動端瀏覽器快取舊樣式問題。
+- **2026-10-13 (Equipment_DB 寫入故障排除與 GAS Version 5 重新部署)**：
+  - **GAS 部署版本同步**：排查發現線上 Web App 端點因未重新部署而持續運行 Version 4，導致 Task 0.7 裝備自動註冊未生效。透過 clasp 建立 Version 5 並成功重新部署 Web App 端點。
+  - **表頭自動防呆初始化**：[src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) 於更新或註冊裝備時自動檢核並補齊 `Equipment_DB` 預設標題列 (`裝備ID`、`名稱`、`暱稱`、`類別`、`品牌`、`累積里程KM`、`狀態`)，補強 `parseGearList()` 輸入型態容錯。
+  - **前台雲端裝備同步機制還原**：於 [app.js](file:///f:/Projects/Don_Quijote_OS/app.js) 實作 `fetchEquipmentFromGAS()` 重新啟用向 GAS API 拉取已註冊裝備與累積里程並載入前台配裝插槽。
+  - **線上實測驗證**：成功完成新裝備自動註冊 (`GEAR_001` / `「Banana」 MIZUNO REVOLT 3`) 與多次遠征里程累加 (6.5km -> 10km) 之雙向即時驗證。
+
 
 

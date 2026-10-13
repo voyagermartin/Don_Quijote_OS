@@ -71,6 +71,20 @@
 - **行動端響應式增強**：
   - 於 `@media (max-width: 768px)` 補強 Modal 滿版適配、header 換行堆疊、分頁滑動與按鈕 100% 寬度觸控佈局。
 
+## [0.1.7] - 2026-10-13
+### Fixed (Equipment_DB 寫入與 GAS 雲端部署修復)
+- **修復 GAS Web App 部署版本鎖死在 Version 4 之問題**：
+  - 診斷出線上 Web App 端點一直固定在 2026 年 8 月的 Version 4，導致 Task 0.7 實作之裝備自動註冊程式碼從未於正式端點生效。
+  - 建立 GAS Version 5 並將正式 Deployment `AKfycbxVNWSL4omtaWcTEpQUwKAOwHBLbtDLky7xw8VNPx_LxvJfbEeC1XG8ABHAKp0DReU-0g` 成功重新部署至 Version 5。
+- **補強 `Equipment_DB` 表頭防呆與格式容錯機制**：
+  - 於 [src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) 新增 `parseGearList()` 支援字串與陣列兩種輸入格式。
+  - 當 `Equipment_DB` 工作表為空或首列無標題時，自動補齊預設標題列 (`裝備ID`、`名稱`、`暱稱`、`類別`、`品牌`、`累積里程KM`、`狀態`) 並凍結首列，避免寫入失敗或索引位移。
+- **恢復前台 `fetchEquipmentFromGAS()` 雲端裝備同步**：
+  - 於 [app.js](file:///f:/Projects/Don_Quijote_OS/app.js) 及 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 實作向 GAS API 抓取現有裝備並動態填入 `INVENTORY_DATA`，實現雲端裝備與累積里程自動載入前台。
+- **實地雙向驗證完成**：
+  - 成功驗證全新裝備（如 `「Banana」 MIZUNO REVOLT 3`）儲存日誌時自動建立新列 `GEAR_001`，且後續日誌可精準匹配並累積里程 (6.5km -> 10km)。
+
+
 
 
 
