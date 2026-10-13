@@ -36,16 +36,16 @@ $$\text{人} \longrightarrow \text{裝備} \longrightarrow \text{配裝 (Loadout
 
 ---
 
-## 4. MVP Scope (Version 0.1 / Task 0.2 ~ Task 0.7.1)
+## 4. MVP Scope (Version 0.1.9 / Task 0.2 ~ Task 0.7.2)
 第一版只做最核心的「配裝與戰報體驗」，包含：
 - **Character（騎士人物中央面板）**：可視化裝備插槽（頭部、身體、鞋款、襪款、手錶 屬 **👕 穿戴裝備**；背包、登山杖、手機、行動電源、水壺 屬 **🧰 其他配備**）。中央人形具備互動點擊功能，動態顯示「🏋️ 裝備總重」與「🛡️ 已裝備數量」標籤，點擊可於 Inspector 開啟「騎士戰備總覽」。
-- **Inventory（皇家倉庫資料）**：採用 JSON 靜態結構，並與 Google Sheet `Equipment_DB` 雲端連動。
+- **Inventory（皇家倉庫資料）**：採用 JSON 結構，並與 Google Sheet `Equipment_DB` 雲端連動，前台開啟時透過 `fetchEquipmentFromGAS()` 自動載入已註冊之現役裝備。
 - **Equipment Panel & Nicknames（裝備詳情與自訂暱稱面板）**：點擊裝備格或中央人形後，切換顯示名稱、類別、單重、評分、累積里程、戰力評級與戰鬥備註；支援「🏷️ 裝備暱稱 (Nickname)」自訂功能，Inspector 提供全套裝備快捷編輯列表與隨打即存機制，並透過 `localStorage` 進行本機持久化保存。
 - **Loadout（兩組主打遠征預設切換）**：`Running` / `Camino`（支援手機行動端響應式排版）。點擊切換時，全套裝備同步更換並自動計算總重量。
 - **Expedition Log Modal（今日活動錄入彈窗）**：提供 `🏃‍♂️ Run`、`🌇 CityWalk` 與 `🥾 Taipei Grand Trail` 三頁籤表單。`Run` 表單支援完整跑力與心率遙測欄位；`Taipei Grand Trail` 支援段數 (1~8段)、起終點、路況 Chips 多選、登山遙測 (爬升/下降m)、心率/疲勞/難度 Slider、Camino 訓練星級評分與騎士復盤欄位。
-- **GAS Cloud Integration（Google Apps Script 雲端資料庫）**：自動將日誌寫入 `Running_Logs` (27 欄) / `CityWalk_Logs` / `TaipeiGrandTrail_Logs` (32 欄)；`Equipment_DB` 支援 `暱稱` 欄位與自動里程累加連動機制。
+- **GAS Cloud Integration & Auto-Registration（Google Apps Script 雲端資料庫與裝備自動註冊 / Task 0.7 & Task 0.7.2）**：自動將日誌寫入 `Running_Logs` (27 欄) / `CityWalk_Logs` / `TaipeiGrandTrail_Logs` (32 欄)；`Equipment_DB` 具備表頭防呆自癒機制、新裝備自動註冊 (`GEAR_XXX` ID、解析品牌/類別、設為服役中)、自訂暱稱精準匹配與多次遠征累積里程連動累加；線上正式 Web App 端點鎖定最新 Version 6。
 - **Garmin Connect Integration & Cloud API（Garmin 遙測與雲端同步模組 / Task 0.5 & 0.6）**：提供本機 CLI 通行證登入驗證 (`garminconnect` / TokenStore)，部署輕量微服務 (`scripts/garmin_server.py`)，支援 Render 雲端平台 `GARMIN_TOKENS_BASE64` 自動解碼與 Base64 Padding 容錯補齊機制。前台彈窗整合「🔄 同步 Garmin 965 最新活動」按鈕與 35 秒長連線抗冷啟動、自動智慧帶入 15+ 項遙測數據（含日期、地點、氣溫、距離、總/移動時間、平均/跑段配速、平均/最高心率、平均/最大步頻、Z1~Z5 心率區間占比 %、移動效率 %、垂直振幅、觸地時間及 VO2Max 跑力）。
-- **Garmin Gear Extraction & GAS Auto-Registration（Garmin 裝備提取與雲端自動註冊 / Task 0.7）**：微服務調用 `get_activity_gear()` 動態抓取活動綁定裝備與自訂暱稱，前台自動對應選取 Chips；提交日誌時若為新裝備，GAS 自動於 `Equipment_DB` 建立新列（自動產生 ID、解析品牌/類別、設為服役中並累加里程）。
+- **Garmin Gear Extraction & Chips Auto-Mapping（Garmin 裝備提取與前台動態勾選 / Task 0.7）**：微服務調用 `get_activity_gear()` 動態抓取活動綁定裝備與自訂暱稱，前台自動對應選取 Chips 並支援自訂輸入；送出日誌時自動連動 GAS 於 `Equipment_DB` 自動註冊並累加里程。
 - **Form Readability & UI Sizing Optimization（活動錄入字體級數與行動端舒適度優化 / Task 0.7.1）**：彈窗標題與副標題放大（1.45rem / 0.95rem），Garmin 同步按鈕加大至 0.98rem 並擴展觸控內距；分頁頁籤字級升至 1.05rem；所有表單輸入框、選單與文字區塊字級全面鎖定 `16px`（徹底防止 iOS/Safari 觸發畫面強制放大縮放），內距擴增至 `11px 15px` 保持舒適呼吸感；標籤提升至 1rem (600 加粗)，數值單位放大至 0.95rem；裝備與路況 Chips 放大至 0.95rem，Sliders 數值放大至 1.25rem 琥珀光暈；送出按鈕升級至 1.1rem；並配置行動端響應式滿版適配與 `style.css?v=0.1.6` 瀏覽器防快取版本機制。
 - **AI Prompt Assistant（一鍵複製 AI 戰報 Prompt）**：表單儲存時自動生成包含完整遙測數據的精簡專業戰報格式，一鍵複製供貼給 Gemini 系統架構師分析。
 - **GitHub Pages 全球雲端部署與隱私防護**：支援全雲端存取，並配置 `noindex` 及 `robots.txt` 全面防止搜尋引擎收錄。
@@ -161,10 +161,10 @@ DON_QUIJOTE_OS
   - **Modal 標頭與操作按鈕視覺放大**：彈窗標題調大至 `1.45rem`，副標題提升至 `0.95rem`，間距開闊；「🔄 同步 Garmin 965 最新活動」按鈕字級調大至 `0.98rem`、內距加大至 `10px 18px`，提升手機點擊觸控熱區；分頁頁籤按鈕 (Run / CityWalk / Taipei Grand Trail) 字級調大至 `1.05rem`，強化金光文字陰影對比。
   - **表單輸入框、選單與標籤層次升級**：所有表單輸入框 (text, number, date)、文字區塊 (textarea)、下拉選單與自訂裝備欄位全面強制設定為 `16px`（徹底防止 iOS/Safari 觸發強制畫面放大），呼吸感內距擴增至 `11px 15px`；欄位標籤調大至 `1rem` 並加粗至 `600`，裝備區標籤放大至 `1.02rem`，分區標題升至 `1.08rem`；數值單位符號 (km, bpm, %, m 等) 放大至 `0.95rem`；心率區間 (Z1~Z5) 標籤與數值框尺寸加大。
   - **戰術送出按鈕、行動端響應式與防快取機制**：「📋 儲存活動並產生 AI 戰報」按鈕字級放大至 `1.1rem`、內距提升至 `13px 28px`，字距拉開；於 `@media (max-width: 768px)` 補強 Modal 滿版適配、header 換行堆疊、分頁滑動與按鈕 100% 寬度觸控佈局；在引入樣式處加入 `style.css?v=0.1.6` 徹底解決行動端瀏覽器快取舊樣式問題。
-- **2026-10-13 (Equipment_DB 寫入故障排除與 GAS Version 5 重新部署)**：
-  - **GAS 部署版本同步**：排查發現線上 Web App 端點因未重新部署而持續運行 Version 4，導致 Task 0.7 裝備自動註冊未生效。透過 clasp 建立 Version 5 並成功重新部署 Web App 端點。
-  - **表頭自動防呆初始化**：[src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) 於更新或註冊裝備時自動檢核並補齊 `Equipment_DB` 預設標題列 (`裝備ID`、`名稱`、`暱稱`、`類別`、`品牌`、`累積里程KM`、`狀態`)，補強 `parseGearList()` 輸入型態容錯。
-  - **前台雲端裝備同步機制還原**：於 [app.js](file:///f:/Projects/Don_Quijote_OS/app.js) 實作 `fetchEquipmentFromGAS()` 重新啟用向 GAS API 拉取已註冊裝備與累積里程並載入前台配裝插槽。
+- **2026-10-13 (Task 0.7.2 / Equipment_DB 寫入故障排除、容錯強化與 GAS Version 6 重新部署)**：
+  - **GAS 部署版本同步與修復**：排查發現線上 Web App 端點因未重新部署而持續運行 8 月的 Version 4（舊版含 `if (data.length <= 1) return;` 且無自動註冊），導致 Task 0.7 裝備自動註冊未在正式端點生效。透過 clasp 建立 Version 5/6 並成功將正式 Web App 端點重新部署至 Version 6。
+  - **表頭自動防呆初始化**：[src/gas_api.js](file:///f:/Projects/Don_Quijote_OS/src/gas_api.js) 於更新或註冊裝備時自動檢核並補齊 `Equipment_DB` 預設標題列 (`裝備ID`、`名稱`、`暱稱`、`類別`、`品牌`、`累積里程KM`、`狀態`)，補強 `parseGearList()` 輸入型態容錯（相容陣列、物件、字串）。
+  - **前台雲端裝備同步機制還原**：於 [app.js](file:///f:/Projects/Don_Quijote_OS/app.js) 及 [src/app.js](file:///f:/Projects/Don_Quijote_OS/src/app.js) 實作 `fetchEquipmentFromGAS()` 重新啟用向 GAS API 拉取已註冊裝備與累積里程並載入前台配裝插槽。
   - **線上實測驗證**：成功完成新裝備自動註冊 (`GEAR_001` / `「Banana」 MIZUNO REVOLT 3`) 與多次遠征里程累加 (6.5km -> 10km) 之雙向即時驗證。
 
 
